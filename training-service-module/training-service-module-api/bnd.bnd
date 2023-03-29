@@ -1,0 +1,10 @@
+Bundle-Name: training-service-module-api
+Bundle-SymbolicName: com.aixtor.training.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.aixtor.training.exception,\
+	com.aixtor.training.model,\
+	com.aixtor.training.service,\
+	com.aixtor.training.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../training-service-module-service/service.xml
