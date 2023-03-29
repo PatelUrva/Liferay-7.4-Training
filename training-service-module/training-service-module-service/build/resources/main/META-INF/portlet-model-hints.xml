@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.aixtor.training.model.Branch">
+		<field name="uuid" type="String" />
+		<field name="branchId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="branchName" type="String" />
+		<field name="cityId" type="long" />
+		<field name="address1" type="String" />
+		<field name="address2" type="String" />
+		<field name="countryId" type="long" />
+		<field name="stateId" type="long" />
+		<field name="pincode" type="int" />
+	</model>
+	<model name="com.aixtor.training.model.City">
+		<field name="uuid" type="String" />
+		<field name="cityId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="cityName" type="String" />
+		<field name="stateId" type="long" />
+	</model>
+	<model name="com.aixtor.training.model.Department">
+		<field name="uuid" type="String" />
+		<field name="departmentId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="departmentName" type="String" />
+		<field name="departmentHead" type="String" />
+	</model>
+	<model name="com.aixtor.training.model.Designation">
+		<field name="uuid" type="String" />
+		<field name="designationId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="designationName" type="String" />
+	</model>
+	<model name="com.aixtor.training.model.Employee">
+		<field name="uuid" type="String" />
+		<field name="employeeId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="employeeName" type="String" />
+		<field name="employeeMobile" type="String" />
+		<field name="employeeEmail" type="String" />
+		<field name="branchId" type="long" />
+		<field name="departmentId" type="long" />
+		<field name="designationId" type="long" />
+	</model>
+	<model name="com.aixtor.training.model.State">
+		<field name="uuid" type="String" />
+		<field name="stateId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="stateName" type="String" />
+		<field name="countryId" type="long" />
+	</model>
+</model-hints>

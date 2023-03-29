@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<custom-sql>
+     <sql id="getDesignationNameByEmployee">
+         <![CDATA[
+         	select e.employeeId, e.employeeName, d.designationName from foo_designation d, 
+         		foo_employee e where d.designationId = e.designationId
+         ]]>
+ 	</sql>
+ 	
+ 	<sql id="getEmployeeByName">
+         <![CDATA[
+         	select employeeId,employeeName,employeeMobile,employeeEmail,branchId,departmentId,designationId from foo_employee where employeeName Like ?
+         ]]>
+ 	</sql>
+ 	
+ 	<sql id="getEmployeeByAllEntity">
+         <![CDATA[
+         	(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e, foo_branch b 
+				where b.branchId = e.branchId AND b.branchName LIKE ? ) UNION
+			(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e, foo_department d
+				where e.departmentId = d.departmentId AND d.departmentName LIKE ? ) UNION
+			(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e, foo_designation de
+				where e.designationId = de.designationId AND de.designationName LIKE ? ) UNION 
+			(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e where e.employeeName
+				LIKE ? )
+         ]]>
+ 	</sql>
+ 	
+</custom-sql>
