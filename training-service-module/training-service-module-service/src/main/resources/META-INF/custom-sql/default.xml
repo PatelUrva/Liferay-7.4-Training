@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<custom-sql>
+     <sql id="getDesignationNameByEmployee">
+         <![CDATA[
+         	select e.employeeId, e.employeeName, d.designationName from foo_designation d, 
+         		foo_employee e where d.designationId = e.designationId
+         ]]>
+ 	</sql>
+ 	
+ 	<sql id="getEmployeeByName">
+         <![CDATA[
+         	select employeeId,employeeName,employeeMobile,employeeEmail,branchId,departmentId,designationId from foo_employee where employeeName Like ?
+         ]]>
+ 	</sql>
+ 	
+ 	<sql id="getEmployeeByAllEntity">
+         <![CDATA[
+         	select e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee as e
+			LEFT JOIN foo_branch as b ON b.branchId = e.branchId
+			LEFT JOIN foo_department as d ON d.departmentId = e.departmentId 
+			LEFT JOIN foo_designation as de ON de.designationId = e.designationId
+			where b.branchName LIKE ? or d.departmentName LIKE ? or de.designationName LIKE ?
+			or e.employeeName LIKE ?
+         ]]>
+ 	</sql>
+ 	
+</custom-sql>
