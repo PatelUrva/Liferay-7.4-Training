@@ -1,0 +1,5 @@
+Bundle-Name: employee-training-web
+Bundle-SymbolicName: com.aixtor.training.employee
+Bundle-Version: 1.0.0
+Export-Package: com.aixtor.training.employee.constants
+Import-Package: *;resolution:="optional"
