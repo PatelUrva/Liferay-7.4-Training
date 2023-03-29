@@ -1,0 +1,8 @@
+com/aixtor/portal/color/preferences/constants/ColorPreferencesPortletKeys.java
+ com.aixtor.portal.color.preferences.constants.ColorPreferencesPortletKeys
+com/aixtor/portal/color/preference/ColorConfiguration.java
+ com.aixtor.portal.color.preference.ColorConfiguration
+com/aixtor/portal/color/preferences/portlet/ColorPreferencesPortlet.java
+ com.aixtor.portal.color.preferences.portlet.ColorPreferencesPortlet
+com/aixtor/portal/color/preferences/action/ColorPreferencesAction.java
+ com.aixtor.portal.color.preferences.action.ColorPreferencesAction
