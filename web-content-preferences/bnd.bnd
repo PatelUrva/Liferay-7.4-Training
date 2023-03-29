@@ -1,0 +1,4 @@
+Bundle-Name: web-content-preferences
+Bundle-SymbolicName: web.content.preferences
+Bundle-Version: 1.0.0
+Export-Package: web.content.preferences.constants

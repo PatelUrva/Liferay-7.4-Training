@@ -1,0 +1,8 @@
+com/aixtor/web/content/preferences/constants/WebContentPreferencesPortletKeys.java
+ com.aixtor.web.content.preferences.constants.WebContentPreferencesPortletKeys
+com/aixtor/web/content/preferences/portlet/WebContentPreferencesPortlet.java
+ com.aixtor.web.content.preferences.portlet.WebContentPreferencesPortlet
+com/aixtor/web/content/preferences/action/WebContentPreferencesAction.java
+ com.aixtor.web.content.preferences.action.WebContentPreferencesAction
+com/aixtor/web/content/preference/WebContentConfiguration.java
+ com.aixtor.web.content.preference.WebContentConfiguration
