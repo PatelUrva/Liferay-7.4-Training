@@ -1,0 +1,4 @@
+Bundle-Name: training-second-module
+Bundle-SymbolicName: com.aixtor.training
+Bundle-Version: 1.0.0
+Export-Package: com.aixtor.training.constants
