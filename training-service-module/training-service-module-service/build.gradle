@@ -1,0 +1,11 @@
+dependencies {
+	compile project(":modules:training-service-module:training-service-module-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../training-service-module-api/src/main/java"
+}
+
+group = "com.aixtor.training"
