@@ -1,0 +1,4 @@
+Bundle-Name: color-preferences
+Bundle-SymbolicName: com.aixtor.portal.color.preferences
+Bundle-Version: 1.0.0
+Export-Package: com.aixtor.portal.color.preferences.constants
