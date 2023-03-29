@@ -1,0 +1,4 @@
+Bundle-Name: training-first-module
+Bundle-SymbolicName: com.aixtor.training.lifecycle
+Bundle-Version: 1.0.0
+Export-Package: com.aixtor.training.lifecycle.constants
