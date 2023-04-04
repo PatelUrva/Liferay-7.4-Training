@@ -1,12 +1,6 @@
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
-<%@page import="com.aixtor.training.service.CityLocalServiceUtil"%>
-<%@page import="com.aixtor.training.service.CityLocalService"%>
-<%@page import="com.aixtor.training.model.City"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
 <%@ include file="init.jsp"%>
-<portlet:defineObjects />
 
 <portlet:actionURL name="addEditCity" var="addEditCityURL" >
 	<portlet:param name="redirectURL" value="${redirectURL}"/>
@@ -44,11 +38,17 @@
 		</div>
 	</div>
 	
-	<button class="btn btn-primary col-md-2" type="submit" > Submit </button>
+	<button class="btn btn-primary col-md-2" type="submit" > <i class="fa-solid fa-floppy-disk"></i> Submit </button>
+	<button class="btn btn-primary col-md-2" id="backBtn" type="button" > <i class="fa-solid fa-square-left"></i> Back </button>
+	
 </form>
 
 <script>
 $(document).ready(function () {
+	document.getElementById("backBtn").onclick = function(){
+		location.href = "http://localhost:8080/web/manali/state-city";
+	};
+	
 	$('#validateCityForm').validate({
 		rules : {
 			cityName : 'required',

@@ -1,11 +1,5 @@
-<%@page import="com.aixtor.training.service.DepartmentLocalServiceUtil"%>
-<%@page import="com.aixtor.training.service.DepartmentLocalService"%>
-<%@page import="com.aixtor.training.model.Department"%>
-<%@page import="com.liferay.portal.kernel.util.ListUtil"%>
-<%@page import="java.util.List"%>
 <%@ include file="init.jsp" %>
-<%@taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
+
 <%
 	String currentURL=PortalUtil.getCurrentURL(renderRequest);
 %>
@@ -15,18 +9,18 @@
     <portlet:param name="redirectURL" value="<%=currentURL %>"/>
 </portlet:renderURL>
 
-<portlet:resourceURL id="/download/DepartmentPDF" var="departmentPDFResourceURL" />
+<portlet:resourceURL id="/download/departmentPDF" var="departmentPDFResourceURL" />
 
 
 <div class = "btn-group">
 	<button type = "button" class = "btn btn-default">
 		<a href="${addDepartmentRenderURL}" class="btn  btn-primary btn-default">
-	        <i class="glyphicon glyphicon-plus"> Add Department </i>
+	        <i class="fa-solid fa-plus"></i> Add Department 
 	    </a>
 	</button>
     <button type = "button" class = "btn btn-default">
     	<a href="${departmentPDFResourceURL}" class="btn  btn-primary btn-default">
-	        <i class="glyphicon glyphicon-plus"> Download Department PDF </i>
+	        <i class="fa-solid fa-download"></i> Download Department PDF 
 	    </a>
     </button>
 </div>
@@ -40,7 +34,7 @@
 	total="${departmentList.size()}" 
 	var="searchContainer" 
 	delta="2" 
-	deltaConfigurable="false" 
+	deltaConfigurable="true" 
   	emptyResultsMessage="Oops. There Are No Departments To Display, Please add Department">
   
 	 <liferay-ui:search-container-results results="<%= ListUtil.subList(departmentList, searchContainer.getStart(),searchContainer.getEnd())%>" />	
@@ -60,8 +54,12 @@
 			   <liferay-ui:search-container-column-text name="Department Name" property="departmentName"/>
 			   <liferay-ui:search-container-column-text name="Department Head" property="departmentHead"/>
 		 	   <liferay-ui:search-container-column-text name="Action">
-		 	   		<a  href="${editDepartment}">Edit</a> &nbsp;
-		 	   		<a href="${deleteDepartmentActionURL}">Delete</a>
+		 	   		<a  href="${editDepartment}">
+		 	   			<i class="fa-solid fa-pen-to-square"></i>
+		 	   		</a> &nbsp;
+		 	   		<a href="${deleteDepartmentActionURL}">
+		 	   			<i class="fa-solid fa-trash"></i>
+		 	   		</a>
 		 	   		
 		 	   </liferay-ui:search-container-column-text>
 		 	   

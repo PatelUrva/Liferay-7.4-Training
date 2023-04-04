@@ -1,10 +1,5 @@
-<%@page import="com.aixtor.training.service.DesignationLocalServiceUtil"%>
-<%@page import="com.liferay.portal.kernel.util.ListUtil"%>
-<%@page import="com.aixtor.training.model.Designation"%>
-<%@page import="java.util.List"%>
 <%@ include file="init.jsp" %>
-<%@taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
+
 <%
 	String currentURL=PortalUtil.getCurrentURL(renderRequest);
 %>
@@ -19,12 +14,12 @@
 <div class = "btn-group">
 	<button type = "button" class = "btn btn-default">
 		<a href="${addDesignationRenderURL}" class="btn  btn-primary btn-default">
-	        <i class="glyphicon glyphicon-plus"> Add Designation </i>
+	        <i class="fa-solid fa-plus"></i> Add Designation
 	    </a>
 	</button>
     <button type = "button" class = "btn btn-default">
     	<a href="${desigantionPDFResourceURL}" class="btn  btn-primary btn-default">
-	        <i class="glyphicon glyphicon-plus"> Download Designation PDF </i>
+	        <i class="fa-solid fa-download"></i> Download Designation PDF 
 	    </a>
     </button>
 </div>
@@ -38,7 +33,7 @@
 	total="${designationList.size()}" 
 	var="searchContainer" 
 	delta="2" 
-	deltaConfigurable="false" 
+	deltaConfigurable="true" 
   	emptyResultsMessage="Oops. There Are No Designation To Display, Please add Designation">
   
 	 <liferay-ui:search-container-results results="<%= ListUtil.subList(designationList, searchContainer.getStart(),searchContainer.getEnd())%>" />	
@@ -57,8 +52,12 @@
 			  
 			   <liferay-ui:search-container-column-text name="Designation Name" property="designationName"/>
 			   <liferay-ui:search-container-column-text name="Action">
-		 	   		<a  href="${editDesignation}">Edit</a> &nbsp;
-		 	   		<a href="${deleteDesignationActionURL}">Delete</a>
+		 	   		<a  href="${editDesignation}">
+		 	   			<i class="fa-solid fa-pen-to-square"></i>
+		 	   		</a> &nbsp;
+		 	   		<a href="${deleteDesignationActionURL}">
+		 	   			<i class="fa-solid fa-trash"></i>
+		 	   		</a>
 		 	   		
 		 	   </liferay-ui:search-container-column-text>
 		 	   

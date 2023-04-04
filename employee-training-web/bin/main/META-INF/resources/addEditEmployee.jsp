@@ -1,13 +1,6 @@
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
-<%@page import="com.liferay.portal.kernel.util.ParamUtil"%>
-<%@page import="com.aixtor.training.service.EmployeeLocalServiceUtil"%>
-<%@page import="com.aixtor.training.service.EmployeeLocalService"%>
-<%@page import="com.aixtor.training.model.Employee"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
 <%@ include file="init.jsp"%>
-<portlet:defineObjects />
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
@@ -43,7 +36,7 @@
 		
 		<div class="form-group col-md-6">
 			 <label>Email</label>
-			 <input type="text" class="form-control" name="employeeEmail"  value="${selectedEmployee.employeeEmail}" />
+			 <input type="email" class="form-control" name="employeeEmail"  value="${selectedEmployee.employeeEmail}" />
 		</div>
 	</div>
 	
@@ -51,9 +44,8 @@
 		<div class="form-group col-md-4">
 			 <label>Branch</label>
 			 <select class="form-control" name="branchId">
-				<option value="${selectedEmployee.getBranchId()}"> ${selectedEmployee.getBranchId()} </option>
 				<c:forEach items="${branchList}" var="branch">
-					<option value="${branch.getBranchId()}"> ${branch.getBranchName() } </option>
+					<option value="${branch.getBranchId()}" ${ branch.getBranchId() == selectedEmployee.getBranchId() ? 'selected' : '' }> ${branch.getBranchName() } </option>
 				</c:forEach>
 			</select>
 		</div>
@@ -61,9 +53,8 @@
 		<div class="form-group col-md-4">
 			<label>Department</label>
 			<select class="form-control" name="departmentId">
-				<option value="${selectedEmployee.getDepartmentId()}"> ${selectedEmployee.getDepartmentId()} </option>
 				<c:forEach items="${departmentList}" var="department">
-					<option value="${department.getDepartmentId()}"> ${department.getDepartmentName() } </option>
+					<option value="${department.getDepartmentId()}" ${department.getDepartmentId() == selectedEmployee.getDepartmentId() ? 'selected' : '' }> ${department.getDepartmentName()} </option>
 				</c:forEach>
 			</select>
 		</div>
@@ -71,25 +62,31 @@
 		<div class="form-group col-md-4">
 			<label>Designation</label>
 			<select class="form-control" name="designationId">
-				<option value="${selectedEmployee.getDesignationId()}"> ${selectedEmployee.getDesignationId()} </option>
 				<c:forEach items="${designationList}" var="designation">
-					<option value="${designation.getDesignationId()}"> ${designation.getDesignationName() } </option>
+					<option value="${designation.getDesignationId()}" ${designation.getDesignationId() == selectedEmployee.getDesignationId() ? 'selected' : '' }> ${designation.getDesignationName()} </option>
 				</c:forEach>
 			</select>
 		</div>
 	</div>
 	
-	<button class="btn btn-primary col-md-2" type="submit" > Submit </button>
+	<button class="btn btn-primary col-md-2" type="submit" > <i class="fa-solid fa-floppy-disk"></i> Submit </button>
+	<button class="btn btn-primary col-md-2" id="backBtn" type="button" > <i class="fa-solid fa-square-left"></i> Back </button>
+	
 </form>
 
 
 <script>
 $(document).ready(function () {
+	document.getElementById("backBtn").onclick = function(){
+		location.href = "http://localhost:8080/web/manali/employee";
+	};
+	
 	$('#employeeValidateForm').validate({
 		rules : {
 			employeeName : 'required',
 			employeeMobile : {
 				required : true,
+				digits : true,
 				maxlength : 10,
 				minlength : 10
 			},
@@ -105,8 +102,9 @@ $(document).ready(function () {
 			employeeName : 'Employee Name is required',
 			employeeMobile : {
 				required : 'Mobile Number is required',
-				maxlength : 'Phone number should be 10 digits',
-				minlength : 'Phone number should be 10 digits'
+				digits : 'Mobile Number should have only digits',
+				maxlength : 'Mobile Number should be 10 digits',
+				minlength : 'Mobile Number should be 10 digits'
 			},
 			employeeEmail : {
 				required : 'Email is required',
