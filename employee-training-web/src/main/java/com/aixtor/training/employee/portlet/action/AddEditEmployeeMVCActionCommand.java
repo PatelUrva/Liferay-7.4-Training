@@ -5,9 +5,6 @@ package com.aixtor.training.employee.portlet.action;
  */
 import com.aixtor.training.employee.constants.EmployeeConstants;
 import com.aixtor.training.model.Employee;
-import com.aixtor.training.service.BranchLocalService;
-import com.aixtor.training.service.DepartmentLocalService;
-import com.aixtor.training.service.DesignationLocalService;
 import com.aixtor.training.service.EmployeeLocalService;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.log.Log;
@@ -38,15 +35,6 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 
 	@Reference
 	EmployeeLocalService employeeLocalService;
-
-	@Reference
-	DepartmentLocalService departmentLocalService;
-	
-	@Reference
-	DesignationLocalService designationLocalService;
-	
-	@Reference
-	BranchLocalService branchLocalService;
 	
 	@Reference
 	CounterLocalService counterLocalService;
@@ -59,7 +47,7 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 		long employeeId = ParamUtil.getLong(actionRequest,EmployeeConstants.EMPLOYEE_ID, GetterUtil.DEFAULT_LONG);
 		
 		// 2. Retrieving the current url to be redirected after the task is done
-		String redirectURL = ParamUtil.getString(actionRequest, "redirectURL");
+		String redirectURL = ParamUtil.getString(actionRequest, EmployeeConstants.REDIRECT_URL);
 
 		// 3. Retrieving all the data of the employee form to be saved or updated in the database
 		String employeeName = ParamUtil.getString(actionRequest, EmployeeConstants.EMPLOYEE_NAME);
@@ -69,16 +57,20 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 		long departmentId = ParamUtil.getLong(actionRequest,EmployeeConstants.DEPARTMENT_ID);
 		long designationId = ParamUtil.getLong(actionRequest,EmployeeConstants.DESIGNATION_ID);
 		
+		log.info("Branch Id "+branchId);
+	
 		
-		// 4. Initalizing and declaring the entity Employee
+		
 		Employee employee = null;
 		
 		/*
-		 * 5. Validating if the employeeId is Empty or Not :: If the employeeId is not null the employeeData will be updated 
+		 * 4. Validating if the employeeId is Empty or Not :: If the employeeId is not null the employeeData will be updated 
 		 *		based on employeeId
 		*/
 		try {
 			if (employeeId > 0) {
+				
+				// 4. If the employeeId is not empty then the data will be updated 
 				employee = employeeLocalService.getEmployee(employeeId);
 				employee.setEmployeeName(employeeName);
 				employee.setEmployeeMobile(employeeMobile);
@@ -86,9 +78,10 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 				employee.setBranchId(branchId);
 				employee.setDepartmentId(departmentId);
 				employee.setDesignationId(designationId);
+				
 			} else {
 				
-				// 6. If the employeeId is empty then the data will be added as the new record entered
+				// 5. If the employeeId is empty then the data will be added as the new record entered
 				employee = employeeLocalService.createEmployee(counterLocalService.increment());
 				employee.setEmployeeName(employeeName);
 				employee.setEmployeeMobile(employeeMobile);
@@ -99,7 +92,7 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 			}
 			
 			/*
-			* 7. Using the updateEmployee method of employeeLocalService as it performs both adding and updating transactions in 
+			* 6. Using the updateEmployee method of employeeLocalService as it performs both adding and updating transactions in 
 				database
 			 */
 			employeeLocalService.updateEmployee(employee);
@@ -108,7 +101,7 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 			log.error("AddEditEmployeeMVCAction >>> doProcessAction >> Exception Occured:: " +e);
 		}
 		
-		// 8. Redirecting back to the previous url
+		// 7. Redirecting back to the previous url
 		actionResponse.sendRedirect(redirectURL);
 	}
 }

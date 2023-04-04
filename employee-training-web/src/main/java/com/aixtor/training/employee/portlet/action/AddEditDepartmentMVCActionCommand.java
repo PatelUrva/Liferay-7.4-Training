@@ -45,17 +45,16 @@ public class AddEditDepartmentMVCActionCommand extends BaseMVCActionCommand{
 		long departmentId = ParamUtil.getLong(actionRequest, EmployeeConstants.DEPARTMENT_ID, GetterUtil.DEFAULT_LONG);
 		
 		// 2. Retrieving the current url to be redirected after the task is done
-		String redirectURL = ParamUtil.getString(actionRequest, "redirectURL");
+		String redirectURL = ParamUtil.getString(actionRequest, EmployeeConstants.REDIRECT_URL);
 
 		// 3. Retrieving all the data of the department form to be saved or updated in the database
 		String departmentName = ParamUtil.getString(actionRequest, EmployeeConstants.DEPARTMENT_NAME);
 		String departmentHead = ParamUtil.getString(actionRequest, EmployeeConstants.DEPARTMENT_HEAD);
 		
-		// 4. Initalizing and declaring the entity Department
 		Department department = null;
 		
 		/*
-		 * 5. Validating if the departmentId is Empty or Not :: If the departmentId is not null the departmentData will be 
+		 * 4. Validating if the departmentId is Empty or Not :: If the departmentId is not null the departmentData will be 
 		 * 		updated based on departmentId
 		 */
 		try {
@@ -65,14 +64,14 @@ public class AddEditDepartmentMVCActionCommand extends BaseMVCActionCommand{
 				department.setDepartmentHead(departmentHead);
 			} else {
 				
-				// 6. If the departmentId is empty then the data will be added as the new record entered
+				// 5. If the departmentId is empty then the data will be added as the new record entered
 				department = departmentLocalService.createDepartment(counterLocalService.increment());
 				department.setDepartmentName(departmentName);
 				department.setDepartmentHead(departmentHead);
 			}
 			
 			/*
-			* 7. Using the updateDepartment method of departmentLocalService as it performs both adding and updating transactions in 
+			* 6. Using the updateDepartment method of departmentLocalService as it performs both adding and updating transactions in 
 				in database
 			 */
 			departmentLocalService.updateDepartment(department);
@@ -80,7 +79,7 @@ public class AddEditDepartmentMVCActionCommand extends BaseMVCActionCommand{
 			log.error("AddEditDepartmentMVCAction >>> doProcessAction >> Exception Occured:: " +e);
 		}
 		
-		// 8. Redirecting back to the previous url
+		// 7. Redirecting back to the previous url
 		actionResponse.sendRedirect(redirectURL);
 	}
 

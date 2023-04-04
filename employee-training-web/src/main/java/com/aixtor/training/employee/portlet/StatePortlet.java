@@ -91,7 +91,6 @@ public class StatePortlet extends MVCPortlet {
 		long stateId = ParamUtil.getLong(request,EmployeeConstants.STATE_ID, GetterUtil.DEFAULT_LONG);
         
 		try {
-			
 			// 2. Using deleteState method of stateLocalService deleting state
 			stateLocalService.deleteState(stateId);
 		} catch (PortalException e) {

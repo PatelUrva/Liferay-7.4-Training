@@ -28,6 +28,11 @@ public class EmployeeConstants {
 	public static final String STATE_NAME = "stateName";
 	
 	public static final String SELECTED_BRANCH = "selectedBranch";
+	public static final String SELECTED_CITY = "selectedCity";
+	public static final String SELECTED_EMPLOYEE = "selectedEmployee";
+	public static final String SELECTED_DEPARTMENT = "selectedDepartment";
+	public static final String SELECTED_DESIGNATION = "selectedDesignation";
+	public static final String SELECTED_STATE = "selectedState";
 	
 	public static final String REDIRECT_URL = "redirectURL";
 	
@@ -63,4 +68,15 @@ public class EmployeeConstants {
 	public static final String MAIL_SUBJECT = "Liferay Mail";
 	public static final String SENDER_MAIL = "urvapatel1507@gmail.com";
 	public static final String RECEIVER_MAIL = "emailId";
+	
+	public static final String ACTION = "action";
+	public static final String IS_EDIT = "isEdit";
+	public static final String EDIT = "edit";
+	
+	public static final String FROM_SEARCH = "fromSearch";
+	public static final String CUR = "cur";
+	public static final String DELTA = "delta";
+	public static final String PORTLET_SEARCH_URL = "portletSearchURL";
+	public static final String TOTAL_SIZE = "totalSize";
+	public static final String EMPLOYEE_CONTAINER = "employeeContainer";
 }

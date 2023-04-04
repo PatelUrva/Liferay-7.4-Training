@@ -1,13 +1,7 @@
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
-<%@page import="com.liferay.portal.kernel.util.ParamUtil"%>
-<%@page import="com.aixtor.training.service.BranchLocalServiceUtil"%>
-<%@page import="com.aixtor.training.service.BranchLocalService"%>
-<%@page import="com.aixtor.training.model.Branch"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
 <%@ include file="init.jsp"%>
-<portlet:defineObjects />
+
 
 <style>
 #validateBranchForm label.error {
@@ -46,7 +40,7 @@
 		<div class="form-group col-md-4">
 			<label>Country</label>
 			 <select class="form-control" id="country" name="country">
-				<option value="${selectedBranch.getCountryId()}"> ${selectedBranch.getCountryId()} </option>
+				<option value="${selectedBranch.getCountryId()}"> ${selectedBranch.getCountry()} </option>
 				<c:forEach items="${countryList}" var="country">
 					<option value="${country.getCountryId()}"> ${country.getName() } </option>
 				</c:forEach>
@@ -56,7 +50,7 @@
 		<div class="form-group col-md-4">
 			<label>State</label>
 			<select class="form-control" name="stateId" id="stateId">
-				<option value="${selectedBranch.getStateId()}"> ${selectedBranch.getStateId()} </option>
+				<option value="${selectedBranch.getStateId()}"> ${selectedBranch.getState()} </option>
 				
 			</select>
 		</div>
@@ -64,7 +58,7 @@
 		<div class="form-group col-md-4">
 			<label>City</label>
 			<select class="form-control" name="cityId" id="cityId">
-				<option value="${selectedBranch.getCityId()}"> ${selectedBranch.getCityId()} </option>
+				<option value="${selectedBranch.getCityId()}"> ${selectedBranch.getCity()} </option>
 				
 			</select>
 		</div>
@@ -85,12 +79,20 @@
 		<input type="number" class="form-control" name="pincode" value="${selectedBranch.pincode}" />
 	</div>
 	
-	<button class="btn btn-primary col-md-2" type="submit" > Submit </button>
+	<button class="btn btn-primary col-md-2" type="submit" > <i class="fa-solid fa-floppy-disk"></i> Submit </button>
+	<button class="btn btn-primary col-md-2" id="backBtn" type="button" > <i class="fa-solid fa-square-left"></i> Back </button>
+	
 </form>
+	
 
 
 <script>
 $(document).ready(function () {
+	
+	document.getElementById("backBtn").onclick = function(){
+		location.href = "http://localhost:8080/web/manali/branch";
+	};
+	
 	
 	$('#country').on('change', function(){
 		var countryId = $(this).val();
@@ -105,6 +107,7 @@ $(document).ready(function () {
 				  if(response.status == 'success' && response.data){
 					  var states = JSON.parse(response.data);
 					  $('#stateId').empty();
+					  $('#cityId').empty();
 					  for(var i=0; i<states.length; i++){
 						  $('#stateId').append($("<option value='"+ states[i].stateId  +"'></option>")
 				                    .text(states[i].stateName));
@@ -147,6 +150,7 @@ $(document).ready(function () {
 			address2 : 'required',
 			pincode : {
 				required : true,
+				minlength : 6,
 				maxlength : 6,
 			},
 		},
@@ -159,6 +163,7 @@ $(document).ready(function () {
 			address2 : 'Address2 is required',
 			pincode : {
 				required : 'Pincode is required',
+				minlength : 'Pincode should be of 6 digits',
 				maxlength : 'Pincode should be of 6 digits'
 			}
 		}

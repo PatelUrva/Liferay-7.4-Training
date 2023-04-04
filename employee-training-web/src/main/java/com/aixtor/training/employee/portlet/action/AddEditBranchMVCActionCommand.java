@@ -59,12 +59,11 @@ public class AddEditBranchMVCActionCommand extends BaseMVCActionCommand{
 		String address2 = ParamUtil.getString(actionRequest, EmployeeConstants.ADDRESS2);
 		int pincode = ParamUtil.getInteger(actionRequest, EmployeeConstants.PINCODE);
 		
-		// 4. Initalizing and declaring the entity Branch
 		Branch branch = null;
 		
 		try {
 			/*
-			 * 5. Validating if the branchId is Empty or Not :: If the branchId is not null the branchData will be updated 
+			 * 4. Validating if the branchId is Empty or Not :: If the branchId is not null the branchData will be updated 
 			 *		based on branchId
 			 */
 			if (branchId > 0) {
@@ -78,7 +77,7 @@ public class AddEditBranchMVCActionCommand extends BaseMVCActionCommand{
 				branch.setPincode(pincode);
 			} else {
 				
-				// 6. If the branchId is empty then the data will be added as the new record enterd
+				// 5. If the branchId is empty then the data will be added as the new record enterd
 				branch = branchLocalService.createBranch(counterLocalService.increment());
 				branch.setBranchName(branchName);
 				branch.setCountryId(countryId);;
@@ -91,7 +90,7 @@ public class AddEditBranchMVCActionCommand extends BaseMVCActionCommand{
 			}
 			
 			/*
-			 * 7. Using the updateBranch method of branchLocalService as it performs both adding and updating transactions in 
+			 * 6. Using the updateBranch method of branchLocalService as it performs both adding and updating transactions in 
 				database
 			 */
 			branchLocalService.updateBranch(branch);

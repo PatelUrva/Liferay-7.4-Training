@@ -52,7 +52,7 @@ public class ViewStateMVCRenderCommand implements MVCRenderCommand {
 		renderRequest.setAttribute(EmployeeConstants.STATE_LIST, stateList);
 		
 		// 2. Getting the action value that is generated on RenderURL
-		String action = ParamUtil.getString(renderRequest, "action");
+		String action = ParamUtil.getString(renderRequest, EmployeeConstants.ACTION);
 		
 		// 3. Getting stateId of the state selected for updating the record
 		long stateId = ParamUtil.getLong(renderRequest, EmployeeConstants.STATE_ID);
@@ -66,10 +66,10 @@ public class ViewStateMVCRenderCommand implements MVCRenderCommand {
 		if(Validator.isNotNull(action)) {
 			
 			// 6. Retrieving the current url to be redirected after the task is done
-			String redirectURL = ParamUtil.getString(renderRequest, "redirectURL");
+			String redirectURL = ParamUtil.getString(renderRequest, EmployeeConstants.REDIRECT_URL);
 			
 			// 7. Validating if the action variable value is edit or not :: If edit than update the state based on stateId
-			if ("edit".equalsIgnoreCase(action) && stateId > 0) {
+			if (EmployeeConstants.EDIT.equalsIgnoreCase(action) && stateId > 0) {
 				try {
 					
 					// 8. Getting the state details based on stateId
@@ -85,8 +85,8 @@ public class ViewStateMVCRenderCommand implements MVCRenderCommand {
 					log.error("ViewStateMVCRender >>> render ::" +e);
 				}
 			}
-			renderRequest.setAttribute("redirectURL", redirectURL);
-			renderRequest.setAttribute("isEdit", isEdit);
+			renderRequest.setAttribute(EmployeeConstants.REDIRECT_URL, redirectURL);
+			renderRequest.setAttribute(EmployeeConstants.IS_EDIT, isEdit);
 			
 			// 11. Redirect to AddEditState jsp page where data is displayed of the stateId selected for updation
 			return "/addEditState.jsp";

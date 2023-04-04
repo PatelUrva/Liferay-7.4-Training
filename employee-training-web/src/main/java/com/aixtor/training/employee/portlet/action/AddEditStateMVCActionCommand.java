@@ -45,17 +45,16 @@ public class AddEditStateMVCActionCommand extends BaseMVCActionCommand{
 		long stateId = ParamUtil.getLong(actionRequest, EmployeeConstants.STATE_ID, GetterUtil.DEFAULT_LONG);
 		
 		// 2. Retrieving the current url to be redirected after the task is done
-		String redirectURL = ParamUtil.getString(actionRequest, "redirectURL");
+		String redirectURL = ParamUtil.getString(actionRequest, EmployeeConstants.REDIRECT_URL);
 
 		// 3. Retrieving all the data of the state form to be saved or updated in the database
 		String stateName = ParamUtil.getString(actionRequest,EmployeeConstants.STATE_NAME);
 		long countryId = ParamUtil.getLong(actionRequest, EmployeeConstants.COUNTRY_ID);
 		
-		// 4. Initalizing and declaring the entity State
 		State state = null;
 		
 		/*
-		 * 5. Validating if the stateId is Empty or Not :: If the stateId is not null the stateData will be updated 
+		 * 4. Validating if the stateId is Empty or Not :: If the stateId is not null the stateData will be updated 
 		 *		based on stateId
 		 */
 	
@@ -67,14 +66,14 @@ public class AddEditStateMVCActionCommand extends BaseMVCActionCommand{
 				
 			} else {
 				
-				// 6. If the stateId is empty then the data will be added as the new record entered
+				// 5. If the stateId is empty then the data will be added as the new record entered
 				state = stateLocalService.createState(counterLocalService.increment());
 				state.setStateName(stateName);
 				state.setCountryId(countryId);
 			}
 			
 			/*
-			* 7. Using the updateState method of stateLocalService as it performs both adding and updating transactions in 
+			* 6. Using the updateState method of stateLocalService as it performs both adding and updating transactions in 
 			*	database
 			*/
 			stateLocalService.updateState(state);
@@ -82,7 +81,7 @@ public class AddEditStateMVCActionCommand extends BaseMVCActionCommand{
 			log.error("AddEditStateMVCAction >>> doProcessAction >> Exception Occured:: " +e);
 		}
 		
-		// 8. Redirecting back to the previous url
+		// 7. Redirecting back to the previous url
 		actionResponse.sendRedirect(redirectURL);
 	}
 }

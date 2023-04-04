@@ -1,8 +1,5 @@
 package com.aixtor.training.employee.portlet.action;
 
-/**
- * @author Urva Patel
- */
 import com.aixtor.training.model.Designation;
 import com.aixtor.training.service.DesignationLocalService;
 import com.itextpdf.text.Document;
@@ -10,13 +7,13 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.util.ContentTypes;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -37,13 +34,12 @@ import org.osgi.service.component.annotations.Reference;
 
 public class DesignationPDFGeneration extends BaseMVCResourceCommand {
 	
-	private static Log log = LogFactoryUtil.getLog(DesignationPDFGeneration.class);
-	
 	@Reference
 	DesignationLocalService designationLocalService;
 
+
 	/**
-	 * @return PDF saved in the given location
+	 * @return PDF saved in the Downloads and Chrome
 	 */
 	@Override
 	protected void doServeResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
@@ -51,49 +47,68 @@ public class DesignationPDFGeneration extends BaseMVCResourceCommand {
 		
 		// 1. Getting the designationList from the database
 		List<Designation> designationList = designationLocalService.getDesignations(-1,-1);
-		
+				
 		// 2. Creating new document with the given location and creating Output stream
 		Document document = new Document();
-		OutputStream outputStream = new FileOutputStream(new File("C:\\Users\\Urva Patel\\Desktop\\DesignationReport.pdf"));
-		PdfWriter.getInstance(document, outputStream);
-		document.open();
 		
-		// 3. Creating table in PDF
-		PdfPTable pdfPTable = new PdfPTable(2);
+		// 3. Declaring ByteArrayOutputStream object
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		
-		// 4. Creating cell that represent the table header in PDF
-		PdfPCell c1 = new PdfPCell(new Phrase("Designation ID"));
-		pdfPTable.addCell(c1);
-		c1 = new PdfPCell(new Phrase("Designation Name"));
-		pdfPTable.addCell(c1);
-		
-		pdfPTable.setHeaderRows(1);
-		
-		// 5. Setting the values from the designationList to the table in the PDF
-		for(int i=0;i<designationList.size();i++)
-		{
-			Designation designation = designationList.get(i);
-			
-			long designationIds = designation.getDesignationId();
-			String designationId = String.valueOf(designationIds);
-			
-			String designationName = designation.getDesignationName();
-			
-			// 6. Adding cell from the designationList using loop to traverse each record
-			pdfPTable.addCell(designationId);
-	        pdfPTable.addCell(designationName);
-	        pdfPTable.setWidths(new int[]{30, 30});
-		}
-        
-		// 7. Adding pdfTable to document 
-        document.add(pdfPTable);
-        
-        // 8. Closing the document and output stream
-        document.close();
-        outputStream.close();
-		 
-	    log.info("DesignationPDFGeneration >>> PDF Created");
+		// 4. Set Instance of PdfWriter
+	    PdfWriter.getInstance(document, baos);
 	    
+	    // 5. Opening document
+	    document.open();
 	    
+	    // 6. Creating table in PDF
+ 		PdfPTable pdfPTable = new PdfPTable(2);
+ 		
+ 		// 7. Creating cell that represent the table header in PDF
+ 		PdfPCell c1 = new PdfPCell(new Phrase("Designation ID"));
+ 		pdfPTable.addCell(c1);
+ 		c1 = new PdfPCell(new Phrase("Designation Name"));
+ 		pdfPTable.addCell(c1);
+ 		pdfPTable.setHeaderRows(1);
+ 		
+ 		// 8. Setting the values from the designationList to the table in the PDF
+ 		for(int i=0;i<designationList.size();i++)
+ 		{
+ 			Designation designation = designationList.get(i);
+ 			
+ 			long designationIds = designation.getDesignationId();
+ 			String designationId = String.valueOf(designationIds);
+ 			
+ 			String designationName = designation.getDesignationName();
+ 			
+ 			// 6. Adding cell from the designationList using loop to traverse each record
+ 			pdfPTable.addCell(designationId);
+ 	        pdfPTable.addCell(designationName);
+ 	        pdfPTable.setWidths(new int[]{30, 30});
+ 		}
+		
+ 		// 9. Adding table in pdf
+		document.add(pdfPTable);
+		
+		// 10. Closing document
+		document.close();
+		
+		// 11. Setting the HttpHeaders
+		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=DesignationReport.pdf");
+		resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL,"max-age=3600, must-revalidate");
+
+        // 12. Setting the content type
+        resourceResponse.setContentType("application/pdf");
+        
+        // 13. Setting the contentlength
+        resourceResponse.setContentLength(baos.size());
+        
+        // 14. Write ByteArrayOutputStream to the ServletOutputStream
+        OutputStream os = resourceResponse.getPortletOutputStream();
+        baos.writeTo(os);
+        os.flush();
+        
+        // 15. Send file using PortletResponseUtil
+		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,"Designation.pdf", baos.toByteArray(), ContentTypes.APPLICATION_PDF);
+	
 	}
 }

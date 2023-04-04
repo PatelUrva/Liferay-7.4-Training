@@ -54,13 +54,12 @@ public class AddEditCityMVCActionCommand extends BaseMVCActionCommand{
 		String cityName = ParamUtil.getString(actionRequest,EmployeeConstants.CITY_NAME);
 		long stateId = ParamUtil.getLong(actionRequest,EmployeeConstants.STATE_ID);
 		
-		// 4. Initalizing and declaring the entity City
 		City city = null;
 		
 		try {
 			
 			/*
-			 * 5. Validating if the cityId is Empty or Not :: If the cityId is not null the cityData will be updated 
+			 * 4. Validating if the cityId is Empty or Not :: If the cityId is not null the cityData will be updated 
 			 *		based on cityId
 			 */
 			if (cityId > 0) {
@@ -69,14 +68,14 @@ public class AddEditCityMVCActionCommand extends BaseMVCActionCommand{
 				city.setStateId(stateId);
 			} else {
 				
-				// 6. If the cityId is empty then the data will be added as the new record enterd
+				// 5. If the cityId is empty then the data will be added as the new record enterd
 				city = cityLocalService.createCity(counterLocalService.increment());
 				city.setCityName(cityName);
 				city.setStateId(stateId);
 			}
 			
 			/*
-			 * 7. Using the updateCity method of cityLocalService as it performs both adding and updating transactions in 
+			 * 6. Using the updateCity method of cityLocalService as it performs both adding and updating transactions in 
 				database
 			 */
 			cityLocalService.updateCity(city);
@@ -84,7 +83,7 @@ public class AddEditCityMVCActionCommand extends BaseMVCActionCommand{
 			log.error("AddEditCityMVCAction >>> doProcessAction >> Exception Occured:: " +e);
 		}
 		
-		// 8. Redirecting back to the previous url
+		// 7. Redirecting back to the previous url
 		actionResponse.sendRedirect(redirectURL);
 	}
 	

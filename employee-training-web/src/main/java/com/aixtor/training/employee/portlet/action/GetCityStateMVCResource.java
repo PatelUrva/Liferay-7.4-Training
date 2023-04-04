@@ -49,20 +49,16 @@ public class GetCityStateMVCResource extends BaseMVCResourceCommand {
 		
 		// 1. Retrieving stateId from the state record user selected
 		long stateId = ParamUtil.getLong(resourceRequest, EmployeeConstants.STATE_ID);
-		//log.info(stateId);
 		
-		// 2. Creating JSONObject 
 		JSONObject responseObj = JSONFactoryUtil.createJSONObject();
-		
-		// 3. Creating JSONArray
 		JSONArray responseArray = JSONFactoryUtil.createJSONArray();
 		
-		// 4. Using finder method of City Entity getting list based on stateId selected
+		// 2. Using finder method of City Entity getting list based on stateId selected
 		List<City> getCityList = cityLocalService.findByStateId(stateId);
 		
 		JSONObject jsonObject = null;
 		
-		// 5. Using foreach loop setting cityList details in jsonObject created
+		// 3. Using foreach loop setting cityList details in jsonObject created
 		for (City city : getCityList) {
 			jsonObject = JSONFactoryUtil.createJSONObject();
 			jsonObject.put(EmployeeConstants.CITY_NAME, city.getCityName());
@@ -72,7 +68,7 @@ public class GetCityStateMVCResource extends BaseMVCResourceCommand {
 		PrintWriter writer = null;
 		try {
 			
-			// 6. Converting the jsonArray data to jsonToString with status
+			// 4. Converting the jsonArray data to jsonToString with status
 			writer = resourceResponse.getWriter();
 			responseObj.put(EmployeeConstants.DATA, responseArray.toJSONString());
 			responseObj.put(EmployeeConstants.STATUS, EmployeeConstants.SUCCESS);

@@ -67,7 +67,6 @@ public class DepartmentPortlet extends MVCPortlet {
 		List<Department> departmentList = departmentLocalService.getDepartments(-1, -1);
 		renderRequest.setAttribute("departmentList", departmentList);
 		
-		log.info("DepartmentPortlet >>> Render Method >>> Department List :: " +departmentList);
 		super.render(renderRequest, renderResponse);
 	}
 	
@@ -83,7 +82,6 @@ public class DepartmentPortlet extends MVCPortlet {
 		long departmentId = ParamUtil.getLong(request,EmployeeConstants.DEPARTMENT_ID, GetterUtil.DEFAULT_LONG);
         
 		try {
-			
 			// 2. Using deleteDepartment method of departmentLocalService deleting department
 			departmentLocalService.deleteDepartment(departmentId);
 		} catch (PortalException e) {

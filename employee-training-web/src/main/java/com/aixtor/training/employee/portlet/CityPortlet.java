@@ -66,17 +66,12 @@ public class CityPortlet extends MVCPortlet {
 			throws IOException, PortletException {
 
 		// 1. Using cityLocalService getting the details of all cities in a list
-
 		List<City> cityList = cityLocalService.getCities(-1, -1);
 		renderRequest.setAttribute(EmployeeConstants.CITY_LIST, cityList);
 
 		// 2. Using stateLocalService getting the details of all states in a list
-
 		List<State> stateList = stateLocalService.getStates(-1, -1);
 		renderRequest.setAttribute(EmployeeConstants.STATE_LIST, stateList);
-
-		log.info("CityPortlet >>> Render Method >>> City List :: " + cityList);
-		log.info("CityPortlet >>> Render Method >>> State List :: " + stateList);
 
 		super.render(renderRequest, renderResponse);
 	}
@@ -90,12 +85,10 @@ public class CityPortlet extends MVCPortlet {
 	public void deleteCity(ActionRequest request, ActionResponse response) {
 
 		// 1. Using ParamUtil and request get the selected city Id
-
 		long cityId = ParamUtil.getLong(request, EmployeeConstants.CITY_ID, GetterUtil.DEFAULT_LONG);
 
 		try {
 			// 2. Using deleteCity method of cityLocalService deleting city
-			
 			cityLocalService.deleteCity(cityId);
 		} catch (PortalException e) {
 			log.error(e.getMessage(), e);

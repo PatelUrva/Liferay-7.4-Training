@@ -3,19 +3,25 @@ package com.aixtor.training.employee.portlet.action;
 /**
  * @author Urva Patel
  */
+
+import com.aixtor.training.employee.bean.ViewCustomBranchBean;
+import com.aixtor.training.employee.common.CommonEmployeeMethods;
 import com.aixtor.training.employee.constants.EmployeeConstants;
 import com.aixtor.training.model.Branch;
+import com.aixtor.training.model.City;
+import com.aixtor.training.model.State;
 import com.aixtor.training.service.BranchLocalService;
+import com.aixtor.training.service.CityLocalService;
 import com.aixtor.training.service.StateLocalService;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.service.CountryLocalService;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.util.List;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -41,6 +47,12 @@ public class ViewBranchMVCRenderCommand implements MVCRenderCommand {
 	
 	@Reference
 	StateLocalService stateLocalService;
+	
+	@Reference
+	CountryLocalService countryLocalService;
+	
+	@Reference
+	CityLocalService cityLocalService;
 
 	@Reference
 	CounterLocalService count;
@@ -51,12 +63,9 @@ public class ViewBranchMVCRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
 		
-		// 1. Using branchLocalService getting the details of all branches in a list
-		List<Branch> branchList = branchLocalService.getBranches(-1, -1);
-		renderRequest.setAttribute(EmployeeConstants.BRANCH_LIST, branchList);
 		
 		// 2. Getting the action value that is generated on RenderURL
-		String action = ParamUtil.getString(renderRequest, "action");
+		String action = ParamUtil.getString(renderRequest, EmployeeConstants.ACTION);
 		
 		// 3. Getting branchId of the branch selected for updating the record
 		long branchId = ParamUtil.getLong(renderRequest, EmployeeConstants.BRANCH_ID);
@@ -73,12 +82,31 @@ public class ViewBranchMVCRenderCommand implements MVCRenderCommand {
 			String redirectURL = ParamUtil.getString(renderRequest,EmployeeConstants.REDIRECT_URL);
 			
 			// 7. Validating if the action variable value is edit or not :: If edit than update the branch based on branchId
-			if ("edit".equalsIgnoreCase(action) && branchId > 0) {
+			if (EmployeeConstants.EDIT.equalsIgnoreCase(action) && branchId > 0) {
 				try {
 					
 					// 8. Getting the branch details based on branchId
-					Branch selectedBranch = branchLocalService.getBranch(branchId);
+					Branch getBranch = branchLocalService.getBranch(branchId);
 					
+					String branchName = getBranch.getBranchName();
+					long countryId = getBranch.getCountryId();
+					long stateId = getBranch.getStateId();
+					long cityId = getBranch.getCityId();
+					String address1 = getBranch.getAddress1();
+					String address2 = getBranch.getAddress2();
+					int pincode = getBranch.getPincode();
+					
+					Country countryName = countryLocalService.fetchCountry(countryId);
+					State stateName = stateLocalService.fetchState(stateId);
+					City cityName = cityLocalService.fetchCity(cityId);
+				
+					String country = countryName.getName();
+					String state = stateName.getStateName();
+					String city = cityName.getCityName();
+					
+					ViewCustomBranchBean selectedBranch = CommonEmployeeMethods.setBranchBean(branchId, 
+							branchName, country, state, city, address1, address2, pincode);
+							
 					// 9. Setting the renderRequest value as selectedBranch record details
 					renderRequest.setAttribute(EmployeeConstants.SELECTED_BRANCH, selectedBranch);
 					
@@ -90,8 +118,8 @@ public class ViewBranchMVCRenderCommand implements MVCRenderCommand {
 				}
 			}
 			
-			renderRequest.setAttribute("redirectURL", redirectURL);
-			renderRequest.setAttribute("isEdit", isEdit);
+			renderRequest.setAttribute(EmployeeConstants.REDIRECT_URL, redirectURL);
+			renderRequest.setAttribute(EmployeeConstants.IS_EDIT, isEdit);
 			
 			// 11. Redirect to AddEditBranch jsp page where data is displayed of the branchId selected for updation
 			return "/addEditBranch.jsp";
@@ -101,4 +129,6 @@ public class ViewBranchMVCRenderCommand implements MVCRenderCommand {
 			return "/branchView.jsp";
 		}
 	}
+	
+	
 }

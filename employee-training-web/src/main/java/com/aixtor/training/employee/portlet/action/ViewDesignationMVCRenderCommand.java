@@ -52,7 +52,7 @@ public class ViewDesignationMVCRenderCommand implements MVCRenderCommand {
 		renderRequest.setAttribute(EmployeeConstants.DESIGNATION_LIST, designationList);
 		
 		// 2. Getting the action value that is generated on RenderURL
-		String action = ParamUtil.getString(renderRequest, "action");
+		String action = ParamUtil.getString(renderRequest, EmployeeConstants.ACTION);
 		
 		// 3. Getting designationId of the designation selected for updating the record
 		long designationId = ParamUtil.getLong(renderRequest, EmployeeConstants.DESIGNATION_ID);
@@ -66,17 +66,17 @@ public class ViewDesignationMVCRenderCommand implements MVCRenderCommand {
 		if(Validator.isNotNull(action)) {
 			
 			// 6. Retrieving the current url to be redirected after the task is done
-			String redirectURL = ParamUtil.getString(renderRequest, "redirectURL");
+			String redirectURL = ParamUtil.getString(renderRequest, EmployeeConstants.REDIRECT_URL);
 			
 			// 7. Validating if the action variable value is edit or not :: If edit than update the designation on designationId
-			if ("edit".equalsIgnoreCase(action) && designationId > 0) {
+			if (EmployeeConstants.EDIT.equalsIgnoreCase(action) && designationId > 0) {
 				try {
 					
 					// 8. Getting the designation details based on designationId
 					Designation selectedDesignation = designationLocalService.getDesignation(designationId);
 					
 					// 9. Setting the renderRequest value as selectedDesignation record details
-					renderRequest.setAttribute("selectedDesignation", selectedDesignation);
+					renderRequest.setAttribute(EmployeeConstants.SELECTED_DESIGNATION, selectedDesignation);
 					
 					// 10. Setting the isEdit flag to true
 					isEdit = Boolean.TRUE;
@@ -85,8 +85,8 @@ public class ViewDesignationMVCRenderCommand implements MVCRenderCommand {
 					log.error("ViewDesignationMVCRender >>> render ::" +e);
 				}
 			}
-			renderRequest.setAttribute("redirectURL", redirectURL);
-			renderRequest.setAttribute("isEdit", isEdit);
+			renderRequest.setAttribute(EmployeeConstants.REDIRECT_URL, redirectURL);
+			renderRequest.setAttribute(EmployeeConstants.IS_EDIT, isEdit);
 			
 			// 11. Redirect to AddEditDesignation jsp page where data is displayed of the designationId selected for updation
 			return "/addEditDesignation.jsp";

@@ -52,7 +52,7 @@ public class ViewCityMVCRenderCommand implements MVCRenderCommand {
 		renderRequest.setAttribute(EmployeeConstants.CITY_LIST, cityList);
 		
 		// 2. Getting the action value that is generated on RenderURL
-		String action = ParamUtil.getString(renderRequest, "action");
+		String action = ParamUtil.getString(renderRequest, EmployeeConstants.ACTION);
 		
 		// 3. Getting cityId of the city selected for updating the record
 		long cityId = ParamUtil.getLong(renderRequest,EmployeeConstants.CITY_ID);
@@ -66,17 +66,17 @@ public class ViewCityMVCRenderCommand implements MVCRenderCommand {
 		if(Validator.isNotNull(action)) {
 			
 			// 6. Retrieving the current url to be redirected after the task is done
-			String redirectURL = ParamUtil.getString(renderRequest, "redirectURL");
+			String redirectURL = ParamUtil.getString(renderRequest, EmployeeConstants.REDIRECT_URL);
 			
 			// 7. Validating if the action variable value is edit or not :: If edit than update the city based on cityId
-			if ("edit".equalsIgnoreCase(action) && cityId > 0) {
+			if (EmployeeConstants.EDIT.equalsIgnoreCase(action) && cityId > 0) {
 				try {
 					
 					// 8. Getting the city details based on cityId
 					City selectedCity = cityLocalService.getCity(cityId);
 					
 					// 9. Setting the renderRequest value as selectedCity record details
-					renderRequest.setAttribute("selectedCity", selectedCity);
+					renderRequest.setAttribute(EmployeeConstants.SELECTED_CITY, selectedCity);
 					
 					// 10. Setting the isEdit flag to true
 					isEdit = Boolean.TRUE;
@@ -85,8 +85,8 @@ public class ViewCityMVCRenderCommand implements MVCRenderCommand {
 					log.error("ViewCityMVCRender >>> render ::" +e);
 				}
 			}
-			renderRequest.setAttribute("redirectURL", redirectURL);
-			renderRequest.setAttribute("isEdit", isEdit);
+			renderRequest.setAttribute(EmployeeConstants.REDIRECT_URL, redirectURL);
+			renderRequest.setAttribute(EmployeeConstants.IS_EDIT, isEdit);
 			
 			// 11. Redirect to AddEditCity jsp page where data is displayed of the cityId selected for updations
 			return "/addEditCity.jsp";

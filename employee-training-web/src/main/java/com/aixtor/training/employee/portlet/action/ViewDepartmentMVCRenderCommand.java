@@ -49,7 +49,7 @@ public class ViewDepartmentMVCRenderCommand implements MVCRenderCommand {
 		renderRequest.setAttribute(EmployeeConstants.DEPARTMENT_LIST, departmentList);
 		
 		// 2. Getting the action value that is generated on RenderURL
-		String action = ParamUtil.getString(renderRequest, "action");
+		String action = ParamUtil.getString(renderRequest, EmployeeConstants.ACTION);
 		
 		// 3. Getting departmentId of the department selected for updating the record
 		long departmentId = ParamUtil.getLong(renderRequest,EmployeeConstants.DEPARTMENT_ID);
@@ -63,20 +63,20 @@ public class ViewDepartmentMVCRenderCommand implements MVCRenderCommand {
 		if(Validator.isNotNull(action)) {
 			
 			// 6. Retrieving the current url to be redirected after the task is done
-			String redirectURL = ParamUtil.getString(renderRequest, "redirectURL");
+			String redirectURL = ParamUtil.getString(renderRequest, EmployeeConstants.REDIRECT_URL);
 			
 			/*
 			 * 7. Validating if the action variable value is edit or not :: If edit than update the department based on
 				departmentId	
 			 */	
-			if ("edit".equalsIgnoreCase(action) && departmentId > 0) {
+			if (EmployeeConstants.EDIT.equalsIgnoreCase(action) && departmentId > 0) {
 				try {
 					
 					// 8. Getting the department details based on departmentId
 					Department selectedDepartment = departmentLocalService.getDepartment(departmentId);
 					
 					// 9. Setting the renderRequest value as selectedDepartment record details
-					renderRequest.setAttribute("selectedDepartment", selectedDepartment);
+					renderRequest.setAttribute(EmployeeConstants.SELECTED_DEPARTMENT, selectedDepartment);
 					
 					// 10. Setting the isEdit flag to true
 					isEdit = Boolean.TRUE;
@@ -84,8 +84,8 @@ public class ViewDepartmentMVCRenderCommand implements MVCRenderCommand {
 					log.error("ViewDepartmentMVCRender >>> render ::" +e);
 				}
 			}
-			renderRequest.setAttribute("redirectURL", redirectURL);
-			renderRequest.setAttribute("isEdit", isEdit);
+			renderRequest.setAttribute(EmployeeConstants.REDIRECT_URL, redirectURL);
+			renderRequest.setAttribute(EmployeeConstants.IS_EDIT, isEdit);
 			
 			// 11. Redirect to AddEditDepartment jsp page where data is displayed of the departmentId selected for updation
 			return "/addEditDepartment.jsp";

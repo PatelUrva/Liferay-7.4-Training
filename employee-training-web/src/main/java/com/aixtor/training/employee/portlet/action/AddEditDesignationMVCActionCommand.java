@@ -45,16 +45,15 @@ public class AddEditDesignationMVCActionCommand extends BaseMVCActionCommand{
 		long designationId = ParamUtil.getLong(actionRequest, EmployeeConstants.DESIGNATION_ID, GetterUtil.DEFAULT_LONG);
 		
 		// 2. Retrieving the current url to be redirected after the task is done
-		String redirectURL = ParamUtil.getString(actionRequest, "redirectURL");
+		String redirectURL = ParamUtil.getString(actionRequest, EmployeeConstants.REDIRECT_URL);
 
 		// 3. Retrieving all the data of the designation form to be saved or updated in the database
 		String designationName = ParamUtil.getString(actionRequest, EmployeeConstants.DESIGNATION_NAME);
 		
-		// 4. Initalizing and declaring the entity Designation
 		Designation designation = null;
 		
 		/*
-		 * 5. Validating if the designationId is Empty or Not :: If the designationId is not null the designationData will be 
+		 * 4. Validating if the designationId is Empty or Not :: If the designationId is not null the designationData will be 
 		 * updated based on designationId
 		 */
 		try {
@@ -63,19 +62,19 @@ public class AddEditDesignationMVCActionCommand extends BaseMVCActionCommand{
 				designation.setDesignationName(designationName);
 			} else {
 				
-				// 6. If the designationId is empty then the data will be added as the new record entered
+				// 5. If the designationId is empty then the data will be added as the new record entered
 				designation = designationLocalService.createDesignation(counterLocalService.increment());
 				designation.setDesignationName(designationName);
 			}
 			/*
-			* 7. Using the updateDesignation method of designationLocalService as it performs both adding and updating 
+			* 6. Using the updateDesignation method of designationLocalService as it performs both adding and updating 
 			* transactions in database
 			 */
 			designationLocalService.updateDesignation(designation);
 		} catch (Exception e) {
 			log.error("AddEditDesignationMVCAction >>> doProcessAction >> Exception Occured:: " +e);
 		}
-		// 8. Redirecting back to the previous url
+		// 7. Redirecting back to the previous url
 		actionResponse.sendRedirect(redirectURL);
 	}
 

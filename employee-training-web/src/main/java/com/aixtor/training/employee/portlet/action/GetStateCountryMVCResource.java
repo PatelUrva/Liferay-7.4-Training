@@ -49,20 +49,16 @@ public class GetStateCountryMVCResource extends BaseMVCResourceCommand {
 		
 		// 1. Retrieving countryId from the country record user selected
 		long countryId = ParamUtil.getLong(resourceRequest, EmployeeConstants.COUNTRY_ID);
-		//log.info(countryId);
 		
-		// 2. Creating JSONObject
 		JSONObject responseObj = JSONFactoryUtil.createJSONObject();
-		
-		// 3. Creating JSONArray
 		JSONArray responseArray = JSONFactoryUtil.createJSONArray();
 		
-		// 4. Using finder method of State Entity getting list based on countryId selected
+		// 2. Using finder method of State Entity getting list based on countryId selected
 		List<State> getStateList = stateLocalService.findByCountryId(countryId);
 		
 		JSONObject jsonObject = null;
 		
-		// 5. Using foreach loop setting cityList details in jsonObject created
+		// 3. Using foreach loop setting cityList details in jsonObject created
 		for (State state : getStateList) {
 			jsonObject = JSONFactoryUtil.createJSONObject();
 			jsonObject.put(EmployeeConstants.STATE_NAME, state.getStateName());
@@ -72,7 +68,7 @@ public class GetStateCountryMVCResource extends BaseMVCResourceCommand {
 		PrintWriter writer = null;
 		try {
 			
-			// 6. Converting the jsonArray data to jsonToString with status
+			// 4. Converting the jsonArray data to jsonToString with status
 			writer = resourceResponse.getWriter();
 			responseObj.put(EmployeeConstants.DATA, responseArray.toJSONString());
 			responseObj.put(EmployeeConstants.STATUS, EmployeeConstants.SUCCESS);

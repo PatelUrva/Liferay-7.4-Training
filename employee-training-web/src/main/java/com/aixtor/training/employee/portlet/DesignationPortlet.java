@@ -60,11 +60,8 @@ public class DesignationPortlet extends MVCPortlet {
 			throws IOException, PortletException {
 		
 		// 1. Using designationLocalService getting the details of all designations in a list
-		
 		List<Designation> designationList = designationLocalService.getDesignations(-1, -1);
 		renderRequest.setAttribute(EmployeeConstants.DESIGNATION_LIST, designationList);
-		
-		//log.info(designationList);
 		
 		super.render(renderRequest, renderResponse);
 	}
@@ -78,10 +75,8 @@ public class DesignationPortlet extends MVCPortlet {
 	public void deleteDesignation(ActionRequest request, ActionResponse response) {
 		
 		// 1. Using ParamUtil and request get the selected designationId
-		
 		long designationId = ParamUtil.getLong(request, EmployeeConstants.DESIGNATION_ID, GetterUtil.DEFAULT_LONG);
 		try {
-			
 			// 2. Using deleteDesignation method of designationLocalService deleting designation
 			designationLocalService.deleteDesignation(designationId);
 		} catch (Exception e) {
