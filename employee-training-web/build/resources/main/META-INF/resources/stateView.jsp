@@ -1,11 +1,5 @@
-<%@page import="com.aixtor.training.service.StateLocalServiceUtil"%>
-<%@page import="com.aixtor.training.service.StateLocalService"%>
-<%@page import="com.aixtor.training.model.State"%>
-<%@page import="com.liferay.portal.kernel.util.ListUtil"%>
-<%@page import="java.util.List"%>
 <%@ include file="init.jsp" %>
-<%@taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
+
 <%
 	String currentURL=PortalUtil.getCurrentURL(renderRequest);
 %>
@@ -18,7 +12,7 @@
 
 <div class="mb-5">
     <a href="${addStateRenderURL}" class="btn  btn-primary btn-default">
-        <i class="glyphicon glyphicon-plus"> Add State </i>
+        <i class="fa-solid fa-plus"></i> Add State
     </a>
 </div>
 
@@ -31,7 +25,7 @@
 	total="${stateList.size()}" 
 	var="searchContainer" 
 	delta="2" 
-	deltaConfigurable="false" 
+	deltaConfigurable="true" 
   	emptyResultsMessage="Oops. There Are No States To Display, Please add States">
   
 	 <liferay-ui:search-container-results results="<%= ListUtil.subList(stateList, searchContainer.getStart(),searchContainer.getEnd())%>" />	
@@ -51,8 +45,12 @@
 			   <liferay-ui:search-container-column-text name="State Name" property="stateName"/>
 			   <liferay-ui:search-container-column-text name="Country Id" property="countryId"/>
 		 	   <liferay-ui:search-container-column-text name="Action">
-		 	   		<a  href="${editState}">Edit</a> &nbsp;
-		 	   		<a href="${deleteStateActionURL}">Delete</a>
+		 	   		<a  href="${editState}">
+		 	   			<i class="fa-solid fa-pen-to-square"></i>
+		 	   		</a> &nbsp;&nbsp;
+		 	   		<a href="${deleteStateActionURL}">
+		 	   			<i class="fa-solid fa-trash"></i>
+		 	   		</a>
 		 	   		
 		 	   </liferay-ui:search-container-column-text>
 		 	   

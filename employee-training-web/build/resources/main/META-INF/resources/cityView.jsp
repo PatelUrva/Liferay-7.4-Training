@@ -1,11 +1,5 @@
-<%@page import="com.aixtor.training.service.CityLocalServiceUtil"%>
-<%@page import="com.aixtor.training.service.CityLocalService"%>
-<%@page import="com.aixtor.training.model.City"%>
-<%@page import="com.liferay.portal.kernel.util.ListUtil"%>
-<%@page import="java.util.List"%>
 <%@ include file="init.jsp" %>
-<%@taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
-<%@page import="com.liferay.portal.kernel.util.PortalUtil"%>
+
 <%
 	String currentURL=PortalUtil.getCurrentURL(renderRequest);
 %>
@@ -18,7 +12,7 @@
 
 <div class="mb-5">
     <a href="${addCityRenderURL}" class="btn  btn-primary btn-default">
-        <i class="glyphicon glyphicon-plus"> Add City </i>
+      <i class="fa-solid fa-plus"></i> Add City 
     </a>
 </div>
 
@@ -31,7 +25,7 @@
 	total="${cityList.size()}" 
 	var="searchContainer" 
 	delta="5" 
-	deltaConfigurable="false" 
+	deltaConfigurable="true" 
   	emptyResultsMessage="Oops. There Are No Cities To Display, Please add City">
   
 	 <liferay-ui:search-container-results results="<%= ListUtil.subList(cityList, searchContainer.getStart(),searchContainer.getEnd())%>" />	
@@ -51,9 +45,12 @@
 			   <liferay-ui:search-container-column-text name="City Name" property="cityName"/>
 			   <liferay-ui:search-container-column-text name="State Id" property="stateId"/>
 		 	   <liferay-ui:search-container-column-text name="Action">
-		 	   		<a  href="${editCity}">Edit</a> &nbsp;
-		 	   		<a href="${deleteCityActionURL}">Delete</a>
-		 	   		
+		 	   		<a  href="${editCity}"> 
+		 	   			<i class="fa-solid fa-pen-to-square"></i>
+		 	   		</a>&nbsp;
+		 	   		<a href="${deleteCityActionURL}"> 
+		 	   			<i class="fa-solid fa-trash"></i>
+		 	   		</a>
 		 	   </liferay-ui:search-container-column-text>
 		 	   
 		 </liferay-ui:search-container-row>	   

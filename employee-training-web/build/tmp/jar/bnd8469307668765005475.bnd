@@ -1,0 +1,46 @@
+-add-resource=D\:/training/liferay/workspace/training-workspace/modules/employee-training-web/build/tmp/compileJSP,D\:/training/liferay/workspace/training-workspace/modules/employee-training-web/build/jspc
+Bundle-Name=employee-training-web
+libsDirName=libs
+Javac-Debug=on
+Export-Package=com.aixtor.training.employee.constants
+-plugin.liferay=com.liferay.ant.bnd.resource.AddResourceVerifierPlugin,com.liferay.ant.bnd.jsp.JspAnalyzerPlugin,com.liferay.ant.bnd.metatype.MetatypePlugin,com.liferay.ant.bnd.npm.NpmAnalyzerPlugin,com.liferay.ant.bnd.resource.bundle.ResourceBundleLoaderAnalyzerPlugin,com.liferay.ant.bnd.sass.SassAnalyzerPlugin,com.liferay.ant.bnd.service.ServiceAnalyzerPlugin,com.liferay.ant.bnd.social.SocialAnalyzerPlugin,aQute.lib.spring.SpringComponent,com.liferay.ant.bnd.spring.SpringDependencyAnalyzerPlugin,com.liferay.ant.bnd.enterprise.EnterpriseAnalyzerPlugin
+docsDirName=docs
+-contract=*
+-metatype=*
+Import-Package=*;resolution\:\="optional"
+testReportDirName=tests
+liferay.workspace.wars.dir=modules
+Javac-Deprecation=off
+name=employee-training-web
+liferay.workspace.themes.dir=themes
+description=employee-training-web
+liferay.workspace.product=portal-7.4-ga56
+distsDirName=distributions
+-fixupmessages.deprecated=annotations are deprecated
+liferay.workspace.home.dir=D\:\trainingliferayserverliferay-ce-portal-7.4.3.56-ga56
+target.platform.index.sources=false
+liferay.workspace.modules.dir=modules
+group=training-workspace.modules
+archivesBaseName=com.aixtor.training.employee
+-donotcopy=(.*.wsdd)
+-plugin.metatype=com.liferay.ant.bnd.metatype.MetatypePlugin
+-fixupmessages.unicode.string=Invalid unicode string
+-jsp=*.jsp,*.jspf,*.jspx
+liferay.workspace.bundle.dist.include.metadata=true
+Bundle-SymbolicName=com.aixtor.training.employee
+status=integration
+displayName=project '\:modules\:employee-training-web'
+-consumer-policy=${replacestring;${range;[\=\=,\=\=]};.*,(.*)];$1}
+testResultsDirName=test-results
+-includeresource.compileInclude=lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/com.itextpdf/itextpdf/5.5.13.3/5282897d446c3b736d63ef6e83043eb6f1943b4e/itextpdf-5.5.13.3.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi-ooxml/3.9/bbe83c739d22eecfacd06d7e0b99ba13277040ed/poi-ooxml-3.9.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.9/5d5e41354e88322e4bc590b31f3d2d1d52b3e6ac/poi-3.9.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.15/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.4.01/3789d9fada2d3d458c4ba2de349d48780f381ee3/xml-apis-1.4.01.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi-ooxml-schemas/3.9/4c514498f0e82cccfdd3208b9caff2f45158db4a/poi-ooxml-schemas-3.9.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/org.apache.xmlbeans/xmlbeans/2.3.0/8704dcf5c9f10265a08f5020b0fab70eb64ac3c4/xmlbeans-2.3.0.jar;lib\:\=true,lib/\=C\:/Users/Urva Patel/.gradle/caches/modules-2/files-2.1/stax/stax-api/1.0.1/49c100caf72d658aca8e58bd74a4ba90fa2b0d70/stax-api-1.0.1.jar;lib\:\=true
+microsoft.translator.subscription.key=
+path=\:modules\:employee-training-web
+-noclassforname=true
+Bundle-Version=1.0.0
+-liferay-service-xml=service.xml,*/service.xml
+version=1.0.0
+-fixupmessages.classpath.empty=Classpath is empty
+-cdiannotations=
+-sass=*
+Javac-Encoding=Cp1252
+-provider-policy=${replacestring;${range;[\=\=,\=\=]};.*,(.*)];$1}
