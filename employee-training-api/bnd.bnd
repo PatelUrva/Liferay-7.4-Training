@@ -1,0 +1,6 @@
+Bundle-Name: employee-training-api
+Bundle-SymbolicName: com.aixtor.training.service.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.aixtor.training.employee.api,\
+	com.aixtor.training.employee.bean
