@@ -1,5 +1,7 @@
 package com.aixtor.training.employee.portlet;
 
+import com.aixtor.training.employee.api.EmployeeApi;
+
 /**
  * @author Urva Patel
  */
@@ -32,9 +34,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -83,6 +83,8 @@ public class EmployeePortlet extends MVCPortlet {
 	@Reference
 	private EmployeeLocalService employeeLocalService;
 	
+	@Reference
+	EmployeeApi employeeAPI;
 
 	/**
 	 * @return EmployeeList based on searching functionality changing the updated employeelist
@@ -159,7 +161,6 @@ public class EmployeePortlet extends MVCPortlet {
 		}
 		
 		// 1. Setting searchContainer attribute values in render request
-		renderRequest.setAttribute(EmployeeConstants.FROM_SEARCH, fromSearch);
 		renderRequest.setAttribute(EmployeeConstants.DELTA, delta);
 		renderRequest.setAttribute(EmployeeConstants.PORTLET_SEARCH_URL, portletSearchURL);
 		renderRequest.setAttribute(EmployeeConstants.TOTAL_SIZE, totalSize);
@@ -204,9 +205,14 @@ public class EmployeePortlet extends MVCPortlet {
 		
 		// 1. Getting fromDate selected by the user
 		String fromDates = ParamUtil.getString(request, EmployeeConstants.FROM_DATE);
+		log.info("From Date :: " +fromDates+ "\n" );
 		
 		// 2. Getting toDate selected by the user
 		String toDates = ParamUtil.getString(request, EmployeeConstants.TO_DATE);
+		log.info("To Date :: " +toDates+ "\n" );
+		
+		String formatPattern = ParamUtil.getString(request, EmployeeConstants.DATE_FORMAT);
+		log.info("Date Pattern :: " +formatPattern+ "\n" );
 		
 		// 3. Getting searchText data selected by the user
 		String searchText = ParamUtil.getString(request, EmployeeConstants.SEARCH_TEXT);
@@ -214,44 +220,20 @@ public class EmployeePortlet extends MVCPortlet {
 		// 4. Validating if the search is done based on dates :: if yes parsing the dates and performing DynamicQuery
 		if(Validator.isNull(searchText)) {
 			
-			Date fromDate = null;
+			Date fromDate = null, toDate = null;
 			try {
 				// 5. Parsing the fromDate value
-				fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(fromDates);
+				fromDate = employeeAPI.parseFromDate(fromDate, fromDates, formatPattern);
+				
+				// 6. Parsing the toDate value using Calendar
+				toDate = employeeAPI.parseToDate(toDate, toDates, formatPattern);
 				
 			} catch (ParseException e) {
 				log.error("EmployeePortlet >>> searchEmployee() >>> From Date :: " +e);
 			}
-			Date toDate = null;
-			try {
-				
-				// 6. Parsing the toDate value using Calendar
-				toDate = new SimpleDateFormat("yyyy-MM-dd").parse(toDates);
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(toDate);
-				calendar.set(Calendar.HOUR, 23);
-				calendar.set(Calendar.MINUTE, 59);
-				calendar.set(Calendar.SECOND, 59);
-				toDate = calendar.getTime();
-				
-			} catch (ParseException e) {
-				log.error("EmployeePortlet >>>searchEmployee() >>> To Date :: " +e);
-			}
 			
-			// 7. If toDate is null then set the toDate value to todays date 
-			if(toDate == null) {
-				Calendar today = Calendar.getInstance();
-				today.set(Calendar.HOUR_OF_DAY, 0);
-				today.set(Calendar.MINUTE, 0);
-				today.set(Calendar.SECOND, 0);
-				toDate = today.getTime();
-			}
-			if(fromDate == null) {
-				 String newDate = "1990-01-01";
-				 fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(newDate);
-			}
-			log.info("From Date :: " +fromDate);
-			log.info("To Date :: " +toDate);
+			log.info("From Date Final :: " +fromDate+ "\n");
+			log.info("To Date Final :: " +toDate+ "\n");
 			
 			// 8. Using DynamicQuery searching the employees data entered that falls between the fromDate and toDate provided by user
 			DynamicQuery dynamicQuery = EmployeeLocalServiceUtil.dynamicQuery();
@@ -259,6 +241,7 @@ public class EmployeePortlet extends MVCPortlet {
 			
 			// 9. Returning employeeList based on the query
 			List<Employee> employeeList = EmployeeLocalServiceUtil.dynamicQuery(dynamicQuery);
+			log.info("EmployeePortlet >>> DynamicQuery List :: " +employeeList+ "\n");
 			
 			// 10. Creating ArrayList of customEmployeeBean to stored the searchList and retrieve the data element by element
 			ArrayList<ViewCustomEmployeeBean> searchEmployeeList = new ArrayList<ViewCustomEmployeeBean>();
@@ -292,6 +275,7 @@ public class EmployeePortlet extends MVCPortlet {
 							employeeName, employeeMobile, employeeEmail, branchName, departmentName, designationName);
 					
 					searchEmployeeList.add(viewCustomEmployeeBean);
+					log.info("EmployeePortlet >>> searchEmployeeList :: " +searchEmployeeList+ "\n");
 				}
 			}	
 			
