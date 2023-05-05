@@ -1,0 +1,6 @@
+Bundle-Name: email-domain-validator-service
+Bundle-SymbolicName: com.aixtor.training.emaildomainvalidator
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.aixtor.training.emaildomainvalidator.api,\
+	com.aixtor.training.emaildomainvalidator.impl
