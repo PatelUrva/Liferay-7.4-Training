@@ -1,0 +1,4 @@
+Bundle-Name: custom-login-web
+Bundle-SymbolicName: com.aixtor.training.customlogin
+Bundle-Version: 1.0.0
+Export-Package: com.aixtor.training.customlogin.constants

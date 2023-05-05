@@ -1,0 +1,6 @@
+com/aixtor/training/customlogin/portlet/LoginMVCActionCommand.java
+ com.aixtor.training.customlogin.portlet.LoginMVCActionCommand
+com/aixtor/training/customlogin/portlet/action/LoginPortlet.java
+ com.aixtor.training.customlogin.portlet.action.LoginPortlet
+com/aixtor/training/customlogin/constants/LoginConstants.java
+ com.aixtor.training.customlogin.constants.LoginConstants
