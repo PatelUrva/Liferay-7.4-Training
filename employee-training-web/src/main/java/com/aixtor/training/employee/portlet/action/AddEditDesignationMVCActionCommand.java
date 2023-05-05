@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=DesignationPortlet",
+	    	"javax.portlet.name="+EmployeeConstants.DESIGNATION_PORTLET,
 	        "mvc.command.name=addEditDesignation",
 	    }, 
 	    service = MVCActionCommand.class

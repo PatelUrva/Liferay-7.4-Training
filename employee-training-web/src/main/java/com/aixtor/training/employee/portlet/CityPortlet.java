@@ -39,7 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.display-name=City Form", 
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/departmentView.jsp", 
-		"javax.portlet.name=CityPortlet",
+		"javax.portlet.name="+EmployeeConstants.CITY_PORTLET,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user" 
 }, service = Portlet.class)

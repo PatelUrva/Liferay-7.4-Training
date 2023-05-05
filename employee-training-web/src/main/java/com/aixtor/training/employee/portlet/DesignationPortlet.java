@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.requires-namespaced-parameters=false",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/designationView.jsp",
-		"javax.portlet.name=DesignationPortlet",
+		"javax.portlet.name="+EmployeeConstants.DESIGNATION_PORTLET,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},

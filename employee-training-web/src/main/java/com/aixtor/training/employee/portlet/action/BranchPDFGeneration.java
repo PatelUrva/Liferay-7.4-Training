@@ -1,5 +1,8 @@
 package com.aixtor.training.employee.portlet.action;
 
+import com.aixtor.training.employee.constants.EmployeeConstants;
+import com.aixtor.training.employee.helper.EmployeeHelper;
+
 /**
  * @author Urva Patel
  */
@@ -30,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=BranchPortlet",
+	    	"javax.portlet.name="+EmployeeConstants.BRANCH_PORTLET,
 	        "mvc.command.name=/download/branchPDF",
 	    }, 
 	    service = MVCResourceCommand.class
@@ -39,9 +42,11 @@ import org.osgi.service.component.annotations.Reference;
 public class BranchPDFGeneration extends BaseMVCResourceCommand {
 	
 	@Reference
+	EmployeeHelper employeeHelper;
+	
+	@Reference
 	BranchLocalService branchLocalService;
-
-
+	
 	/**
 	 * @return PDF saved in the Downloads and Chrome
 	 */
@@ -112,39 +117,43 @@ public class BranchPDFGeneration extends BaseMVCResourceCommand {
  			
  			// 6. Adding cell from the employeeList using loop to traverse each record
  			pdfPTable.addCell(branchId);
- 	        pdfPTable.addCell(branchName);
- 	        pdfPTable.addCell(countryId);
- 	        pdfPTable.addCell(stateId);
- 	        pdfPTable.addCell(cityId);
- 	        pdfPTable.addCell(address1);
- 	        pdfPTable.addCell(address2);
- 	        pdfPTable.addCell(pincode);
+ 			pdfPTable.addCell(branchName);
+ 			pdfPTable.addCell(countryId);
+ 			pdfPTable.addCell(stateId);
+ 			pdfPTable.addCell(cityId);
+ 			pdfPTable.addCell(address1);
+ 			pdfPTable.addCell(address2);
+ 			pdfPTable.addCell(pincode);
+ 			
  	        pdfPTable.setWidths(new int[]{30, 30, 30, 30, 30, 30, 30, 30});
  		}
-		
- 		// 9. Adding table in pdf
+ 		String fileName = "BranchReport.pdf";
+ 		
+ 		// 1. Adding table in pdf
 		document.add(pdfPTable);
 		
-		// 10. Closing document
+		// 2. Closing document
 		document.close();
 		
-		// 11. Setting the HttpHeaders
-		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=BranchReport.pdf");
+		// 3. Setting the HttpHeaders
+		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+fileName);
 		resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL,"max-age=3600, must-revalidate");
 
-        // 12. Setting the content type
+        // 4. Setting the content type
         resourceResponse.setContentType("application/pdf");
         
-        // 13. Setting the contentlength
+        // 5. Setting the contentlength
         resourceResponse.setContentLength(baos.size());
         
-        // 14. Write ByteArrayOutputStream to the ServletOutputStream
+        // 6. Write ByteArrayOutputStream to the ServletOutputStream
         OutputStream os = resourceResponse.getPortletOutputStream();
         baos.writeTo(os);
         os.flush();
         
-        // 15. Send file using PortletResponseUtil
-		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,"Branch.pdf", baos.toByteArray(), ContentTypes.APPLICATION_PDF);
-	
+        // 7. Send file using PortletResponseUtil
+		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,fileName, baos.toByteArray(), ContentTypes.APPLICATION_PDF);
 	}
+
+
+	
 }

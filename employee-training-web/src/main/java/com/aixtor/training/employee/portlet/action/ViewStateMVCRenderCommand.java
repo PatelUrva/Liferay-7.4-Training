@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=StatePortlet",
+	    	"javax.portlet.name="+EmployeeConstants.STATE_PORTLET,
 	        "mvc.command.name=/",
 	    }, 
 	    service = MVCRenderCommand.class

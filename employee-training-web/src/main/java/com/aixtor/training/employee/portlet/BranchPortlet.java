@@ -1,12 +1,11 @@
 package com.aixtor.training.employee.portlet;
 
-import com.aixtor.training.employee.bean.ViewCustomBranchBean;
-import com.aixtor.training.employee.common.CommonEmployeeMethods;
-
 /**
  * @author Urva Patel
  */
 
+import com.aixtor.training.employee.api.EmployeeApi;
+import com.aixtor.training.employee.bean.ViewCustomBranchBean;
 import com.aixtor.training.employee.constants.EmployeeConstants;
 import com.aixtor.training.service.BranchLocalService;
 import com.liferay.counter.kernel.service.CounterLocalService;
@@ -44,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.display-name=Branch Form",
 		"javax.portlet.init-param.template-path=/", 
 		"javax.portlet.init-param.view-template=/branchView.jsp",
-		"javax.portlet.name=BranchPortlet", 
+		"javax.portlet.name="+EmployeeConstants.BRANCH_PORTLET, 
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 }, service = Portlet.class)
@@ -62,6 +61,9 @@ public class BranchPortlet extends MVCPortlet {
 	@Reference
 	private CounterLocalService count;
 	
+	@Reference
+	private EmployeeApi employeeApi;
+	
 	
 	/**
 	 * @return List of branches and countries on Page load
@@ -70,13 +72,11 @@ public class BranchPortlet extends MVCPortlet {
 	public void render(RenderRequest renderRequest, RenderResponse renderResponse)
 			throws IOException, PortletException {
 
-		//List<Branch> branchList = branchLocalService.getBranches(-1,-1);
-		
 		// 1. Using branchLocalService getting the details of all branches in a list
 		List<Object[]> branches = branchLocalService.getAllBranches();
 		
 		// 2. Creating ArrayList of customEmployeeBean to stored the searchList and retrieve the data element by element
-		List<ViewCustomBranchBean> branchList = new ArrayList<ViewCustomBranchBean>();
+		List<ViewCustomBranchBean> branchList = new ArrayList<>();
 		
 		// 3. Traversing to all the records available in the Employee entity
 		for (Object[] obj : branches) {
@@ -90,14 +90,16 @@ public class BranchPortlet extends MVCPortlet {
 			String address1 = String.valueOf(obj[5]);
 			String address2 = String.valueOf(obj[6]);
 			int pincode = (Integer) obj[7];
+			long countryId = 0;
+			long stateId = 0;
+			long cityId = 0;
 			
 			// 5. Calling setCustomBean method for setting values in ViewEmployeeCustomBean
-			ViewCustomBranchBean viewCustomBranchBean = CommonEmployeeMethods.setBranchBean(branchId, 
-					branchName, country, state, city, address1, address2, pincode);
+			ViewCustomBranchBean viewCustomBranchBean = employeeApi.setBranchBean(branchId, branchName,
+					country, state, city, address1, address2, pincode, countryId, stateId, cityId);
 					
 			// 6. Adding the customBean object in the ArrayList
 			branchList.add(viewCustomBranchBean);
-			log.info(branchList);
 		}				
 		renderRequest.setAttribute(EmployeeConstants.BRANCH_LIST, branchList);
 		
@@ -142,28 +144,15 @@ public class BranchPortlet extends MVCPortlet {
 		
 		String mailSubject =  EmployeeConstants.MAIL_SUBJECT;
 		String senderMailAddress = EmployeeConstants.SENDER_MAIL;
-	    
-	    // 1. Getting receiver mail address from textbox
 	    String receiverMailAddress = ParamUtil.getString(request,EmployeeConstants.RECEIVER_MAIL);
 	    
 	    try {
-	    	
-	    	// 2. Creating object of MailMessage for using its mail methods
-			MailMessage mailMessage = CommonEmployeeMethods.sendMail(mailSubject, senderMailAddress, receiverMailAddress);
-			
+	    	// 1. Creating object of MailMessage for using its mail methods
+			MailMessage mailMessage = employeeApi.sendMail(mailSubject, senderMailAddress, receiverMailAddress);
 			MailServiceUtil.sendEmail(mailMessage);
-			
-			// 3. Logger message if mail sent
-			log.info("BranchPortlet >>> sendMail() >>> Mail Sent"); 
-			
 		} catch (Exception e) {
-			
-			// 4. If exeception occurred while sending mail
+			// 2. If exeception occurred while sending mail
 			log.error("BranchPortlet >>> sendMail() >>> Mail Sending Error :: "+e); 
 		}
-	    
 	}
-	
-	
-	
 }

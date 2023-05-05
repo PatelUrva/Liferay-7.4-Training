@@ -1,12 +1,10 @@
 package com.aixtor.training.employee.portlet.action;
 
+import com.aixtor.training.employee.api.EmployeeApi;
 /**
  * @author Urva Patel
  */
 import com.aixtor.training.employee.constants.EmployeeConstants;
-import com.aixtor.training.model.Branch;
-import com.aixtor.training.service.BranchLocalService;
-import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -23,7 +21,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=BranchPortlet",
+	    	"javax.portlet.name="+EmployeeConstants.BRANCH_PORTLET,
 	        "mvc.command.name=addEditBranch",
 	    }, 
 	    service = MVCActionCommand.class
@@ -33,10 +31,7 @@ public class AddEditBranchMVCActionCommand extends BaseMVCActionCommand{
 	private static Log log = LogFactoryUtil.getLog(AddEditBranchMVCActionCommand.class);
 
 	@Reference
-	BranchLocalService branchLocalService;
-
-	@Reference
-	CounterLocalService counterLocalService;
+	private EmployeeApi employeeApi;
 	
 	/**
 	 * @return adding and editing branch record in the database
@@ -59,41 +54,18 @@ public class AddEditBranchMVCActionCommand extends BaseMVCActionCommand{
 		String address2 = ParamUtil.getString(actionRequest, EmployeeConstants.ADDRESS2);
 		int pincode = ParamUtil.getInteger(actionRequest, EmployeeConstants.PINCODE);
 		
-		Branch branch = null;
-		
 		try {
 			/*
 			 * 4. Validating if the branchId is Empty or Not :: If the branchId is not null the branchData will be updated 
 			 *		based on branchId
 			 */
 			if (branchId > 0) {
-				branch = branchLocalService.getBranch(branchId);
-				branch.setBranchName(branchName);
-				branch.setCountryId(countryId);;
-				branch.setStateId(stateId);
-				branch.setCityId(cityId);
-				branch.setAddress1(address1);
-				branch.setAddress2(address2);
-				branch.setPincode(pincode);
+				employeeApi.updateBranchDetails(branchId, branchName, countryId, stateId, cityId, address1, address2, pincode);
 			} else {
-				
 				// 5. If the branchId is empty then the data will be added as the new record enterd
-				branch = branchLocalService.createBranch(counterLocalService.increment());
-				branch.setBranchName(branchName);
-				branch.setCountryId(countryId);;
-				branch.setStateId(stateId);
-				branch.setCityId(cityId);
-				branch.setAddress1(address1);
-				branch.setAddress2(address2);
-				branch.setPincode(pincode);
-				
+				employeeApi.addBranchDetails(branchName, countryId, stateId, cityId, address1, address2, pincode);
 			}
 			
-			/*
-			 * 6. Using the updateBranch method of branchLocalService as it performs both adding and updating transactions in 
-				database
-			 */
-			branchLocalService.updateBranch(branch);
 		} catch (Exception e) {
 			log.error("AddEditBranchMVCAction >>> doProcessAction >> Exception Occured:: " +e);
 		}
@@ -101,5 +73,4 @@ public class AddEditBranchMVCActionCommand extends BaseMVCActionCommand{
 		// 8. Redirecting back to the previous url
 		actionResponse.sendRedirect(redirectURL);
 	}
-
 }

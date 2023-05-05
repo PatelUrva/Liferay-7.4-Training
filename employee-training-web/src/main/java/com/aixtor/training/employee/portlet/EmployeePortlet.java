@@ -1,14 +1,13 @@
 package com.aixtor.training.employee.portlet;
 
-import com.aixtor.training.employee.api.EmployeeApi;
-
 /**
  * @author Urva Patel
  */
 
+import com.aixtor.training.employee.api.EmployeeApi;
 import com.aixtor.training.employee.bean.ViewCustomEmployeeBean;
-import com.aixtor.training.employee.common.CommonEmployeeMethods;
 import com.aixtor.training.employee.constants.EmployeeConstants;
+import com.aixtor.training.employee.helper.EmployeeHelper;
 import com.aixtor.training.model.Branch;
 import com.aixtor.training.model.Department;
 import com.aixtor.training.model.Designation;
@@ -18,6 +17,7 @@ import com.aixtor.training.service.DepartmentLocalService;
 import com.aixtor.training.service.DesignationLocalService;
 import com.aixtor.training.service.EmployeeLocalService;
 import com.aixtor.training.service.EmployeeLocalServiceUtil;
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.liferay.adaptive.media.exception.AMRuntimeException.IOException;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,19 +73,19 @@ public class EmployeePortlet extends MVCPortlet {
 	private CounterLocalService count;
 	
 	@Reference
-	BranchLocalService branchLocalService;
+	private BranchLocalService branchLocalService;
 	
 	@Reference
-	DepartmentLocalService departmentLocalService;
+	private DepartmentLocalService departmentLocalService;
 	
 	@Reference
-	DesignationLocalService designationLocalService;
+	private DesignationLocalService designationLocalService;
 
 	@Reference
 	private EmployeeLocalService employeeLocalService;
 	
 	@Reference
-	EmployeeApi employeeAPI;
+	private EmployeeApi employeeAPI;
 
 	/**
 	 * @return EmployeeList based on searching functionality changing the updated employeelist
@@ -97,15 +98,18 @@ public class EmployeePortlet extends MVCPortlet {
 		
 		// 1. Requsting fromSearch value from searchAction
 		String fromSearch = (String) renderRequest.getAttribute(EmployeeConstants.FROM_SEARCH);
+		String searchText = (String) renderRequest.getAttribute(EmployeeConstants.SEARCH_TEXT);
+		Date fromDate = (Date) renderRequest.getAttribute(EmployeeConstants.FROM_DATE);
+		Date toDate = (Date) renderRequest.getAttribute(EmployeeConstants.TO_DATE);
 		
-		String cur = null;
 		PortletURL portletSearchURL = null;
 		List<ViewCustomEmployeeBean> employeeSearchList = null;
-		int totalSize = 0, delta = 2;
+		int totalSize = 0;
+		int delta = 0;
 		PortletURL portletURL = renderResponse.createRenderURL();
 		
 		// 2. Setting searchContainer values 
-		SearchContainer<ViewCustomEmployeeBean> employeeContainer = new SearchContainer<ViewCustomEmployeeBean>(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, 4, portletURL, null, null);
+		SearchContainer<ViewCustomEmployeeBean> employeeContainer = new SearchContainer<>(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, 4, portletURL, null, null);
 		
 		// 3. Validating if search list to be passed 
 		if (Validator.isNotNull(fromSearch)) {
@@ -131,7 +135,7 @@ public class EmployeePortlet extends MVCPortlet {
 			employeeLists = employeeLocalService.getAllEmployees();
 					
 			// 2. Creating ArrayList of customEmployeeBean to stored the searchList and retrieve the data element by element
-			ArrayList<ViewCustomEmployeeBean> employeeList = new ArrayList<ViewCustomEmployeeBean>();
+			ArrayList<ViewCustomEmployeeBean> employeeList = new ArrayList<>();
 			
 			// 3. Traversing to all the records available in the Employee entity
 			for (Object[] obj : employeeLists) {
@@ -144,10 +148,13 @@ public class EmployeePortlet extends MVCPortlet {
 				String branchName = String.valueOf(obj[4]);
 				String departmentName = String.valueOf(obj[5]);
 				String designationName = String.valueOf(obj[6]);
+				long branchId = 0;
+				long departmentId = 0;
+				long designationId = 0;
 				
 				// 5. Calling setCustomBean method for setting values in ViewEmployeeCustomBean
-				ViewCustomEmployeeBean viewCustomEmployeeBean = CommonEmployeeMethods.setNewCustomBean(employeeId, 
-						employeeName, employeeMobile, employeeEmail, branchName, departmentName, designationName);
+				ViewCustomEmployeeBean viewCustomEmployeeBean = employeeAPI.setNewCustomBean(employeeId, employeeName, employeeMobile, employeeEmail, branchName,
+						departmentName, designationName, branchId, departmentId, designationId);
 						
 				// 6. Adding the customBean object in the ArrayList
 				employeeList.add(viewCustomEmployeeBean);
@@ -164,6 +171,9 @@ public class EmployeePortlet extends MVCPortlet {
 		renderRequest.setAttribute(EmployeeConstants.DELTA, delta);
 		renderRequest.setAttribute(EmployeeConstants.PORTLET_SEARCH_URL, portletSearchURL);
 		renderRequest.setAttribute(EmployeeConstants.TOTAL_SIZE, totalSize);
+		renderRequest.setAttribute(EmployeeConstants.SEARCH_TEXT, searchText);
+		renderRequest.setAttribute(EmployeeConstants.FROM_DATE, fromDate);
+		renderRequest.setAttribute(EmployeeConstants.TO_DATE, toDate);
 		
 		// 2. Setting searchContainer in render request
 		renderRequest.setAttribute(EmployeeConstants.EMPLOYEE_CONTAINER, employeeContainer);
@@ -203,131 +213,49 @@ public class EmployeePortlet extends MVCPortlet {
 	@ProcessAction(name = "searchEmployee")
 	public void searchEmployee(ActionRequest request, ActionResponse response) throws PortalException, ParseException {
 		
+		String formatPattern = ParamUtil.getString(request, EmployeeConstants.DATE_FORMAT);
+		
 		// 1. Getting fromDate selected by the user
-		String fromDates = ParamUtil.getString(request, EmployeeConstants.FROM_DATE);
-		log.info("From Date :: " +fromDates+ "\n" );
+		Date fromDate = ParamUtil.getDate(request, EmployeeConstants.FROM_DATE, new SimpleDateFormat("yyyy-MM-dd"), new SimpleDateFormat(formatPattern).parse("1990-01-01"));
 		
 		// 2. Getting toDate selected by the user
-		String toDates = ParamUtil.getString(request, EmployeeConstants.TO_DATE);
-		log.info("To Date :: " +toDates+ "\n" );
-		
-		String formatPattern = ParamUtil.getString(request, EmployeeConstants.DATE_FORMAT);
-		log.info("Date Pattern :: " +formatPattern+ "\n" );
+		Date toDate = ParamUtil.getDate(request, EmployeeConstants.TO_DATE, new SimpleDateFormat("yyyy-MM-dd"), new Date());
 		
 		// 3. Getting searchText data selected by the user
 		String searchText = ParamUtil.getString(request, EmployeeConstants.SEARCH_TEXT);
 		
-		// 4. Validating if the search is done based on dates :: if yes parsing the dates and performing DynamicQuery
-		if(Validator.isNull(searchText)) {
-			
-			Date fromDate = null, toDate = null;
-			try {
-				// 5. Parsing the fromDate value
-				fromDate = employeeAPI.parseFromDate(fromDate, fromDates, formatPattern);
-				
-				// 6. Parsing the toDate value using Calendar
-				toDate = employeeAPI.parseToDate(toDate, toDates, formatPattern);
-				
-			} catch (ParseException e) {
-				log.error("EmployeePortlet >>> searchEmployee() >>> From Date :: " +e);
-			}
-			
-			log.info("From Date Final :: " +fromDate+ "\n");
-			log.info("To Date Final :: " +toDate+ "\n");
-			
-			// 8. Using DynamicQuery searching the employees data entered that falls between the fromDate and toDate provided by user
-			DynamicQuery dynamicQuery = EmployeeLocalServiceUtil.dynamicQuery();
-			dynamicQuery.add(PropertyFactoryUtil.forName("createDate").between(fromDate , toDate));
-			
-			// 9. Returning employeeList based on the query
-			List<Employee> employeeList = EmployeeLocalServiceUtil.dynamicQuery(dynamicQuery);
-			log.info("EmployeePortlet >>> DynamicQuery List :: " +employeeList+ "\n");
-			
-			// 10. Creating ArrayList of customEmployeeBean to stored the searchList and retrieve the data element by element
-			ArrayList<ViewCustomEmployeeBean> searchEmployeeList = new ArrayList<ViewCustomEmployeeBean>();
-			
-			// 11. Traversing to all the records available in the Employee entity
-			for (Employee employee : employeeList) {
-				
-				// 12. Getting values from database 
-				long employeeId = employee.getEmployeeId();
-				
-				if(employeeId > 0) {
-					Employee getEmployee = employeeLocalService.getEmployee(employeeId);
+		// 4. Creating ArrayList of customEmployeeBean to stored the searchList and  retrieve the data element by element
+		ArrayList<ViewCustomEmployeeBean> searchEmployeeList = new ArrayList<ViewCustomEmployeeBean>();
+		
+		EmployeeHelper employeeHelper = new EmployeeHelper(employeeAPI, employeeLocalService, branchLocalService, 
+				departmentLocalService, designationLocalService);
+		
+		if (Validator.isNull(searchText)) {
 
-					String employeeName = getEmployee.getEmployeeName();
-					String employeeMobile = getEmployee.getEmployeeMobile();
-					String employeeEmail = getEmployee.getEmployeeEmail();
-					long branchId = getEmployee.getBranchId();
-					long departmentId = getEmployee.getDepartmentId();
-					long designationId = getEmployee.getDesignationId();
-					
-					Branch branch = branchLocalService.fetchBranch(branchId);
-					Department department = departmentLocalService.fetchDepartment(departmentId);
-					Designation designation = designationLocalService.fetchDesignation(designationId);
-					
-					String branchName = branch.getBranchName();
-					String departmentName = department.getDepartmentName() ;
-					String designationName = designation.getDesignationName();
-					
-					// 13. Calling setCustomBean function for setting values in ViewEmployeeCustomBean
-					ViewCustomEmployeeBean viewCustomEmployeeBean = CommonEmployeeMethods.setNewCustomBean(employeeId, 
-							employeeName, employeeMobile, employeeEmail, branchName, departmentName, designationName);
-					
-					searchEmployeeList.add(viewCustomEmployeeBean);
-					log.info("EmployeePortlet >>> searchEmployeeList :: " +searchEmployeeList+ "\n");
-				}
-			}	
-			
-			request.setAttribute(EmployeeConstants.EMPLOYEE_LIST, searchEmployeeList);
-			request.setAttribute(EmployeeConstants.FROM_SEARCH, "Yes");
-			
-		}
-		else {
-			
+			/*
+			 * 5. Using DynamicQuery searching the employees data entered that falls betweent he fromDate and toDate
+			 *	  provided by user	
+			 */
+			searchEmployeeList = employeeHelper.dateSearchEmployeeList(fromDate, toDate, searchEmployeeList);
+
+		} else {
+
 			// 1. If searching is done using textbox provided then passing the searchbox data
 			// 2. Returning employeeObjectList using getEmployeeByAllEntity made in EmployeeFinderImpl that matches the search
-			List<Object[]> searchList = employeeLocalService.getEmployeesByAllEntity(searchText);
-					
-			// 3. Validating if searchList is empty or not :: If not null then return employeeList
-			if(Validator.isNotNull(searchList)) {
-				
-				// 4. Creating ArrayList of customEmployeeBean to stored the searchList and retrieve the data element by element
-				ArrayList<ViewCustomEmployeeBean> searchEmployeeList = new ArrayList<ViewCustomEmployeeBean>();
-				
-				// 5. Traversing to all the records available in the Employee entity
-				for (Object[] obj : searchList) {
-					
-					// 6. Getting values from database and casting them
-					long employeeId = GetterUtil.getLong(obj[0]);
-					String employeeName = String.valueOf(obj[1]);
-					String employeeMobile = String.valueOf(obj[2]);
-					String employeeEmail = String.valueOf(obj[3]);
-					
-					String branchName = String.valueOf(obj[4]);
-					String departmentName = String.valueOf(obj[5]);
-					String designationName = String.valueOf(obj[6]);
-					
-					
-					// 7. Calling setCustomBean function for setting values in ViewEmployeeCustomBean
-					ViewCustomEmployeeBean viewCustomEmployeeBean = CommonEmployeeMethods.setNewCustomBean(employeeId, 
-							employeeName, employeeMobile, employeeEmail, branchName, departmentName, designationName);
-							
-					// 9. Adding the customBean object in the ArrayList
-					searchEmployeeList.add(viewCustomEmployeeBean);
-					
-				}
-				// 10. Setting the employeeList in the request 
-				request.setAttribute(EmployeeConstants.EMPLOYEE_LIST, searchEmployeeList);
-				
-				// 11. Setting the fromSearch flag to true 
-				request.setAttribute(EmployeeConstants.FROM_SEARCH, "yes");
-			}
+			
+			searchEmployeeList = employeeHelper.searchTextEmployeeList(searchText, searchEmployeeList);
+			
 		}
-	
-		// 12. Copying the request parameters for sending the current request in the renderRequest
+		
+		request.setAttribute(EmployeeConstants.EMPLOYEE_LIST, searchEmployeeList);
+		request.setAttribute(EmployeeConstants.FROM_SEARCH, "Yes");
+		request.setAttribute(EmployeeConstants.SEARCH_TEXT, searchText);
+		request.setAttribute(EmployeeConstants.FROM_DATE, fromDate);
+		request.setAttribute(EmployeeConstants.TO_DATE, toDate);
+		
+		// 8. Copying the request parameters for sending the current request in the renderRequest
 		PortalUtil.copyRequestParameters(request, response);
 	}
 
-	
+
 }

@@ -1,11 +1,12 @@
 package com.aixtor.training.employee.portlet.action;
 
+import com.aixtor.training.employee.api.EmployeeApi;
+
 /**
  * @author Urva Patel
  */
 
 import com.aixtor.training.employee.bean.ViewCustomBranchBean;
-import com.aixtor.training.employee.common.CommonEmployeeMethods;
 import com.aixtor.training.employee.constants.EmployeeConstants;
 import com.aixtor.training.model.Branch;
 import com.aixtor.training.model.City;
@@ -33,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=BranchPortlet",
+	    	"javax.portlet.name="+EmployeeConstants.BRANCH_PORTLET,
 	        "mvc.command.name=/",
 	    }, 
 	    service = MVCRenderCommand.class
@@ -43,19 +44,22 @@ public class ViewBranchMVCRenderCommand implements MVCRenderCommand {
 	private static Log log=LogFactoryUtil.getLog(ViewBranchMVCRenderCommand.class);
 
 	@Reference
-	BranchLocalService branchLocalService;
+	private BranchLocalService branchLocalService;
 	
 	@Reference
-	StateLocalService stateLocalService;
+	private StateLocalService stateLocalService;
 	
 	@Reference
-	CountryLocalService countryLocalService;
+	private CountryLocalService countryLocalService;
 	
 	@Reference
-	CityLocalService cityLocalService;
+	private CityLocalService cityLocalService;
 
 	@Reference
-	CounterLocalService count;
+	private CounterLocalService count;
+	
+	@Reference
+	private EmployeeApi employeeApi;
 	
 	/**
 	 * @return branchList on page load and update record 
@@ -104,9 +108,9 @@ public class ViewBranchMVCRenderCommand implements MVCRenderCommand {
 					String state = stateName.getStateName();
 					String city = cityName.getCityName();
 					
-					ViewCustomBranchBean selectedBranch = CommonEmployeeMethods.setBranchBean(branchId, 
-							branchName, country, state, city, address1, address2, pincode);
-							
+					ViewCustomBranchBean selectedBranch = employeeApi.setBranchBean(branchId, branchName, country, state,
+							city, address1, address2, pincode, countryId, stateId, cityId);
+					log.info("ViewEmployeeMVCRender >>> Branch" +selectedBranch+ "\n");
 					// 9. Setting the renderRequest value as selectedBranch record details
 					renderRequest.setAttribute(EmployeeConstants.SELECTED_BRANCH, selectedBranch);
 					

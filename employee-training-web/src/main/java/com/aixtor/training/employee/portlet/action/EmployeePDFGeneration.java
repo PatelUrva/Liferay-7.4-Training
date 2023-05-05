@@ -1,5 +1,8 @@
 package com.aixtor.training.employee.portlet.action;
 
+import com.aixtor.training.employee.constants.EmployeeConstants;
+import com.aixtor.training.employee.helper.EmployeeHelper;
+
 /**
  * @author Urva Patel
  */
@@ -11,8 +14,6 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -32,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=EmployeePortlet",
+	    	"javax.portlet.name="+EmployeeConstants.EMPLOYEE_PORTLET,
 	        "mvc.command.name=/download/employeePDF",
 	    }, 
 	    service = MVCResourceCommand.class
@@ -40,7 +41,8 @@ import org.osgi.service.component.annotations.Reference;
 
 public class EmployeePDFGeneration extends BaseMVCResourceCommand {
 	
-	private static Log log = LogFactoryUtil.getLog(EmployeePDFGeneration.class);
+	@Reference
+	EmployeeHelper employeeHelper;
 	
 	@Reference
 	EmployeeLocalService employeeLocalService;
@@ -111,41 +113,44 @@ public class EmployeePDFGeneration extends BaseMVCResourceCommand {
  			
  			// 6. Adding cell from the employeeList using loop to traverse each record
  			pdfPTable.addCell(employeeId);
- 	        pdfPTable.addCell(employeeName);
- 	        pdfPTable.addCell(employeeMobile);
- 	        pdfPTable.addCell(employeeEmail);
- 	        pdfPTable.addCell(branchId);
- 	        pdfPTable.addCell(departmentId);
- 	        pdfPTable.addCell(designationId);
+ 			pdfPTable.addCell(employeeName);
+ 			pdfPTable.addCell(employeeMobile);
+ 			pdfPTable.addCell(employeeEmail);
+ 			pdfPTable.addCell(branchId);
+ 			pdfPTable.addCell(departmentId);
+ 			pdfPTable.addCell(designationId);
+ 			
  	        pdfPTable.setWidths(new int[]{30, 30, 30, 30, 30, 30, 30});
  		}
-		
- 		// 9. Adding table in pdf
+		String fileName = "EmployeeReport.pdf";
+		// 1. Adding table in pdf
 		document.add(pdfPTable);
 		
-		// 10. Closing document
+		// 2. Closing document
 		document.close();
 		
-		// 11. Setting the HttpHeaders
-		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=EmployeeReport.pdf");
+		// 3. Setting the HttpHeaders
+		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+fileName);
 		resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL,"max-age=3600, must-revalidate");
 
-        // 12. Setting the content type
+        // 4. Setting the content type
         resourceResponse.setContentType("application/pdf");
         
-        // 13. Setting the contentlength
+        // 5. Setting the contentlength
         resourceResponse.setContentLength(baos.size());
         
-        // 14. Write ByteArrayOutputStream to the ServletOutputStream
+        // 6. Write ByteArrayOutputStream to the ServletOutputStream
         OutputStream os = resourceResponse.getPortletOutputStream();
         baos.writeTo(os);
         os.flush();
         
-        // 15. Send file using PortletResponseUtil
-		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,"Employee.pdf", baos.toByteArray(), ContentTypes.APPLICATION_PDF);
-	
-        log.info("EmployeePDFGeneration >>> doServeResource >>> Pdf Created");
-	    
-	    
+        // 7. Send file using PortletResponseUtil
+		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,fileName, baos.toByteArray(), ContentTypes.APPLICATION_PDF);
+		
 	}
+
+
+	
+
+
 }

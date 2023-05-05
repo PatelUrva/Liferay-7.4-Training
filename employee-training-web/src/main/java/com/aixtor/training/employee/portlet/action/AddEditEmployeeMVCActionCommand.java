@@ -3,10 +3,9 @@ package com.aixtor.training.employee.portlet.action;
 /**
  * @author Urva Patel
  */
+
+import com.aixtor.training.employee.api.EmployeeApi;
 import com.aixtor.training.employee.constants.EmployeeConstants;
-import com.aixtor.training.model.Employee;
-import com.aixtor.training.service.EmployeeLocalService;
-import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -23,7 +22,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=EmployeePortlet",
+	    	"javax.portlet.name="+EmployeeConstants.EMPLOYEE_PORTLET,
 	        "mvc.command.name=addEditEmployee",
 	        "javax.portlet.display-name=Employee Display Form",
 	    }, 
@@ -34,10 +33,7 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 	private static Log log = LogFactoryUtil.getLog(AddEditEmployeeMVCActionCommand.class);
 
 	@Reference
-	EmployeeLocalService employeeLocalService;
-	
-	@Reference
-	CounterLocalService counterLocalService;
+	private EmployeeApi employeeAPI;
 	
 	
 	@Override
@@ -57,45 +53,22 @@ public class AddEditEmployeeMVCActionCommand extends BaseMVCActionCommand{
 		long departmentId = ParamUtil.getLong(actionRequest,EmployeeConstants.DEPARTMENT_ID);
 		long designationId = ParamUtil.getLong(actionRequest,EmployeeConstants.DESIGNATION_ID);
 		
-		log.info("Branch Id "+branchId);
-	
-		
-		
-		Employee employee = null;
-		
 		/*
 		 * 4. Validating if the employeeId is Empty or Not :: If the employeeId is not null the employeeData will be updated 
 		 *		based on employeeId
 		*/
 		try {
 			if (employeeId > 0) {
-				
 				// 4. If the employeeId is not empty then the data will be updated 
-				employee = employeeLocalService.getEmployee(employeeId);
-				employee.setEmployeeName(employeeName);
-				employee.setEmployeeMobile(employeeMobile);
-				employee.setEmployeeEmail(employeeEmail);
-				employee.setBranchId(branchId);
-				employee.setDepartmentId(departmentId);
-				employee.setDesignationId(designationId);
-				
+				employeeAPI.updateEmployeeDetails(employeeId, employeeName, employeeMobile, employeeEmail,
+						branchId, departmentId, designationId);
 			} else {
 				
 				// 5. If the employeeId is empty then the data will be added as the new record entered
-				employee = employeeLocalService.createEmployee(counterLocalService.increment());
-				employee.setEmployeeName(employeeName);
-				employee.setEmployeeMobile(employeeMobile);
-				employee.setEmployeeEmail(employeeEmail);
-				employee.setBranchId(branchId);
-				employee.setDepartmentId(departmentId);
-				employee.setDesignationId(designationId);	
+				employeeAPI.addEmployeeDetails(employeeName, employeeMobile, employeeEmail, branchId, departmentId,
+						designationId);
 			}
-			
-			/*
-			* 6. Using the updateEmployee method of employeeLocalService as it performs both adding and updating transactions in 
-				database
-			 */
-			employeeLocalService.updateEmployee(employee);
+	
 			
 		} catch (Exception e) {
 			log.error("AddEditEmployeeMVCAction >>> doProcessAction >> Exception Occured:: " +e);

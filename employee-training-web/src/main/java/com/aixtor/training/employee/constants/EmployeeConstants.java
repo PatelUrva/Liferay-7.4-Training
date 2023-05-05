@@ -4,6 +4,20 @@ package com.aixtor.training.employee.constants;
  * @author Urva Patel
  */
 public class EmployeeConstants {
+	
+	private EmployeeConstants() {
+	}
+	
+	public static final String[] EMPLOYEE_HEADER = {
+		    "Employee ID",
+		    "Employee Name",
+		    "Mobile Number",
+		    "Email",
+		    "Branch",
+		    "Department",
+		    "Designation"
+	};
+
 
 	public static final String BRANCH_NAME = "branchName";
 	public static final String COUNTRY = "country";
@@ -51,6 +65,7 @@ public class EmployeeConstants {
 	
 	public static final String FROM_DATE = "fromDate";
 	public static final String TO_DATE = "toDate";
+	public static final String DATE_FORMAT = "dateFormat";
 	
 	public static final String EMPLOYEE_NAME = "employeeName";
 	public static final String EMPLOYEE_EMAIL = "employeeEmail";
@@ -79,4 +94,12 @@ public class EmployeeConstants {
 	public static final String PORTLET_SEARCH_URL = "portletSearchURL";
 	public static final String TOTAL_SIZE = "totalSize";
 	public static final String EMPLOYEE_CONTAINER = "employeeContainer";
+	
+	public static final String EMPLOYEE_PORTLET = "EmployeePortlet";
+	public static final String BRANCH_PORTLET = "BranchPortlet";
+	public static final String DEPARTMENT_PORTLET = "DepartmentPortlet";
+	public static final String DESIGNATION_PORTLET = "DesignationPortlet";
+	public static final String STATE_PORTLET = "StatePortlet";
+	public static final String CITY_PORTLET = "CityPortlet";
+	
 }

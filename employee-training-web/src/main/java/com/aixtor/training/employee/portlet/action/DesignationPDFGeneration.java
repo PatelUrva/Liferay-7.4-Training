@@ -1,5 +1,11 @@
 package com.aixtor.training.employee.portlet.action;
 
+/**
+ * @author Urva Patel
+ */
+
+import com.aixtor.training.employee.constants.EmployeeConstants;
+import com.aixtor.training.employee.helper.EmployeeHelper;
 import com.aixtor.training.model.Designation;
 import com.aixtor.training.service.DesignationLocalService;
 import com.itextpdf.text.Document;
@@ -26,13 +32,16 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=DesignationPortlet",
+	    	"javax.portlet.name="+EmployeeConstants.DESIGNATION_PORTLET,
 	        "mvc.command.name=/download/designationPDF",
 	    }, 
 	    service = MVCResourceCommand.class
 )
 
 public class DesignationPDFGeneration extends BaseMVCResourceCommand {
+	
+	@Reference
+	EmployeeHelper employeeHelper;
 	
 	@Reference
 	DesignationLocalService designationLocalService;
@@ -86,29 +95,30 @@ public class DesignationPDFGeneration extends BaseMVCResourceCommand {
  	        pdfPTable.setWidths(new int[]{30, 30});
  		}
 		
- 		// 9. Adding table in pdf
+ 		String fileName = "DesignationReport.pdf";
+ 		
+ 		// 1. Adding table in pdf
 		document.add(pdfPTable);
 		
-		// 10. Closing document
+		// 2. Closing document
 		document.close();
 		
-		// 11. Setting the HttpHeaders
-		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=DesignationReport.pdf");
+		// 3. Setting the HttpHeaders
+		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+fileName);
 		resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL,"max-age=3600, must-revalidate");
 
-        // 12. Setting the content type
+        // 4. Setting the content type
         resourceResponse.setContentType("application/pdf");
         
-        // 13. Setting the contentlength
+        // 5. Setting the contentlength
         resourceResponse.setContentLength(baos.size());
         
-        // 14. Write ByteArrayOutputStream to the ServletOutputStream
+        // 6. Write ByteArrayOutputStream to the ServletOutputStream
         OutputStream os = resourceResponse.getPortletOutputStream();
         baos.writeTo(os);
         os.flush();
         
-        // 15. Send file using PortletResponseUtil
-		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,"Designation.pdf", baos.toByteArray(), ContentTypes.APPLICATION_PDF);
-	
+        // 7. Send file using PortletResponseUtil
+		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,fileName, baos.toByteArray(), ContentTypes.APPLICATION_PDF);
 	}
 }

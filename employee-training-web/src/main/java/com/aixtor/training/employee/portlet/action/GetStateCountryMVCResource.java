@@ -4,14 +4,13 @@ package com.aixtor.training.employee.portlet.action;
  * @author Urva Patel
  */
 import com.aixtor.training.employee.constants.EmployeeConstants;
+import com.aixtor.training.employee.helper.EmployeeHelper;
 import com.aixtor.training.model.State;
 import com.aixtor.training.service.StateLocalService;
 import com.liferay.adaptive.media.exception.AMRuntimeException.IOException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -28,7 +27,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=BranchPortlet",
+	    	"javax.portlet.name="+EmployeeConstants.BRANCH_PORTLET,
 	        "mvc.command.name=/get/country-states",
 	    }, 
 	    service = MVCResourceCommand.class
@@ -38,7 +37,8 @@ public class GetStateCountryMVCResource extends BaseMVCResourceCommand {
 	@Reference
 	StateLocalService stateLocalService;
 	
-	private static Log log = LogFactoryUtil.getLog(GetStateCountryMVCResource.class);
+	@Reference
+	EmployeeHelper employeeHelper;
 	
 	/**
 	 * @return stateList based on countryId selected
@@ -69,22 +69,20 @@ public class GetStateCountryMVCResource extends BaseMVCResourceCommand {
 		try {
 			
 			// 4. Converting the jsonArray data to jsonToString with status
-			writer = resourceResponse.getWriter();
+			
 			responseObj.put(EmployeeConstants.DATA, responseArray.toJSONString());
 			responseObj.put(EmployeeConstants.STATUS, EmployeeConstants.SUCCESS);
-			log.info("GetStateCountryMVCResource >>> States from country retrieved successfully");
 			
 		} catch (IOException e) {
 			
-			log.error("GetStateCountryMVCResource >>> Error occured while fetching states from country :: " +e);
 			responseObj.put(EmployeeConstants.STATUS,EmployeeConstants.ERROR);
 			responseObj.put(EmployeeConstants.MESSAGE, "Error occured while fetching states from country.");
 			
 		} finally {
-			writer.write(responseObj.toString());
+			writer = resourceResponse.getWriter();
 			writer.close();
 		}
-		
 	}
 
+	
 }

@@ -1,5 +1,8 @@
 package com.aixtor.training.employee.portlet.action;
 
+import com.aixtor.training.employee.constants.EmployeeConstants;
+import com.aixtor.training.employee.helper.EmployeeHelper;
+
 /**
  * @author Urva Patel
  */
@@ -30,13 +33,16 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate=true,
 	    property = { 
-	    	"javax.portlet.name=DepartmentPortlet",
+	    	"javax.portlet.name="+EmployeeConstants.DEPARTMENT_PORTLET,
 	        "mvc.command.name=/download/departmentPDF",
 	    }, 
 	    service = MVCResourceCommand.class
 )
 
 public class DepartmentPDFGeneration extends BaseMVCResourceCommand {
+	
+	@Reference
+	EmployeeHelper employeeHelper;
 	
 	@Reference
 	DepartmentLocalService departmentLocalService;
@@ -93,30 +99,30 @@ public class DepartmentPDFGeneration extends BaseMVCResourceCommand {
  	        pdfPTable.addCell(departmentHead);
  	        pdfPTable.setWidths(new int[]{30, 30, 30});
  		}
+		String fileName = "DepartmentReport.pdf";
 		
- 		// 9. Adding table in pdf
+		// 1. Adding table in pdf
 		document.add(pdfPTable);
 		
-		// 10. Closing document
+		// 2. Closing document
 		document.close();
 		
-		// 11. Setting the HttpHeaders
-		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=DepartmentReport.pdf");
+		// 3. Setting the HttpHeaders
+		resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+fileName);
 		resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL,"max-age=3600, must-revalidate");
 
-        // 12. Setting the content type
+        // 4. Setting the content type
         resourceResponse.setContentType("application/pdf");
         
-        // 13. Setting the contentlength
+        // 5. Setting the contentlength
         resourceResponse.setContentLength(baos.size());
         
-        // 14. Write ByteArrayOutputStream to the ServletOutputStream
+        // 6. Write ByteArrayOutputStream to the ServletOutputStream
         OutputStream os = resourceResponse.getPortletOutputStream();
         baos.writeTo(os);
         os.flush();
         
-        // 15. Send file using PortletResponseUtil
-		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,"Department.pdf", baos.toByteArray(), ContentTypes.APPLICATION_PDF);
-	
+        // 7. Send file using PortletResponseUtil
+		PortletResponseUtil.sendFile(resourceRequest, resourceResponse,fileName, baos.toByteArray(), ContentTypes.APPLICATION_PDF);
 	}
 }

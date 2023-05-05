@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.requires-namespaced-parameters=false",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/departmentView.jsp",
-		"javax.portlet.name=StatePortlet",
+		"javax.portlet.name="+EmployeeConstants.STATE_PORTLET,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},
@@ -75,7 +75,6 @@ public class StatePortlet extends MVCPortlet {
 		List<Country> countryList = countryLocalService.getCountries(-1, -1);
 		renderRequest.setAttribute(EmployeeConstants.COUNTRY_LIST, countryList);
 		
-		//log.info(stateList);
 		super.render(renderRequest, renderResponse);
 	}
 	
