@@ -1,0 +1,4 @@
+com/aixtor/training/user/customfield/constants/UserHobbyPortletKeys.java
+ com.aixtor.training.user.customfield.constants.UserHobbyPortletKeys
+com/aixtor/training/user/customfield/portlet/UserHobbyPortlet.java
+ com.aixtor.training.user.customfield.portlet.UserHobbyPortlet

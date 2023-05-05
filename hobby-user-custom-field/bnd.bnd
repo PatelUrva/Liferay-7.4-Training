@@ -1,0 +1,4 @@
+Bundle-Name: hobby-user-custom-field
+Bundle-SymbolicName: com.aixtor.training.user.customfield
+Bundle-Version: 1.0.0
+Export-Package: com.aixtor.training.user.customfield.constants
