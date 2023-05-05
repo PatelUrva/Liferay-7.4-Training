@@ -36,8 +36,12 @@
 
 		<!-- Finder methods -->
 
-		<finder name="departmentName" return-type="Collection">
+		<finder name="DepartmentName" return-type="Department">
 			<finder-column name="departmentName" />
+		</finder>
+		
+		<finder name="DepartmentId" return-type="Collection">
+			<finder-column name="departmentId" />
 		</finder>
 
 		<!-- References -->
@@ -76,8 +80,12 @@
 
 		<!-- Finder methods -->
 
-		<finder name="designationName" return-type="Collection">
+		<finder name="DesignationName" return-type="Collection">
 			<finder-column name="designationName" />
+		</finder>
+		
+		<finder name="DesignationId" return-type="Collection">
+			<finder-column name="designationId" />
 		</finder>
 
 		<!-- References -->
@@ -123,8 +131,8 @@
 
 		<!-- Finder methods -->
 
-		<finder name="branchName" return-type="Collection">
-			<finder-column name="branchName" />
+		<finder name="branchId" return-type="Branch">
+			<finder-column name="branchId" />
 		</finder>
 		
 		<finder name="countryId" return-type="Collection">
@@ -137,6 +145,10 @@
 		
 		<finder name="cityId" return-type="Collection">
 			<finder-column name="cityId" />
+		</finder>
+		
+		<finder name="branchName" return-type="Branch">
+			<finder-column name="branchName" />
 		</finder>
 
 		<!-- References -->
@@ -183,6 +195,22 @@
 		<finder name="employeeName" return-type="Collection">
 			<finder-column name="employeeName" />
 		</finder>
+		
+		<finder name="employeeId" return-type="Collection">
+			<finder-column name="employeeId" />
+		</finder>
+		
+		<finder name="branchId" return-type="Collection">
+			<finder-column name="branchId" />
+		</finder>
+		
+		<finder name="departmentId" return-type="Collection">
+			<finder-column name="departmentId" />
+		</finder>
+		
+		<finder name="designationId" return-type="Collection">
+			<finder-column name="designationId" />
+		</finder>
 
 		<!-- References -->
 
@@ -228,6 +256,10 @@
 		<finder name="countryId" return-type="Collection">
 			<finder-column name="countryId" />
 		</finder>
+		
+		<finder name="stateId" return-type="Collection">
+			<finder-column name="stateId" />
+		</finder>
 
 		<!-- References -->
 
@@ -268,6 +300,10 @@
 
 		<finder name="cityName" return-type="Collection">
 			<finder-column name="cityName" />
+		</finder>
+		
+		<finder name="cityId" return-type="Collection">
+			<finder-column name="cityId" />
 		</finder>
 		
 		<finder name="stateId" return-type="Collection">

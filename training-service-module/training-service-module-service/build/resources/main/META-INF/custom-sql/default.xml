@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <custom-sql>
-     <sql id="getDesignationNameByEmployee">
-         <![CDATA[
-         	select e.employeeId, e.employeeName, d.designationName from foo_designation d, 
-         		foo_employee e where d.designationId = e.designationId
-         ]]>
- 	</sql>
- 	
- 	<sql id="getEmployeeByName">
-         <![CDATA[
-         	select employeeId,employeeName,employeeMobile,employeeEmail,branchId,departmentId,designationId from foo_employee where employeeName Like ?
-         ]]>
- 	</sql>
- 	
- 	<sql id="getEmployeeByAllEntity">
-         <![CDATA[
-         	(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e, foo_branch b 
-				where b.branchId = e.branchId AND b.branchName LIKE ? ) UNION
-			(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e, foo_department d
-				where e.departmentId = d.departmentId AND d.departmentName LIKE ? ) UNION
-			(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e, foo_designation de
-				where e.designationId = de.designationId AND de.designationName LIKE ? ) UNION 
-			(select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,e.branchId,e.departmentId,e.designationId from foo_employee e where e.employeeName
-				LIKE ? )
-         ]]>
- 	</sql>
- 	
+   <sql id="getEmployeesByAllEntity"> 
+      <![CDATA[ 
+        select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,b.branchName,d.departmentName,de.designationName from foo_employee as e
+		JOIN foo_branch as b ON b.branchId = e.branchId
+		JOIN foo_department as d ON d.departmentId = e.departmentId 
+		JOIN foo_designation as de ON de.designationId = e.designationId
+		where b.branchName LIKE ? or d.departmentName LIKE ? or de.designationName LIKE ?
+		or e.employeeName LIKE ?
+	  ]]>
+   </sql>
+   
+   <sql id="getAllEmployees"> 
+      <![CDATA[ 
+        select e.employeeId,e.employeeName,e.employeeMobile,e.employeeEmail,b.branchName,d.departmentName,de.designationName from foo_employee as e
+		INNER JOIN foo_branch as b ON b.branchId = e.branchId
+		INNER JOIN foo_department as d ON d.departmentId = e.departmentId 
+		INNER JOIN foo_designation as de ON de.designationId = e.designationId
+	  ]]>
+   </sql>
+   
+   <sql id="getAllBranches"> 
+      <![CDATA[ 
+        select b.branchId,b.branchName,c.Name,s.stateName,ci.cityName,b.address1,b.address2,b.pincode from foo_branch as b
+		JOIN country as c ON b.countryId = c.countryId
+		JOIN foo_state as s ON b.stateId = s.stateId
+		JOIN foo_city as ci ON b.cityId = ci.cityId
+		where b.countryId = c.countryId AND
+		b.stateId = s.stateId AND b.cityId = ci.cityId
+	  ]]>
+   </sql>
+   
+   
 </custom-sql>
