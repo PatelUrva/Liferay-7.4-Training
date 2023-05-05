@@ -244,18 +244,48 @@ public class EmployeeLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.aixtor.training.model.Employee> findByBranchId(
+		long branchId) {
+
+		return _employeeLocalService.findByBranchId(branchId);
+	}
+
+	@Override
+	public java.util.List<com.aixtor.training.model.Employee>
+		findByDepartmentId(long departmentId) {
+
+		return _employeeLocalService.findByDepartmentId(departmentId);
+	}
+
+	@Override
+	public java.util.List<com.aixtor.training.model.Employee>
+		findByDesignationId(long designationId) {
+
+		return _employeeLocalService.findByDesignationId(designationId);
+	}
+
+	@Override
+	public java.util.List<com.aixtor.training.model.Employee> findByEmployeeId(
+		long employeeId) {
+
+		return _employeeLocalService.findByEmployeeId(employeeId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return _employeeLocalService.getActionableDynamicQuery();
 	}
 
-	/**
-	 * @return designation name by employee name using employeeFinderImpl
-	 */
 	@Override
-	public java.util.List<Object[]> getDesignationNameByEmployee() {
-		return _employeeLocalService.getDesignationNameByEmployee();
+	public java.util.List<Object[]> getAllBranches() {
+		return _employeeLocalService.getAllBranches();
+	}
+
+	@Override
+	public java.util.List<Object[]> getAllEmployees() {
+		return _employeeLocalService.getAllEmployees();
 	}
 
 	/**
@@ -270,32 +300,6 @@ public class EmployeeLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _employeeLocalService.getEmployee(employeeId);
-	}
-
-	/**
-	 * @return employee list by employeeName, designationName, departmentName, branchName using employeeFinderImpl
-	 */
-	@Override
-	public java.util.List<Object[]> getEmployeeByAllEntity(String searchData) {
-		return _employeeLocalService.getEmployeeByAllEntity(searchData);
-	}
-
-	/**
-	 * @return employee list by designation name using employeeFinderImpl
-	 */
-	@Override
-	public java.util.List<com.aixtor.training.model.Employee>
-		getEmployeeByDesignation(String designationName) {
-
-		return _employeeLocalService.getEmployeeByDesignation(designationName);
-	}
-
-	/**
-	 * @return employee list by employee name using employeeFinderImpl
-	 */
-	@Override
-	public java.util.List<Object[]> getEmployeeByName(String employeeName) {
-		return _employeeLocalService.getEmployeeByName(employeeName);
 	}
 
 	/**
@@ -330,6 +334,11 @@ public class EmployeeLocalServiceWrapper
 		int start, int end) {
 
 		return _employeeLocalService.getEmployees(start, end);
+	}
+
+	@Override
+	public java.util.List<Object[]> getEmployeesByAllEntity(String searchData) {
+		return _employeeLocalService.getEmployeesByAllEntity(searchData);
 	}
 
 	/**

@@ -214,6 +214,11 @@ public interface DesignationLocalService
 	public Designation fetchDesignationByUuidAndGroupId(
 		String uuid, long groupId);
 
+	public Designation findByDesignationId(long designationId)
+		throws SystemException;
+
+	public Designation findByDesignationName(String designationName);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 

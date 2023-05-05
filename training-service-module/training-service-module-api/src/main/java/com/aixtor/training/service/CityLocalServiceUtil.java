@@ -220,6 +220,13 @@ public class CityLocalServiceUtil {
 		return getService().fetchCityByUuidAndGroupId(uuid, groupId);
 	}
 
+	public static City findByCityId(long cityId)
+		throws com.aixtor.training.exception.NoSuchCityException,
+			   SystemException {
+
+		return getService().findByCityId(cityId);
+	}
+
 	public static List<City> findByStateId(long stateId)
 		throws SystemException {
 

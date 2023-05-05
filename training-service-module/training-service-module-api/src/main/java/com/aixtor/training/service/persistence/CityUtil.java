@@ -691,6 +691,150 @@ public class CityUtil {
 	}
 
 	/**
+	 * Returns all the cities where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @return the matching cities
+	 */
+	public static List<City> findBycityId(long cityId) {
+		return getPersistence().findBycityId(cityId);
+	}
+
+	/**
+	 * Returns a range of all the cities where cityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param cityId the city ID
+	 * @param start the lower bound of the range of cities
+	 * @param end the upper bound of the range of cities (not inclusive)
+	 * @return the range of matching cities
+	 */
+	public static List<City> findBycityId(long cityId, int start, int end) {
+		return getPersistence().findBycityId(cityId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the cities where cityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param cityId the city ID
+	 * @param start the lower bound of the range of cities
+	 * @param end the upper bound of the range of cities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching cities
+	 */
+	public static List<City> findBycityId(
+		long cityId, int start, int end,
+		OrderByComparator<City> orderByComparator) {
+
+		return getPersistence().findBycityId(
+			cityId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the cities where cityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param cityId the city ID
+	 * @param start the lower bound of the range of cities
+	 * @param end the upper bound of the range of cities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching cities
+	 */
+	public static List<City> findBycityId(
+		long cityId, int start, int end,
+		OrderByComparator<City> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findBycityId(
+			cityId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching city
+	 * @throws NoSuchCityException if a matching city could not be found
+	 */
+	public static City findBycityId_First(
+			long cityId, OrderByComparator<City> orderByComparator)
+		throws com.aixtor.training.exception.NoSuchCityException {
+
+		return getPersistence().findBycityId_First(cityId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching city, or <code>null</code> if a matching city could not be found
+	 */
+	public static City fetchBycityId_First(
+		long cityId, OrderByComparator<City> orderByComparator) {
+
+		return getPersistence().fetchBycityId_First(cityId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching city
+	 * @throws NoSuchCityException if a matching city could not be found
+	 */
+	public static City findBycityId_Last(
+			long cityId, OrderByComparator<City> orderByComparator)
+		throws com.aixtor.training.exception.NoSuchCityException {
+
+		return getPersistence().findBycityId_Last(cityId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching city, or <code>null</code> if a matching city could not be found
+	 */
+	public static City fetchBycityId_Last(
+		long cityId, OrderByComparator<City> orderByComparator) {
+
+		return getPersistence().fetchBycityId_Last(cityId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the cities where cityId = &#63; from the database.
+	 *
+	 * @param cityId the city ID
+	 */
+	public static void removeBycityId(long cityId) {
+		getPersistence().removeBycityId(cityId);
+	}
+
+	/**
+	 * Returns the number of cities where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @return the number of matching cities
+	 */
+	public static int countBycityId(long cityId) {
+		return getPersistence().countBycityId(cityId);
+	}
+
+	/**
 	 * Returns all the cities where stateId = &#63;.
 	 *
 	 * @param stateId the state ID

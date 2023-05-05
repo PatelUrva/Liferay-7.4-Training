@@ -537,10 +537,10 @@ public class DesignationUtil {
 	 * @param designationName the designation name
 	 * @return the matching designations
 	 */
-	public static List<Designation> findBydesignationName(
+	public static List<Designation> findByDesignationName(
 		String designationName) {
 
-		return getPersistence().findBydesignationName(designationName);
+		return getPersistence().findByDesignationName(designationName);
 	}
 
 	/**
@@ -555,10 +555,10 @@ public class DesignationUtil {
 	 * @param end the upper bound of the range of designations (not inclusive)
 	 * @return the range of matching designations
 	 */
-	public static List<Designation> findBydesignationName(
+	public static List<Designation> findByDesignationName(
 		String designationName, int start, int end) {
 
-		return getPersistence().findBydesignationName(
+		return getPersistence().findByDesignationName(
 			designationName, start, end);
 	}
 
@@ -575,11 +575,11 @@ public class DesignationUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching designations
 	 */
-	public static List<Designation> findBydesignationName(
+	public static List<Designation> findByDesignationName(
 		String designationName, int start, int end,
 		OrderByComparator<Designation> orderByComparator) {
 
-		return getPersistence().findBydesignationName(
+		return getPersistence().findByDesignationName(
 			designationName, start, end, orderByComparator);
 	}
 
@@ -597,12 +597,12 @@ public class DesignationUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching designations
 	 */
-	public static List<Designation> findBydesignationName(
+	public static List<Designation> findByDesignationName(
 		String designationName, int start, int end,
 		OrderByComparator<Designation> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findBydesignationName(
+		return getPersistence().findByDesignationName(
 			designationName, start, end, orderByComparator, useFinderCache);
 	}
 
@@ -614,12 +614,12 @@ public class DesignationUtil {
 	 * @return the first matching designation
 	 * @throws NoSuchDesignationException if a matching designation could not be found
 	 */
-	public static Designation findBydesignationName_First(
+	public static Designation findByDesignationName_First(
 			String designationName,
 			OrderByComparator<Designation> orderByComparator)
 		throws com.aixtor.training.exception.NoSuchDesignationException {
 
-		return getPersistence().findBydesignationName_First(
+		return getPersistence().findByDesignationName_First(
 			designationName, orderByComparator);
 	}
 
@@ -630,11 +630,11 @@ public class DesignationUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching designation, or <code>null</code> if a matching designation could not be found
 	 */
-	public static Designation fetchBydesignationName_First(
+	public static Designation fetchByDesignationName_First(
 		String designationName,
 		OrderByComparator<Designation> orderByComparator) {
 
-		return getPersistence().fetchBydesignationName_First(
+		return getPersistence().fetchByDesignationName_First(
 			designationName, orderByComparator);
 	}
 
@@ -646,12 +646,12 @@ public class DesignationUtil {
 	 * @return the last matching designation
 	 * @throws NoSuchDesignationException if a matching designation could not be found
 	 */
-	public static Designation findBydesignationName_Last(
+	public static Designation findByDesignationName_Last(
 			String designationName,
 			OrderByComparator<Designation> orderByComparator)
 		throws com.aixtor.training.exception.NoSuchDesignationException {
 
-		return getPersistence().findBydesignationName_Last(
+		return getPersistence().findByDesignationName_Last(
 			designationName, orderByComparator);
 	}
 
@@ -662,11 +662,11 @@ public class DesignationUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching designation, or <code>null</code> if a matching designation could not be found
 	 */
-	public static Designation fetchBydesignationName_Last(
+	public static Designation fetchByDesignationName_Last(
 		String designationName,
 		OrderByComparator<Designation> orderByComparator) {
 
-		return getPersistence().fetchBydesignationName_Last(
+		return getPersistence().fetchByDesignationName_Last(
 			designationName, orderByComparator);
 	}
 
@@ -679,12 +679,12 @@ public class DesignationUtil {
 	 * @return the previous, current, and next designation
 	 * @throws NoSuchDesignationException if a designation with the primary key could not be found
 	 */
-	public static Designation[] findBydesignationName_PrevAndNext(
+	public static Designation[] findByDesignationName_PrevAndNext(
 			long designationId, String designationName,
 			OrderByComparator<Designation> orderByComparator)
 		throws com.aixtor.training.exception.NoSuchDesignationException {
 
-		return getPersistence().findBydesignationName_PrevAndNext(
+		return getPersistence().findByDesignationName_PrevAndNext(
 			designationId, designationName, orderByComparator);
 	}
 
@@ -693,8 +693,8 @@ public class DesignationUtil {
 	 *
 	 * @param designationName the designation name
 	 */
-	public static void removeBydesignationName(String designationName) {
-		getPersistence().removeBydesignationName(designationName);
+	public static void removeByDesignationName(String designationName) {
+		getPersistence().removeByDesignationName(designationName);
 	}
 
 	/**
@@ -703,8 +703,161 @@ public class DesignationUtil {
 	 * @param designationName the designation name
 	 * @return the number of matching designations
 	 */
-	public static int countBydesignationName(String designationName) {
-		return getPersistence().countBydesignationName(designationName);
+	public static int countByDesignationName(String designationName) {
+		return getPersistence().countByDesignationName(designationName);
+	}
+
+	/**
+	 * Returns all the designations where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @return the matching designations
+	 */
+	public static List<Designation> findByDesignationId(long designationId) {
+		return getPersistence().findByDesignationId(designationId);
+	}
+
+	/**
+	 * Returns a range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @return the range of matching designations
+	 */
+	public static List<Designation> findByDesignationId(
+		long designationId, int start, int end) {
+
+		return getPersistence().findByDesignationId(designationId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching designations
+	 */
+	public static List<Designation> findByDesignationId(
+		long designationId, int start, int end,
+		OrderByComparator<Designation> orderByComparator) {
+
+		return getPersistence().findByDesignationId(
+			designationId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching designations
+	 */
+	public static List<Designation> findByDesignationId(
+		long designationId, int start, int end,
+		OrderByComparator<Designation> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDesignationId(
+			designationId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching designation
+	 * @throws NoSuchDesignationException if a matching designation could not be found
+	 */
+	public static Designation findByDesignationId_First(
+			long designationId,
+			OrderByComparator<Designation> orderByComparator)
+		throws com.aixtor.training.exception.NoSuchDesignationException {
+
+		return getPersistence().findByDesignationId_First(
+			designationId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching designation, or <code>null</code> if a matching designation could not be found
+	 */
+	public static Designation fetchByDesignationId_First(
+		long designationId, OrderByComparator<Designation> orderByComparator) {
+
+		return getPersistence().fetchByDesignationId_First(
+			designationId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching designation
+	 * @throws NoSuchDesignationException if a matching designation could not be found
+	 */
+	public static Designation findByDesignationId_Last(
+			long designationId,
+			OrderByComparator<Designation> orderByComparator)
+		throws com.aixtor.training.exception.NoSuchDesignationException {
+
+		return getPersistence().findByDesignationId_Last(
+			designationId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching designation, or <code>null</code> if a matching designation could not be found
+	 */
+	public static Designation fetchByDesignationId_Last(
+		long designationId, OrderByComparator<Designation> orderByComparator) {
+
+		return getPersistence().fetchByDesignationId_Last(
+			designationId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the designations where designationId = &#63; from the database.
+	 *
+	 * @param designationId the designation ID
+	 */
+	public static void removeByDesignationId(long designationId) {
+		getPersistence().removeByDesignationId(designationId);
+	}
+
+	/**
+	 * Returns the number of designations where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @return the number of matching designations
+	 */
+	public static int countByDesignationId(long designationId) {
+		return getPersistence().countByDesignationId(designationId);
 	}
 
 	/**

@@ -14,6 +14,7 @@
 
 package com.aixtor.training.service;
 
+import com.aixtor.training.exception.NoSuchBranchException;
 import com.aixtor.training.model.Branch;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -212,8 +213,17 @@ public interface BranchLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Branch fetchBranchByUuidAndGroupId(String uuid, long groupId);
 
+	public Branch findByBranchId(long branchId)
+		throws NoSuchBranchException, SystemException;
+
+	public Branch findBybranchName(String branchName)
+		throws NoSuchBranchException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Object[]> getAllBranches();
 
 	/**
 	 * Returns the branch with the primary key.

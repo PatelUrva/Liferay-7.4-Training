@@ -14,6 +14,7 @@
 
 package com.aixtor.training.service;
 
+import com.aixtor.training.exception.NoSuchDepartmentException;
 import com.aixtor.training.model.Department;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -213,6 +214,12 @@ public interface DepartmentLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Department fetchDepartmentByUuidAndGroupId(
 		String uuid, long groupId);
+
+	public Department findByDepartmentId(long departmentId)
+		throws NoSuchDepartmentException, SystemException;
+
+	public Department findByDepartmentName(String departmentName)
+		throws NoSuchDepartmentException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

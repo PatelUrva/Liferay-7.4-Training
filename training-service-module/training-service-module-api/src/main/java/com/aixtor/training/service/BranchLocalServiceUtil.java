@@ -19,6 +19,7 @@ import com.aixtor.training.model.Branch;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -221,10 +222,27 @@ public class BranchLocalServiceUtil {
 		return getService().fetchBranchByUuidAndGroupId(uuid, groupId);
 	}
 
+	public static Branch findByBranchId(long branchId)
+		throws com.aixtor.training.exception.NoSuchBranchException,
+			   SystemException {
+
+		return getService().findByBranchId(branchId);
+	}
+
+	public static Branch findBybranchName(String branchName)
+		throws com.aixtor.training.exception.NoSuchBranchException {
+
+		return getService().findBybranchName(branchName);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
+	}
+
+	public static List<Object[]> getAllBranches() {
+		return getService().getAllBranches();
 	}
 
 	/**

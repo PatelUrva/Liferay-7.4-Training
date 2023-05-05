@@ -395,7 +395,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @param designationName the designation name
 	 * @return the matching designations
 	 */
-	public java.util.List<Designation> findBydesignationName(
+	public java.util.List<Designation> findByDesignationName(
 		String designationName);
 
 	/**
@@ -410,7 +410,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @param end the upper bound of the range of designations (not inclusive)
 	 * @return the range of matching designations
 	 */
-	public java.util.List<Designation> findBydesignationName(
+	public java.util.List<Designation> findByDesignationName(
 		String designationName, int start, int end);
 
 	/**
@@ -426,7 +426,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching designations
 	 */
-	public java.util.List<Designation> findBydesignationName(
+	public java.util.List<Designation> findByDesignationName(
 		String designationName, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Designation>
 			orderByComparator);
@@ -445,7 +445,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching designations
 	 */
-	public java.util.List<Designation> findBydesignationName(
+	public java.util.List<Designation> findByDesignationName(
 		String designationName, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Designation>
 			orderByComparator,
@@ -459,7 +459,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @return the first matching designation
 	 * @throws NoSuchDesignationException if a matching designation could not be found
 	 */
-	public Designation findBydesignationName_First(
+	public Designation findByDesignationName_First(
 			String designationName,
 			com.liferay.portal.kernel.util.OrderByComparator<Designation>
 				orderByComparator)
@@ -472,7 +472,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching designation, or <code>null</code> if a matching designation could not be found
 	 */
-	public Designation fetchBydesignationName_First(
+	public Designation fetchByDesignationName_First(
 		String designationName,
 		com.liferay.portal.kernel.util.OrderByComparator<Designation>
 			orderByComparator);
@@ -485,7 +485,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @return the last matching designation
 	 * @throws NoSuchDesignationException if a matching designation could not be found
 	 */
-	public Designation findBydesignationName_Last(
+	public Designation findByDesignationName_Last(
 			String designationName,
 			com.liferay.portal.kernel.util.OrderByComparator<Designation>
 				orderByComparator)
@@ -498,7 +498,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching designation, or <code>null</code> if a matching designation could not be found
 	 */
-	public Designation fetchBydesignationName_Last(
+	public Designation fetchByDesignationName_Last(
 		String designationName,
 		com.liferay.portal.kernel.util.OrderByComparator<Designation>
 			orderByComparator);
@@ -512,7 +512,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @return the previous, current, and next designation
 	 * @throws NoSuchDesignationException if a designation with the primary key could not be found
 	 */
-	public Designation[] findBydesignationName_PrevAndNext(
+	public Designation[] findByDesignationName_PrevAndNext(
 			long designationId, String designationName,
 			com.liferay.portal.kernel.util.OrderByComparator<Designation>
 				orderByComparator)
@@ -523,7 +523,7 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 *
 	 * @param designationName the designation name
 	 */
-	public void removeBydesignationName(String designationName);
+	public void removeByDesignationName(String designationName);
 
 	/**
 	 * Returns the number of designations where designationName = &#63;.
@@ -531,7 +531,135 @@ public interface DesignationPersistence extends BasePersistence<Designation> {
 	 * @param designationName the designation name
 	 * @return the number of matching designations
 	 */
-	public int countBydesignationName(String designationName);
+	public int countByDesignationName(String designationName);
+
+	/**
+	 * Returns all the designations where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @return the matching designations
+	 */
+	public java.util.List<Designation> findByDesignationId(long designationId);
+
+	/**
+	 * Returns a range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @return the range of matching designations
+	 */
+	public java.util.List<Designation> findByDesignationId(
+		long designationId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching designations
+	 */
+	public java.util.List<Designation> findByDesignationId(
+		long designationId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Designation>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching designations
+	 */
+	public java.util.List<Designation> findByDesignationId(
+		long designationId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Designation>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching designation
+	 * @throws NoSuchDesignationException if a matching designation could not be found
+	 */
+	public Designation findByDesignationId_First(
+			long designationId,
+			com.liferay.portal.kernel.util.OrderByComparator<Designation>
+				orderByComparator)
+		throws NoSuchDesignationException;
+
+	/**
+	 * Returns the first designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching designation, or <code>null</code> if a matching designation could not be found
+	 */
+	public Designation fetchByDesignationId_First(
+		long designationId,
+		com.liferay.portal.kernel.util.OrderByComparator<Designation>
+			orderByComparator);
+
+	/**
+	 * Returns the last designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching designation
+	 * @throws NoSuchDesignationException if a matching designation could not be found
+	 */
+	public Designation findByDesignationId_Last(
+			long designationId,
+			com.liferay.portal.kernel.util.OrderByComparator<Designation>
+				orderByComparator)
+		throws NoSuchDesignationException;
+
+	/**
+	 * Returns the last designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching designation, or <code>null</code> if a matching designation could not be found
+	 */
+	public Designation fetchByDesignationId_Last(
+		long designationId,
+		com.liferay.portal.kernel.util.OrderByComparator<Designation>
+			orderByComparator);
+
+	/**
+	 * Removes all the designations where designationId = &#63; from the database.
+	 *
+	 * @param designationId the designation ID
+	 */
+	public void removeByDesignationId(long designationId);
+
+	/**
+	 * Returns the number of designations where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @return the number of matching designations
+	 */
+	public int countByDesignationId(long designationId);
 
 	/**
 	 * Caches the designation in the entity cache if it is enabled.

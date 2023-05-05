@@ -240,6 +240,14 @@ public class CityLocalServiceWrapper
 	}
 
 	@Override
+	public com.aixtor.training.model.City findByCityId(long cityId)
+		throws com.aixtor.training.exception.NoSuchCityException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _cityLocalService.findByCityId(cityId);
+	}
+
+	@Override
 	public java.util.List<com.aixtor.training.model.City> findByStateId(
 			long stateId)
 		throws com.liferay.portal.kernel.exception.SystemException {

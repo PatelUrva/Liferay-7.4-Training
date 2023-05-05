@@ -223,17 +223,34 @@ public class EmployeeLocalServiceUtil {
 		return getService().fetchEmployeeByUuidAndGroupId(uuid, groupId);
 	}
 
+	public static List<Employee> findByBranchId(long branchId) {
+		return getService().findByBranchId(branchId);
+	}
+
+	public static List<Employee> findByDepartmentId(long departmentId) {
+		return getService().findByDepartmentId(departmentId);
+	}
+
+	public static List<Employee> findByDesignationId(long designationId) {
+		return getService().findByDesignationId(designationId);
+	}
+
+	public static List<Employee> findByEmployeeId(long employeeId) {
+		return getService().findByEmployeeId(employeeId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
 	}
 
-	/**
-	 * @return designation name by employee name using employeeFinderImpl
-	 */
-	public static List<Object[]> getDesignationNameByEmployee() {
-		return getService().getDesignationNameByEmployee();
+	public static List<Object[]> getAllBranches() {
+		return getService().getAllBranches();
+	}
+
+	public static List<Object[]> getAllEmployees() {
+		return getService().getAllEmployees();
 	}
 
 	/**
@@ -245,29 +262,6 @@ public class EmployeeLocalServiceUtil {
 	 */
 	public static Employee getEmployee(long employeeId) throws PortalException {
 		return getService().getEmployee(employeeId);
-	}
-
-	/**
-	 * @return employee list by employeeName, designationName, departmentName, branchName using employeeFinderImpl
-	 */
-	public static List<Object[]> getEmployeeByAllEntity(String searchData) {
-		return getService().getEmployeeByAllEntity(searchData);
-	}
-
-	/**
-	 * @return employee list by designation name using employeeFinderImpl
-	 */
-	public static List<Employee> getEmployeeByDesignation(
-		String designationName) {
-
-		return getService().getEmployeeByDesignation(designationName);
-	}
-
-	/**
-	 * @return employee list by employee name using employeeFinderImpl
-	 */
-	public static List<Object[]> getEmployeeByName(String employeeName) {
-		return getService().getEmployeeByName(employeeName);
 	}
 
 	/**
@@ -298,6 +292,10 @@ public class EmployeeLocalServiceUtil {
 	 */
 	public static List<Employee> getEmployees(int start, int end) {
 		return getService().getEmployees(start, end);
+	}
+
+	public static List<Object[]> getEmployeesByAllEntity(String searchData) {
+		return getService().getEmployeesByAllEntity(searchData);
 	}
 
 	/**

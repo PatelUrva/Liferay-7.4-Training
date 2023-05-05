@@ -240,10 +240,30 @@ public class BranchLocalServiceWrapper
 	}
 
 	@Override
+	public com.aixtor.training.model.Branch findByBranchId(long branchId)
+		throws com.aixtor.training.exception.NoSuchBranchException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _branchLocalService.findByBranchId(branchId);
+	}
+
+	@Override
+	public com.aixtor.training.model.Branch findBybranchName(String branchName)
+		throws com.aixtor.training.exception.NoSuchBranchException {
+
+		return _branchLocalService.findBybranchName(branchName);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return _branchLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public java.util.List<Object[]> getAllBranches() {
+		return _branchLocalService.getAllBranches();
 	}
 
 	/**

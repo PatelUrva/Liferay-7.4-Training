@@ -212,14 +212,22 @@ public interface EmployeeLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Employee fetchEmployeeByUuidAndGroupId(String uuid, long groupId);
 
+	public List<Employee> findByBranchId(long branchId);
+
+	public List<Employee> findByDepartmentId(long departmentId);
+
+	public List<Employee> findByDesignationId(long designationId);
+
+	public List<Employee> findByEmployeeId(long employeeId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
-	/**
-	 * @return designation name by employee name using employeeFinderImpl
-	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Object[]> getDesignationNameByEmployee();
+	public List<Object[]> getAllBranches();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Object[]> getAllEmployees();
 
 	/**
 	 * Returns the employee with the primary key.
@@ -230,24 +238,6 @@ public interface EmployeeLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Employee getEmployee(long employeeId) throws PortalException;
-
-	/**
-	 * @return employee list by employeeName, designationName, departmentName, branchName using employeeFinderImpl
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Object[]> getEmployeeByAllEntity(String searchData);
-
-	/**
-	 * @return employee list by designation name using employeeFinderImpl
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Employee> getEmployeeByDesignation(String designationName);
-
-	/**
-	 * @return employee list by employee name using employeeFinderImpl
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Object[]> getEmployeeByName(String employeeName);
 
 	/**
 	 * Returns the employee matching the UUID and group.
@@ -274,6 +264,9 @@ public interface EmployeeLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Employee> getEmployees(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Object[]> getEmployeesByAllEntity(String searchData);
 
 	/**
 	 * Returns all the employees matching the UUID and company.

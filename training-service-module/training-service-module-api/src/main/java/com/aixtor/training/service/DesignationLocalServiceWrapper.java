@@ -250,6 +250,21 @@ public class DesignationLocalServiceWrapper
 	}
 
 	@Override
+	public com.aixtor.training.model.Designation findByDesignationId(
+			long designationId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+
+		return _designationLocalService.findByDesignationId(designationId);
+	}
+
+	@Override
+	public com.aixtor.training.model.Designation findByDesignationName(
+		String designationName) {
+
+		return _designationLocalService.findByDesignationName(designationName);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

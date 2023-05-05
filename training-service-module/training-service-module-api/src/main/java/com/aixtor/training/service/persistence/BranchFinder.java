@@ -21,11 +21,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface EmployeeFinder {
-
-	public java.util.List<Object[]> getEmployeesByAllEntity(String searchData);
-
-	public java.util.List<Object[]> getAllEmployees();
+public interface BranchFinder {
 
 	public java.util.List<Object[]> getAllBranches();
 

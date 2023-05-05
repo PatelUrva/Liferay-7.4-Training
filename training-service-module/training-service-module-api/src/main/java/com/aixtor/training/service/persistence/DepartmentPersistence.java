@@ -389,140 +389,41 @@ public interface DepartmentPersistence extends BasePersistence<Department> {
 	public int countByUuid_C(String uuid, long companyId);
 
 	/**
-	 * Returns all the departments where departmentName = &#63;.
+	 * Returns the department where departmentName = &#63; or throws a <code>NoSuchDepartmentException</code> if it could not be found.
 	 *
 	 * @param departmentName the department name
-	 * @return the matching departments
+	 * @return the matching department
+	 * @throws NoSuchDepartmentException if a matching department could not be found
 	 */
-	public java.util.List<Department> findBydepartmentName(
-		String departmentName);
+	public Department findByDepartmentName(String departmentName)
+		throws NoSuchDepartmentException;
 
 	/**
-	 * Returns a range of all the departments where departmentName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
-	 * </p>
+	 * Returns the department where departmentName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
 	 * @param departmentName the department name
-	 * @param start the lower bound of the range of departments
-	 * @param end the upper bound of the range of departments (not inclusive)
-	 * @return the range of matching departments
+	 * @return the matching department, or <code>null</code> if a matching department could not be found
 	 */
-	public java.util.List<Department> findBydepartmentName(
-		String departmentName, int start, int end);
+	public Department fetchByDepartmentName(String departmentName);
 
 	/**
-	 * Returns an ordered range of all the departments where departmentName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
-	 * </p>
+	 * Returns the department where departmentName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param departmentName the department name
-	 * @param start the lower bound of the range of departments
-	 * @param end the upper bound of the range of departments (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching departments
-	 */
-	public java.util.List<Department> findBydepartmentName(
-		String departmentName, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<Department>
-			orderByComparator);
-
-	/**
-	 * Returns an ordered range of all the departments where departmentName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param departmentName the department name
-	 * @param start the lower bound of the range of departments
-	 * @param end the upper bound of the range of departments (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching departments
+	 * @return the matching department, or <code>null</code> if a matching department could not be found
 	 */
-	public java.util.List<Department> findBydepartmentName(
-		String departmentName, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<Department>
-			orderByComparator,
-		boolean useFinderCache);
+	public Department fetchByDepartmentName(
+		String departmentName, boolean useFinderCache);
 
 	/**
-	 * Returns the first department in the ordered set where departmentName = &#63;.
+	 * Removes the department where departmentName = &#63; from the database.
 	 *
 	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching department
-	 * @throws NoSuchDepartmentException if a matching department could not be found
+	 * @return the department that was removed
 	 */
-	public Department findBydepartmentName_First(
-			String departmentName,
-			com.liferay.portal.kernel.util.OrderByComparator<Department>
-				orderByComparator)
+	public Department removeByDepartmentName(String departmentName)
 		throws NoSuchDepartmentException;
-
-	/**
-	 * Returns the first department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching department, or <code>null</code> if a matching department could not be found
-	 */
-	public Department fetchBydepartmentName_First(
-		String departmentName,
-		com.liferay.portal.kernel.util.OrderByComparator<Department>
-			orderByComparator);
-
-	/**
-	 * Returns the last department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching department
-	 * @throws NoSuchDepartmentException if a matching department could not be found
-	 */
-	public Department findBydepartmentName_Last(
-			String departmentName,
-			com.liferay.portal.kernel.util.OrderByComparator<Department>
-				orderByComparator)
-		throws NoSuchDepartmentException;
-
-	/**
-	 * Returns the last department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching department, or <code>null</code> if a matching department could not be found
-	 */
-	public Department fetchBydepartmentName_Last(
-		String departmentName,
-		com.liferay.portal.kernel.util.OrderByComparator<Department>
-			orderByComparator);
-
-	/**
-	 * Returns the departments before and after the current department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentId the primary key of the current department
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next department
-	 * @throws NoSuchDepartmentException if a department with the primary key could not be found
-	 */
-	public Department[] findBydepartmentName_PrevAndNext(
-			long departmentId, String departmentName,
-			com.liferay.portal.kernel.util.OrderByComparator<Department>
-				orderByComparator)
-		throws NoSuchDepartmentException;
-
-	/**
-	 * Removes all the departments where departmentName = &#63; from the database.
-	 *
-	 * @param departmentName the department name
-	 */
-	public void removeBydepartmentName(String departmentName);
 
 	/**
 	 * Returns the number of departments where departmentName = &#63;.
@@ -530,7 +431,135 @@ public interface DepartmentPersistence extends BasePersistence<Department> {
 	 * @param departmentName the department name
 	 * @return the number of matching departments
 	 */
-	public int countBydepartmentName(String departmentName);
+	public int countByDepartmentName(String departmentName);
+
+	/**
+	 * Returns all the departments where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @return the matching departments
+	 */
+	public java.util.List<Department> findByDepartmentId(long departmentId);
+
+	/**
+	 * Returns a range of all the departments where departmentId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param departmentId the department ID
+	 * @param start the lower bound of the range of departments
+	 * @param end the upper bound of the range of departments (not inclusive)
+	 * @return the range of matching departments
+	 */
+	public java.util.List<Department> findByDepartmentId(
+		long departmentId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the departments where departmentId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param departmentId the department ID
+	 * @param start the lower bound of the range of departments
+	 * @param end the upper bound of the range of departments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching departments
+	 */
+	public java.util.List<Department> findByDepartmentId(
+		long departmentId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Department>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the departments where departmentId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param departmentId the department ID
+	 * @param start the lower bound of the range of departments
+	 * @param end the upper bound of the range of departments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching departments
+	 */
+	public java.util.List<Department> findByDepartmentId(
+		long departmentId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Department>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching department
+	 * @throws NoSuchDepartmentException if a matching department could not be found
+	 */
+	public Department findByDepartmentId_First(
+			long departmentId,
+			com.liferay.portal.kernel.util.OrderByComparator<Department>
+				orderByComparator)
+		throws NoSuchDepartmentException;
+
+	/**
+	 * Returns the first department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching department, or <code>null</code> if a matching department could not be found
+	 */
+	public Department fetchByDepartmentId_First(
+		long departmentId,
+		com.liferay.portal.kernel.util.OrderByComparator<Department>
+			orderByComparator);
+
+	/**
+	 * Returns the last department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching department
+	 * @throws NoSuchDepartmentException if a matching department could not be found
+	 */
+	public Department findByDepartmentId_Last(
+			long departmentId,
+			com.liferay.portal.kernel.util.OrderByComparator<Department>
+				orderByComparator)
+		throws NoSuchDepartmentException;
+
+	/**
+	 * Returns the last department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching department, or <code>null</code> if a matching department could not be found
+	 */
+	public Department fetchByDepartmentId_Last(
+		long departmentId,
+		com.liferay.portal.kernel.util.OrderByComparator<Department>
+			orderByComparator);
+
+	/**
+	 * Removes all the departments where departmentId = &#63; from the database.
+	 *
+	 * @param departmentId the department ID
+	 */
+	public void removeByDepartmentId(long departmentId);
+
+	/**
+	 * Returns the number of departments where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @return the number of matching departments
+	 */
+	public int countByDepartmentId(long departmentId);
 
 	/**
 	 * Caches the department in the entity cache if it is enabled.

@@ -388,147 +388,46 @@ public interface BranchPersistence extends BasePersistence<Branch> {
 	public int countByUuid_C(String uuid, long companyId);
 
 	/**
-	 * Returns all the branches where branchName = &#63;.
+	 * Returns the branch where branchId = &#63; or throws a <code>NoSuchBranchException</code> if it could not be found.
 	 *
-	 * @param branchName the branch name
-	 * @return the matching branches
+	 * @param branchId the branch ID
+	 * @return the matching branch
+	 * @throws NoSuchBranchException if a matching branch could not be found
 	 */
-	public java.util.List<Branch> findBybranchName(String branchName);
+	public Branch findBybranchId(long branchId) throws NoSuchBranchException;
 
 	/**
-	 * Returns a range of all the branches where branchName = &#63;.
+	 * Returns the branch where branchId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BranchModelImpl</code>.
-	 * </p>
-	 *
-	 * @param branchName the branch name
-	 * @param start the lower bound of the range of branches
-	 * @param end the upper bound of the range of branches (not inclusive)
-	 * @return the range of matching branches
+	 * @param branchId the branch ID
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
 	 */
-	public java.util.List<Branch> findBybranchName(
-		String branchName, int start, int end);
+	public Branch fetchBybranchId(long branchId);
 
 	/**
-	 * Returns an ordered range of all the branches where branchName = &#63;.
+	 * Returns the branch where branchId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BranchModelImpl</code>.
-	 * </p>
-	 *
-	 * @param branchName the branch name
-	 * @param start the lower bound of the range of branches
-	 * @param end the upper bound of the range of branches (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching branches
-	 */
-	public java.util.List<Branch> findBybranchName(
-		String branchName, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<Branch>
-			orderByComparator);
-
-	/**
-	 * Returns an ordered range of all the branches where branchName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BranchModelImpl</code>.
-	 * </p>
-	 *
-	 * @param branchName the branch name
-	 * @param start the lower bound of the range of branches
-	 * @param end the upper bound of the range of branches (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param branchId the branch ID
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching branches
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
 	 */
-	public java.util.List<Branch> findBybranchName(
-		String branchName, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<Branch>
-			orderByComparator,
-		boolean useFinderCache);
+	public Branch fetchBybranchId(long branchId, boolean useFinderCache);
 
 	/**
-	 * Returns the first branch in the ordered set where branchName = &#63;.
+	 * Removes the branch where branchId = &#63; from the database.
 	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching branch
-	 * @throws NoSuchBranchException if a matching branch could not be found
+	 * @param branchId the branch ID
+	 * @return the branch that was removed
 	 */
-	public Branch findBybranchName_First(
-			String branchName,
-			com.liferay.portal.kernel.util.OrderByComparator<Branch>
-				orderByComparator)
-		throws NoSuchBranchException;
+	public Branch removeBybranchId(long branchId) throws NoSuchBranchException;
 
 	/**
-	 * Returns the first branch in the ordered set where branchName = &#63;.
+	 * Returns the number of branches where branchId = &#63;.
 	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching branch, or <code>null</code> if a matching branch could not be found
-	 */
-	public Branch fetchBybranchName_First(
-		String branchName,
-		com.liferay.portal.kernel.util.OrderByComparator<Branch>
-			orderByComparator);
-
-	/**
-	 * Returns the last branch in the ordered set where branchName = &#63;.
-	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching branch
-	 * @throws NoSuchBranchException if a matching branch could not be found
-	 */
-	public Branch findBybranchName_Last(
-			String branchName,
-			com.liferay.portal.kernel.util.OrderByComparator<Branch>
-				orderByComparator)
-		throws NoSuchBranchException;
-
-	/**
-	 * Returns the last branch in the ordered set where branchName = &#63;.
-	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching branch, or <code>null</code> if a matching branch could not be found
-	 */
-	public Branch fetchBybranchName_Last(
-		String branchName,
-		com.liferay.portal.kernel.util.OrderByComparator<Branch>
-			orderByComparator);
-
-	/**
-	 * Returns the branches before and after the current branch in the ordered set where branchName = &#63;.
-	 *
-	 * @param branchId the primary key of the current branch
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next branch
-	 * @throws NoSuchBranchException if a branch with the primary key could not be found
-	 */
-	public Branch[] findBybranchName_PrevAndNext(
-			long branchId, String branchName,
-			com.liferay.portal.kernel.util.OrderByComparator<Branch>
-				orderByComparator)
-		throws NoSuchBranchException;
-
-	/**
-	 * Removes all the branches where branchName = &#63; from the database.
-	 *
-	 * @param branchName the branch name
-	 */
-	public void removeBybranchName(String branchName);
-
-	/**
-	 * Returns the number of branches where branchName = &#63;.
-	 *
-	 * @param branchName the branch name
+	 * @param branchId the branch ID
 	 * @return the number of matching branches
 	 */
-	public int countBybranchName(String branchName);
+	public int countBybranchId(long branchId);
 
 	/**
 	 * Returns all the branches where countryId = &#63;.
@@ -957,6 +856,50 @@ public interface BranchPersistence extends BasePersistence<Branch> {
 	 * @return the number of matching branches
 	 */
 	public int countBycityId(long cityId);
+
+	/**
+	 * Returns the branch where branchName = &#63; or throws a <code>NoSuchBranchException</code> if it could not be found.
+	 *
+	 * @param branchName the branch name
+	 * @return the matching branch
+	 * @throws NoSuchBranchException if a matching branch could not be found
+	 */
+	public Branch findBybranchName(String branchName)
+		throws NoSuchBranchException;
+
+	/**
+	 * Returns the branch where branchName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param branchName the branch name
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
+	 */
+	public Branch fetchBybranchName(String branchName);
+
+	/**
+	 * Returns the branch where branchName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param branchName the branch name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
+	 */
+	public Branch fetchBybranchName(String branchName, boolean useFinderCache);
+
+	/**
+	 * Removes the branch where branchName = &#63; from the database.
+	 *
+	 * @param branchName the branch name
+	 * @return the branch that was removed
+	 */
+	public Branch removeBybranchName(String branchName)
+		throws NoSuchBranchException;
+
+	/**
+	 * Returns the number of branches where branchName = &#63;.
+	 *
+	 * @param branchName the branch name
+	 * @return the number of matching branches
+	 */
+	public int countBybranchName(String branchName);
 
 	/**
 	 * Caches the branch in the entity cache if it is enabled.

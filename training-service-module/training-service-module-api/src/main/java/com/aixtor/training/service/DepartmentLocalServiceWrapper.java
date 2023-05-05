@@ -249,6 +249,24 @@ public class DepartmentLocalServiceWrapper
 	}
 
 	@Override
+	public com.aixtor.training.model.Department findByDepartmentId(
+			long departmentId)
+		throws com.aixtor.training.exception.NoSuchDepartmentException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _departmentLocalService.findByDepartmentId(departmentId);
+	}
+
+	@Override
+	public com.aixtor.training.model.Department findByDepartmentName(
+			String departmentName)
+		throws com.aixtor.training.exception.NoSuchDepartmentException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _departmentLocalService.findByDepartmentName(departmentName);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

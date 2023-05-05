@@ -19,6 +19,7 @@ import com.aixtor.training.model.Department;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -221,6 +222,20 @@ public class DepartmentLocalServiceUtil {
 		String uuid, long groupId) {
 
 		return getService().fetchDepartmentByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static Department findByDepartmentId(long departmentId)
+		throws com.aixtor.training.exception.NoSuchDepartmentException,
+			   SystemException {
+
+		return getService().findByDepartmentId(departmentId);
+	}
+
+	public static Department findByDepartmentName(String departmentName)
+		throws com.aixtor.training.exception.NoSuchDepartmentException,
+			   SystemException {
+
+		return getService().findByDepartmentName(departmentName);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery

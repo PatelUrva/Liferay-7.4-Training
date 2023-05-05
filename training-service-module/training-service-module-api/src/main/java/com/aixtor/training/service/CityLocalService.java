@@ -14,6 +14,7 @@
 
 package com.aixtor.training.service;
 
+import com.aixtor.training.exception.NoSuchCityException;
 import com.aixtor.training.model.City;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -211,6 +212,9 @@ public interface CityLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public City fetchCityByUuidAndGroupId(String uuid, long groupId);
+
+	public City findByCityId(long cityId)
+		throws NoSuchCityException, SystemException;
 
 	public List<City> findByStateId(long stateId) throws SystemException;
 

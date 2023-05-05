@@ -19,6 +19,7 @@ import com.aixtor.training.model.Designation;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -221,6 +222,16 @@ public class DesignationLocalServiceUtil {
 		String uuid, long groupId) {
 
 		return getService().fetchDesignationByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static Designation findByDesignationId(long designationId)
+		throws SystemException {
+
+		return getService().findByDesignationId(designationId);
+	}
+
+	public static Designation findByDesignationName(String designationName) {
+		return getService().findByDesignationName(designationName);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery

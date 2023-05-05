@@ -860,6 +860,151 @@ public class StateUtil {
 	}
 
 	/**
+	 * Returns all the states where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @return the matching states
+	 */
+	public static List<State> findBystateId(long stateId) {
+		return getPersistence().findBystateId(stateId);
+	}
+
+	/**
+	 * Returns a range of all the states where stateId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param stateId the state ID
+	 * @param start the lower bound of the range of states
+	 * @param end the upper bound of the range of states (not inclusive)
+	 * @return the range of matching states
+	 */
+	public static List<State> findBystateId(long stateId, int start, int end) {
+		return getPersistence().findBystateId(stateId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the states where stateId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param stateId the state ID
+	 * @param start the lower bound of the range of states
+	 * @param end the upper bound of the range of states (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching states
+	 */
+	public static List<State> findBystateId(
+		long stateId, int start, int end,
+		OrderByComparator<State> orderByComparator) {
+
+		return getPersistence().findBystateId(
+			stateId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the states where stateId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param stateId the state ID
+	 * @param start the lower bound of the range of states
+	 * @param end the upper bound of the range of states (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching states
+	 */
+	public static List<State> findBystateId(
+		long stateId, int start, int end,
+		OrderByComparator<State> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findBystateId(
+			stateId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching state
+	 * @throws NoSuchStateException if a matching state could not be found
+	 */
+	public static State findBystateId_First(
+			long stateId, OrderByComparator<State> orderByComparator)
+		throws com.aixtor.training.exception.NoSuchStateException {
+
+		return getPersistence().findBystateId_First(stateId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching state, or <code>null</code> if a matching state could not be found
+	 */
+	public static State fetchBystateId_First(
+		long stateId, OrderByComparator<State> orderByComparator) {
+
+		return getPersistence().fetchBystateId_First(
+			stateId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching state
+	 * @throws NoSuchStateException if a matching state could not be found
+	 */
+	public static State findBystateId_Last(
+			long stateId, OrderByComparator<State> orderByComparator)
+		throws com.aixtor.training.exception.NoSuchStateException {
+
+		return getPersistence().findBystateId_Last(stateId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching state, or <code>null</code> if a matching state could not be found
+	 */
+	public static State fetchBystateId_Last(
+		long stateId, OrderByComparator<State> orderByComparator) {
+
+		return getPersistence().fetchBystateId_Last(stateId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the states where stateId = &#63; from the database.
+	 *
+	 * @param stateId the state ID
+	 */
+	public static void removeBystateId(long stateId) {
+		getPersistence().removeBystateId(stateId);
+	}
+
+	/**
+	 * Returns the number of states where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @return the number of matching states
+	 */
+	public static int countBystateId(long stateId) {
+		return getPersistence().countBystateId(stateId);
+	}
+
+	/**
 	 * Caches the state in the entity cache if it is enabled.
 	 *
 	 * @param state the state

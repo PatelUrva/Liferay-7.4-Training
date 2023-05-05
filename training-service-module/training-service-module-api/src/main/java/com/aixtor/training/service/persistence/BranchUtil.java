@@ -524,171 +524,61 @@ public class BranchUtil {
 	}
 
 	/**
-	 * Returns all the branches where branchName = &#63;.
+	 * Returns the branch where branchId = &#63; or throws a <code>NoSuchBranchException</code> if it could not be found.
 	 *
-	 * @param branchName the branch name
-	 * @return the matching branches
+	 * @param branchId the branch ID
+	 * @return the matching branch
+	 * @throws NoSuchBranchException if a matching branch could not be found
 	 */
-	public static List<Branch> findBybranchName(String branchName) {
-		return getPersistence().findBybranchName(branchName);
+	public static Branch findBybranchId(long branchId)
+		throws com.aixtor.training.exception.NoSuchBranchException {
+
+		return getPersistence().findBybranchId(branchId);
 	}
 
 	/**
-	 * Returns a range of all the branches where branchName = &#63;.
+	 * Returns the branch where branchId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BranchModelImpl</code>.
-	 * </p>
-	 *
-	 * @param branchName the branch name
-	 * @param start the lower bound of the range of branches
-	 * @param end the upper bound of the range of branches (not inclusive)
-	 * @return the range of matching branches
+	 * @param branchId the branch ID
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
 	 */
-	public static List<Branch> findBybranchName(
-		String branchName, int start, int end) {
-
-		return getPersistence().findBybranchName(branchName, start, end);
+	public static Branch fetchBybranchId(long branchId) {
+		return getPersistence().fetchBybranchId(branchId);
 	}
 
 	/**
-	 * Returns an ordered range of all the branches where branchName = &#63;.
+	 * Returns the branch where branchId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BranchModelImpl</code>.
-	 * </p>
-	 *
-	 * @param branchName the branch name
-	 * @param start the lower bound of the range of branches
-	 * @param end the upper bound of the range of branches (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching branches
-	 */
-	public static List<Branch> findBybranchName(
-		String branchName, int start, int end,
-		OrderByComparator<Branch> orderByComparator) {
-
-		return getPersistence().findBybranchName(
-			branchName, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns an ordered range of all the branches where branchName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BranchModelImpl</code>.
-	 * </p>
-	 *
-	 * @param branchName the branch name
-	 * @param start the lower bound of the range of branches
-	 * @param end the upper bound of the range of branches (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param branchId the branch ID
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching branches
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
 	 */
-	public static List<Branch> findBybranchName(
-		String branchName, int start, int end,
-		OrderByComparator<Branch> orderByComparator, boolean useFinderCache) {
+	public static Branch fetchBybranchId(
+		long branchId, boolean useFinderCache) {
 
-		return getPersistence().findBybranchName(
-			branchName, start, end, orderByComparator, useFinderCache);
+		return getPersistence().fetchBybranchId(branchId, useFinderCache);
 	}
 
 	/**
-	 * Returns the first branch in the ordered set where branchName = &#63;.
+	 * Removes the branch where branchId = &#63; from the database.
 	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching branch
-	 * @throws NoSuchBranchException if a matching branch could not be found
+	 * @param branchId the branch ID
+	 * @return the branch that was removed
 	 */
-	public static Branch findBybranchName_First(
-			String branchName, OrderByComparator<Branch> orderByComparator)
+	public static Branch removeBybranchId(long branchId)
 		throws com.aixtor.training.exception.NoSuchBranchException {
 
-		return getPersistence().findBybranchName_First(
-			branchName, orderByComparator);
+		return getPersistence().removeBybranchId(branchId);
 	}
 
 	/**
-	 * Returns the first branch in the ordered set where branchName = &#63;.
+	 * Returns the number of branches where branchId = &#63;.
 	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching branch, or <code>null</code> if a matching branch could not be found
-	 */
-	public static Branch fetchBybranchName_First(
-		String branchName, OrderByComparator<Branch> orderByComparator) {
-
-		return getPersistence().fetchBybranchName_First(
-			branchName, orderByComparator);
-	}
-
-	/**
-	 * Returns the last branch in the ordered set where branchName = &#63;.
-	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching branch
-	 * @throws NoSuchBranchException if a matching branch could not be found
-	 */
-	public static Branch findBybranchName_Last(
-			String branchName, OrderByComparator<Branch> orderByComparator)
-		throws com.aixtor.training.exception.NoSuchBranchException {
-
-		return getPersistence().findBybranchName_Last(
-			branchName, orderByComparator);
-	}
-
-	/**
-	 * Returns the last branch in the ordered set where branchName = &#63;.
-	 *
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching branch, or <code>null</code> if a matching branch could not be found
-	 */
-	public static Branch fetchBybranchName_Last(
-		String branchName, OrderByComparator<Branch> orderByComparator) {
-
-		return getPersistence().fetchBybranchName_Last(
-			branchName, orderByComparator);
-	}
-
-	/**
-	 * Returns the branches before and after the current branch in the ordered set where branchName = &#63;.
-	 *
-	 * @param branchId the primary key of the current branch
-	 * @param branchName the branch name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next branch
-	 * @throws NoSuchBranchException if a branch with the primary key could not be found
-	 */
-	public static Branch[] findBybranchName_PrevAndNext(
-			long branchId, String branchName,
-			OrderByComparator<Branch> orderByComparator)
-		throws com.aixtor.training.exception.NoSuchBranchException {
-
-		return getPersistence().findBybranchName_PrevAndNext(
-			branchId, branchName, orderByComparator);
-	}
-
-	/**
-	 * Removes all the branches where branchName = &#63; from the database.
-	 *
-	 * @param branchName the branch name
-	 */
-	public static void removeBybranchName(String branchName) {
-		getPersistence().removeBybranchName(branchName);
-	}
-
-	/**
-	 * Returns the number of branches where branchName = &#63;.
-	 *
-	 * @param branchName the branch name
+	 * @param branchId the branch ID
 	 * @return the number of matching branches
 	 */
-	public static int countBybranchName(String branchName) {
-		return getPersistence().countBybranchName(branchName);
+	public static int countBybranchId(long branchId) {
+		return getPersistence().countBybranchId(branchId);
 	}
 
 	/**
@@ -1182,6 +1072,64 @@ public class BranchUtil {
 	 */
 	public static int countBycityId(long cityId) {
 		return getPersistence().countBycityId(cityId);
+	}
+
+	/**
+	 * Returns the branch where branchName = &#63; or throws a <code>NoSuchBranchException</code> if it could not be found.
+	 *
+	 * @param branchName the branch name
+	 * @return the matching branch
+	 * @throws NoSuchBranchException if a matching branch could not be found
+	 */
+	public static Branch findBybranchName(String branchName)
+		throws com.aixtor.training.exception.NoSuchBranchException {
+
+		return getPersistence().findBybranchName(branchName);
+	}
+
+	/**
+	 * Returns the branch where branchName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param branchName the branch name
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
+	 */
+	public static Branch fetchBybranchName(String branchName) {
+		return getPersistence().fetchBybranchName(branchName);
+	}
+
+	/**
+	 * Returns the branch where branchName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param branchName the branch name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching branch, or <code>null</code> if a matching branch could not be found
+	 */
+	public static Branch fetchBybranchName(
+		String branchName, boolean useFinderCache) {
+
+		return getPersistence().fetchBybranchName(branchName, useFinderCache);
+	}
+
+	/**
+	 * Removes the branch where branchName = &#63; from the database.
+	 *
+	 * @param branchName the branch name
+	 * @return the branch that was removed
+	 */
+	public static Branch removeBybranchName(String branchName)
+		throws com.aixtor.training.exception.NoSuchBranchException {
+
+		return getPersistence().removeBybranchName(branchName);
+	}
+
+	/**
+	 * Returns the number of branches where branchName = &#63;.
+	 *
+	 * @param branchName the branch name
+	 * @return the number of matching branches
+	 */
+	public static int countBybranchName(String branchName) {
+		return getPersistence().countBybranchName(branchName);
 	}
 
 	/**
