@@ -1,8 +1,14 @@
+<%@page import="java.util.Date"%>
+<%@page import="com.aixtor.training.employee.constants.EmployeeConstants"%>
+<%@page import="com.aixtor.training.employee.bean.ViewCustomEmployeeBean"%>
 <%@ include file="init.jsp" %>
 <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
 
 <%
 	String currentURL=PortalUtil.getCurrentURL(renderRequest);
+	String searchText = (String) renderRequest.getAttribute("searchText");
+	Date fromDate = (Date) renderRequest.getAttribute("fromDate");
+	Date toDate = (Date) renderRequest.getAttribute("toDate");
 %>
 
 <portlet:renderURL var="addEmployeeRenderURL">
@@ -12,9 +18,13 @@
 
 <portlet:resourceURL id="/download/employeePDF" var="employeePDFResourceURL" />
 
-<portlet:resourceURL id="/download/employeeXLSX" var="employeeXLSXResourceURL" />
+<portlet:resourceURL id="/download/employeeXLSX" var="employeeXLSXResourceURL">
+	<portlet:param name="searchText" value="<%=searchText%>"/>
+	<portlet:param name="fromDate" value="${fromDate}"/>
+	<portlet:param name="toDate" value="${toDate}"/>
+</portlet:resourceURL>
 
-<liferay-portlet:actionURL name="searchEmployee" var="searchEmployeeActionURL" />
+<portlet:actionURL name="searchEmployee" var="searchEmployeeActionURL" />
 
 <div class = "btn-group">
 	<button type = "button" class="btn btn-default">
@@ -32,11 +42,19 @@
 	        <i class="fa-solid fa-download"></i> Download XLSX 
 	    </a>
     </button>
+    <br>
     <form action="${searchEmployeeActionURL}" method="post">
     	<div style="margin-left:50px;padding-top:10px">
-	    	<input type="date" name="fromDate" />
+	    	<input type="date" name="fromDate" id="fromDate" />
 	    	<input type="date" name="toDate" />
 	   		<input type="text" name="searchText" /> 
+	   		<select name="dateFormat" >
+	   			<option  value="yyyy-MM-dd"> yyyy-MM-dd </option>
+	   			<option  value="dd-MM-yyyy"> dd-MM-yyyy </option>
+	   			<option  value="MM-dd-yyyys"> MM-dd-yyyy </option>
+	   			<option  value="HH:mm:ss.SSSZ"> HH:mm:ss.SSSZ </option>
+	   			<option  value="HH:mm:ss"> HH:mm:ss </option>
+	   		</select>
 	    	<button style="padding-top:5px" type="submit" class="btn btn-primary btn-default">
 	    		<i class="fa-solid fa-magnifying-glass"></i> Search
 	    	</button>

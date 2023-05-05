@@ -51,7 +51,6 @@
 			<label>State</label>
 			<select class="form-control" name="stateId" id="stateId">
 				<option value="${selectedBranch.getStateId()}"> ${selectedBranch.getState()} </option>
-				
 			</select>
 		</div>
 		
@@ -89,9 +88,9 @@
 <script>
 $(document).ready(function () {
 	
-	document.getElementById("backBtn").onclick = function(){
+	/* document.getElementById("backBtn").onclick = function(){
 		location.href = "http://localhost:8080/web/manali/branch";
-	};
+	}; */
 	
 	
 	$('#country').on('change', function(){
@@ -144,8 +143,8 @@ $(document).ready(function () {
 		rules : {
 			branchName : 'required',
 			country : 'required',
-			stateId : 'required',
-			cityId : 'required',
+		/* 	stateId : 'required',
+			cityId : 'required', */
 			address1 : 'required',
 			address2 : 'required',
 			pincode : {
@@ -157,8 +156,8 @@ $(document).ready(function () {
 		messages : {
 			branchName : 'Branch Name is required',
 			country : 'Country is required',
-			stateId : 'State is required',
-			cityId : 'City is required',
+			/* stateId : 'State is required',
+			cityId : 'City is required', */
 			address1 : 'Address1 is required',
 			address2 : 'Address2 is required',
 			pincode : {
