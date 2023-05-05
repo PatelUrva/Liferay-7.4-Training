@@ -1977,6 +1977,343 @@ public class CityPersistenceImpl
 	private static final String _FINDER_COLUMN_CITYNAME_CITYNAME_3 =
 		"(city.cityName IS NULL OR city.cityName = '')";
 
+	private FinderPath _finderPathWithPaginationFindBycityId;
+	private FinderPath _finderPathWithoutPaginationFindBycityId;
+	private FinderPath _finderPathCountBycityId;
+
+	/**
+	 * Returns all the cities where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @return the matching cities
+	 */
+	@Override
+	public List<City> findBycityId(long cityId) {
+		return findBycityId(cityId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the cities where cityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param cityId the city ID
+	 * @param start the lower bound of the range of cities
+	 * @param end the upper bound of the range of cities (not inclusive)
+	 * @return the range of matching cities
+	 */
+	@Override
+	public List<City> findBycityId(long cityId, int start, int end) {
+		return findBycityId(cityId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the cities where cityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param cityId the city ID
+	 * @param start the lower bound of the range of cities
+	 * @param end the upper bound of the range of cities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching cities
+	 */
+	@Override
+	public List<City> findBycityId(
+		long cityId, int start, int end,
+		OrderByComparator<City> orderByComparator) {
+
+		return findBycityId(cityId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the cities where cityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param cityId the city ID
+	 * @param start the lower bound of the range of cities
+	 * @param end the upper bound of the range of cities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching cities
+	 */
+	@Override
+	public List<City> findBycityId(
+		long cityId, int start, int end,
+		OrderByComparator<City> orderByComparator, boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindBycityId;
+				finderArgs = new Object[] {cityId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindBycityId;
+			finderArgs = new Object[] {cityId, start, end, orderByComparator};
+		}
+
+		List<City> list = null;
+
+		if (useFinderCache) {
+			list = (List<City>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (City city : list) {
+					if (cityId != city.getCityId()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_CITY_WHERE);
+
+			sb.append(_FINDER_COLUMN_CITYID_CITYID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(CityModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(cityId);
+
+				list = (List<City>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching city
+	 * @throws NoSuchCityException if a matching city could not be found
+	 */
+	@Override
+	public City findBycityId_First(
+			long cityId, OrderByComparator<City> orderByComparator)
+		throws NoSuchCityException {
+
+		City city = fetchBycityId_First(cityId, orderByComparator);
+
+		if (city != null) {
+			return city;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("cityId=");
+		sb.append(cityId);
+
+		sb.append("}");
+
+		throw new NoSuchCityException(sb.toString());
+	}
+
+	/**
+	 * Returns the first city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching city, or <code>null</code> if a matching city could not be found
+	 */
+	@Override
+	public City fetchBycityId_First(
+		long cityId, OrderByComparator<City> orderByComparator) {
+
+		List<City> list = findBycityId(cityId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching city
+	 * @throws NoSuchCityException if a matching city could not be found
+	 */
+	@Override
+	public City findBycityId_Last(
+			long cityId, OrderByComparator<City> orderByComparator)
+		throws NoSuchCityException {
+
+		City city = fetchBycityId_Last(cityId, orderByComparator);
+
+		if (city != null) {
+			return city;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("cityId=");
+		sb.append(cityId);
+
+		sb.append("}");
+
+		throw new NoSuchCityException(sb.toString());
+	}
+
+	/**
+	 * Returns the last city in the ordered set where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching city, or <code>null</code> if a matching city could not be found
+	 */
+	@Override
+	public City fetchBycityId_Last(
+		long cityId, OrderByComparator<City> orderByComparator) {
+
+		int count = countBycityId(cityId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<City> list = findBycityId(
+			cityId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Removes all the cities where cityId = &#63; from the database.
+	 *
+	 * @param cityId the city ID
+	 */
+	@Override
+	public void removeBycityId(long cityId) {
+		for (City city :
+				findBycityId(
+					cityId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(city);
+		}
+	}
+
+	/**
+	 * Returns the number of cities where cityId = &#63;.
+	 *
+	 * @param cityId the city ID
+	 * @return the number of matching cities
+	 */
+	@Override
+	public int countBycityId(long cityId) {
+		FinderPath finderPath = _finderPathCountBycityId;
+
+		Object[] finderArgs = new Object[] {cityId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_CITY_WHERE);
+
+			sb.append(_FINDER_COLUMN_CITYID_CITYID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(cityId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_CITYID_CITYID_2 =
+		"city.cityId = ?";
+
 	private FinderPath _finderPathWithPaginationFindBystateId;
 	private FinderPath _finderPathWithoutPaginationFindBystateId;
 	private FinderPath _finderPathCountBystateId;
@@ -3090,6 +3427,23 @@ public class CityPersistenceImpl
 		_finderPathCountBycityName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBycityName",
 			new String[] {String.class.getName()}, new String[] {"cityName"},
+			false);
+
+		_finderPathWithPaginationFindBycityId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBycityId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"cityId"}, true);
+
+		_finderPathWithoutPaginationFindBycityId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBycityId",
+			new String[] {Long.class.getName()}, new String[] {"cityId"}, true);
+
+		_finderPathCountBycityId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBycityId",
+			new String[] {Long.class.getName()}, new String[] {"cityId"},
 			false);
 
 		_finderPathWithPaginationFindBystateId = new FinderPath(

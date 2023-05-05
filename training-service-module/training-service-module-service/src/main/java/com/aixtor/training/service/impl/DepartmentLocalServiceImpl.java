@@ -14,9 +14,11 @@
 
 package com.aixtor.training.service.impl;
 
+import com.aixtor.training.exception.NoSuchDepartmentException;
+import com.aixtor.training.model.Department;
 import com.aixtor.training.service.base.DepartmentLocalServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.exception.SystemException;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -28,4 +30,17 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class DepartmentLocalServiceImpl extends DepartmentLocalServiceBaseImpl {
+
+	@Override
+	public Department findByDepartmentId(long departmentId) throws NoSuchDepartmentException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Department findByDepartmentName(String departmentName) throws NoSuchDepartmentException, SystemException {
+		return departmentPersistence.findByDepartmentName(departmentName);
+	}
+
+	
 }

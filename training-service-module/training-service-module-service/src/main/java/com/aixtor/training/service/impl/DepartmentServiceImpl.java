@@ -15,7 +15,6 @@
 package com.aixtor.training.service.impl;
 
 import com.aixtor.training.service.base.DepartmentServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
 
 import org.osgi.service.component.annotations.Component;

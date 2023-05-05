@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 
@@ -54,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1454,132 +1456,91 @@ public class DepartmentPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"department.companyId = ?";
 
-	private FinderPath _finderPathWithPaginationFindBydepartmentName;
-	private FinderPath _finderPathWithoutPaginationFindBydepartmentName;
-	private FinderPath _finderPathCountBydepartmentName;
+	private FinderPath _finderPathFetchByDepartmentName;
+	private FinderPath _finderPathCountByDepartmentName;
 
 	/**
-	 * Returns all the departments where departmentName = &#63;.
+	 * Returns the department where departmentName = &#63; or throws a <code>NoSuchDepartmentException</code> if it could not be found.
 	 *
 	 * @param departmentName the department name
-	 * @return the matching departments
+	 * @return the matching department
+	 * @throws NoSuchDepartmentException if a matching department could not be found
 	 */
 	@Override
-	public List<Department> findBydepartmentName(String departmentName) {
-		return findBydepartmentName(
-			departmentName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public Department findByDepartmentName(String departmentName)
+		throws NoSuchDepartmentException {
+
+		Department department = fetchByDepartmentName(departmentName);
+
+		if (department == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("departmentName=");
+			sb.append(departmentName);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchDepartmentException(sb.toString());
+		}
+
+		return department;
 	}
 
 	/**
-	 * Returns a range of all the departments where departmentName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
-	 * </p>
+	 * Returns the department where departmentName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
 	 * @param departmentName the department name
-	 * @param start the lower bound of the range of departments
-	 * @param end the upper bound of the range of departments (not inclusive)
-	 * @return the range of matching departments
+	 * @return the matching department, or <code>null</code> if a matching department could not be found
 	 */
 	@Override
-	public List<Department> findBydepartmentName(
-		String departmentName, int start, int end) {
-
-		return findBydepartmentName(departmentName, start, end, null);
+	public Department fetchByDepartmentName(String departmentName) {
+		return fetchByDepartmentName(departmentName, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the departments where departmentName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
-	 * </p>
+	 * Returns the department where departmentName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param departmentName the department name
-	 * @param start the lower bound of the range of departments
-	 * @param end the upper bound of the range of departments (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching departments
-	 */
-	@Override
-	public List<Department> findBydepartmentName(
-		String departmentName, int start, int end,
-		OrderByComparator<Department> orderByComparator) {
-
-		return findBydepartmentName(
-			departmentName, start, end, orderByComparator, true);
-	}
-
-	/**
-	 * Returns an ordered range of all the departments where departmentName = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param departmentName the department name
-	 * @param start the lower bound of the range of departments
-	 * @param end the upper bound of the range of departments (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching departments
+	 * @return the matching department, or <code>null</code> if a matching department could not be found
 	 */
 	@Override
-	public List<Department> findBydepartmentName(
-		String departmentName, int start, int end,
-		OrderByComparator<Department> orderByComparator,
-		boolean useFinderCache) {
+	public Department fetchByDepartmentName(
+		String departmentName, boolean useFinderCache) {
 
 		departmentName = Objects.toString(departmentName, "");
 
-		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindBydepartmentName;
-				finderArgs = new Object[] {departmentName};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindBydepartmentName;
-			finderArgs = new Object[] {
-				departmentName, start, end, orderByComparator
-			};
+		if (useFinderCache) {
+			finderArgs = new Object[] {departmentName};
 		}
 
-		List<Department> list = null;
+		Object result = null;
 
 		if (useFinderCache) {
-			list = (List<Department>)finderCache.getResult(
-				finderPath, finderArgs, this);
+			result = finderCache.getResult(
+				_finderPathFetchByDepartmentName, finderArgs, this);
+		}
 
-			if ((list != null) && !list.isEmpty()) {
-				for (Department department : list) {
-					if (!departmentName.equals(
-							department.getDepartmentName())) {
+		if (result instanceof Department) {
+			Department department = (Department)result;
 
-						list = null;
+			if (!Objects.equals(
+					departmentName, department.getDepartmentName())) {
 
-						break;
-					}
-				}
+				result = null;
 			}
 		}
 
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
+		if (result == null) {
+			StringBundler sb = new StringBundler(3);
 
 			sb.append(_SQL_SELECT_DEPARTMENT_WHERE);
 
@@ -1592,14 +1553,6 @@ public class DepartmentPersistenceImpl
 				bindDepartmentName = true;
 
 				sb.append(_FINDER_COLUMN_DEPARTMENTNAME_DEPARTMENTNAME_2);
-			}
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DepartmentModelImpl.ORDER_BY_JPQL);
 			}
 
 			String sql = sb.toString();
@@ -1617,13 +1570,35 @@ public class DepartmentPersistenceImpl
 					queryPos.add(departmentName);
 				}
 
-				list = (List<Department>)QueryUtil.list(
-					query, getDialect(), start, end);
+				List<Department> list = query.list();
 
-				cacheResult(list);
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByDepartmentName, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {departmentName};
+							}
+
+							_log.warn(
+								"DepartmentPersistenceImpl.fetchByDepartmentName(String, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					Department department = list.get(0);
+
+					result = department;
+
+					cacheResult(department);
 				}
 			}
 			catch (Exception exception) {
@@ -1634,302 +1609,27 @@ public class DepartmentPersistenceImpl
 			}
 		}
 
-		return list;
-	}
-
-	/**
-	 * Returns the first department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching department
-	 * @throws NoSuchDepartmentException if a matching department could not be found
-	 */
-	@Override
-	public Department findBydepartmentName_First(
-			String departmentName,
-			OrderByComparator<Department> orderByComparator)
-		throws NoSuchDepartmentException {
-
-		Department department = fetchBydepartmentName_First(
-			departmentName, orderByComparator);
-
-		if (department != null) {
-			return department;
-		}
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		sb.append("departmentName=");
-		sb.append(departmentName);
-
-		sb.append("}");
-
-		throw new NoSuchDepartmentException(sb.toString());
-	}
-
-	/**
-	 * Returns the first department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching department, or <code>null</code> if a matching department could not be found
-	 */
-	@Override
-	public Department fetchBydepartmentName_First(
-		String departmentName,
-		OrderByComparator<Department> orderByComparator) {
-
-		List<Department> list = findBydepartmentName(
-			departmentName, 0, 1, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the last department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching department
-	 * @throws NoSuchDepartmentException if a matching department could not be found
-	 */
-	@Override
-	public Department findBydepartmentName_Last(
-			String departmentName,
-			OrderByComparator<Department> orderByComparator)
-		throws NoSuchDepartmentException {
-
-		Department department = fetchBydepartmentName_Last(
-			departmentName, orderByComparator);
-
-		if (department != null) {
-			return department;
-		}
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		sb.append("departmentName=");
-		sb.append(departmentName);
-
-		sb.append("}");
-
-		throw new NoSuchDepartmentException(sb.toString());
-	}
-
-	/**
-	 * Returns the last department in the ordered set where departmentName = &#63;.
-	 *
-	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching department, or <code>null</code> if a matching department could not be found
-	 */
-	@Override
-	public Department fetchBydepartmentName_Last(
-		String departmentName,
-		OrderByComparator<Department> orderByComparator) {
-
-		int count = countBydepartmentName(departmentName);
-
-		if (count == 0) {
+		if (result instanceof List<?>) {
 			return null;
 		}
-
-		List<Department> list = findBydepartmentName(
-			departmentName, count - 1, count, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
+		else {
+			return (Department)result;
 		}
-
-		return null;
 	}
 
 	/**
-	 * Returns the departments before and after the current department in the ordered set where departmentName = &#63;.
+	 * Removes the department where departmentName = &#63; from the database.
 	 *
-	 * @param departmentId the primary key of the current department
 	 * @param departmentName the department name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next department
-	 * @throws NoSuchDepartmentException if a department with the primary key could not be found
+	 * @return the department that was removed
 	 */
 	@Override
-	public Department[] findBydepartmentName_PrevAndNext(
-			long departmentId, String departmentName,
-			OrderByComparator<Department> orderByComparator)
+	public Department removeByDepartmentName(String departmentName)
 		throws NoSuchDepartmentException {
 
-		departmentName = Objects.toString(departmentName, "");
+		Department department = findByDepartmentName(departmentName);
 
-		Department department = findByPrimaryKey(departmentId);
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			Department[] array = new DepartmentImpl[3];
-
-			array[0] = getBydepartmentName_PrevAndNext(
-				session, department, departmentName, orderByComparator, true);
-
-			array[1] = department;
-
-			array[2] = getBydepartmentName_PrevAndNext(
-				session, department, departmentName, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected Department getBydepartmentName_PrevAndNext(
-		Session session, Department department, String departmentName,
-		OrderByComparator<Department> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(3);
-		}
-
-		sb.append(_SQL_SELECT_DEPARTMENT_WHERE);
-
-		boolean bindDepartmentName = false;
-
-		if (departmentName.isEmpty()) {
-			sb.append(_FINDER_COLUMN_DEPARTMENTNAME_DEPARTMENTNAME_3);
-		}
-		else {
-			bindDepartmentName = true;
-
-			sb.append(_FINDER_COLUMN_DEPARTMENTNAME_DEPARTMENTNAME_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(DepartmentModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		if (bindDepartmentName) {
-			queryPos.add(departmentName);
-		}
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(department)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<Department> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
-	}
-
-	/**
-	 * Removes all the departments where departmentName = &#63; from the database.
-	 *
-	 * @param departmentName the department name
-	 */
-	@Override
-	public void removeBydepartmentName(String departmentName) {
-		for (Department department :
-				findBydepartmentName(
-					departmentName, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
-			remove(department);
-		}
+		return remove(department);
 	}
 
 	/**
@@ -1939,10 +1639,10 @@ public class DepartmentPersistenceImpl
 	 * @return the number of matching departments
 	 */
 	@Override
-	public int countBydepartmentName(String departmentName) {
+	public int countByDepartmentName(String departmentName) {
 		departmentName = Objects.toString(departmentName, "");
 
-		FinderPath finderPath = _finderPathCountBydepartmentName;
+		FinderPath finderPath = _finderPathCountByDepartmentName;
 
 		Object[] finderArgs = new Object[] {departmentName};
 
@@ -2000,6 +1700,353 @@ public class DepartmentPersistenceImpl
 	private static final String _FINDER_COLUMN_DEPARTMENTNAME_DEPARTMENTNAME_3 =
 		"(department.departmentName IS NULL OR department.departmentName = '')";
 
+	private FinderPath _finderPathWithPaginationFindByDepartmentId;
+	private FinderPath _finderPathWithoutPaginationFindByDepartmentId;
+	private FinderPath _finderPathCountByDepartmentId;
+
+	/**
+	 * Returns all the departments where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @return the matching departments
+	 */
+	@Override
+	public List<Department> findByDepartmentId(long departmentId) {
+		return findByDepartmentId(
+			departmentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the departments where departmentId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param departmentId the department ID
+	 * @param start the lower bound of the range of departments
+	 * @param end the upper bound of the range of departments (not inclusive)
+	 * @return the range of matching departments
+	 */
+	@Override
+	public List<Department> findByDepartmentId(
+		long departmentId, int start, int end) {
+
+		return findByDepartmentId(departmentId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the departments where departmentId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param departmentId the department ID
+	 * @param start the lower bound of the range of departments
+	 * @param end the upper bound of the range of departments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching departments
+	 */
+	@Override
+	public List<Department> findByDepartmentId(
+		long departmentId, int start, int end,
+		OrderByComparator<Department> orderByComparator) {
+
+		return findByDepartmentId(
+			departmentId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the departments where departmentId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DepartmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param departmentId the department ID
+	 * @param start the lower bound of the range of departments
+	 * @param end the upper bound of the range of departments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching departments
+	 */
+	@Override
+	public List<Department> findByDepartmentId(
+		long departmentId, int start, int end,
+		OrderByComparator<Department> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByDepartmentId;
+				finderArgs = new Object[] {departmentId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByDepartmentId;
+			finderArgs = new Object[] {
+				departmentId, start, end, orderByComparator
+			};
+		}
+
+		List<Department> list = null;
+
+		if (useFinderCache) {
+			list = (List<Department>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Department department : list) {
+					if (departmentId != department.getDepartmentId()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_DEPARTMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_DEPARTMENTID_DEPARTMENTID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(DepartmentModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(departmentId);
+
+				list = (List<Department>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching department
+	 * @throws NoSuchDepartmentException if a matching department could not be found
+	 */
+	@Override
+	public Department findByDepartmentId_First(
+			long departmentId, OrderByComparator<Department> orderByComparator)
+		throws NoSuchDepartmentException {
+
+		Department department = fetchByDepartmentId_First(
+			departmentId, orderByComparator);
+
+		if (department != null) {
+			return department;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("departmentId=");
+		sb.append(departmentId);
+
+		sb.append("}");
+
+		throw new NoSuchDepartmentException(sb.toString());
+	}
+
+	/**
+	 * Returns the first department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching department, or <code>null</code> if a matching department could not be found
+	 */
+	@Override
+	public Department fetchByDepartmentId_First(
+		long departmentId, OrderByComparator<Department> orderByComparator) {
+
+		List<Department> list = findByDepartmentId(
+			departmentId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching department
+	 * @throws NoSuchDepartmentException if a matching department could not be found
+	 */
+	@Override
+	public Department findByDepartmentId_Last(
+			long departmentId, OrderByComparator<Department> orderByComparator)
+		throws NoSuchDepartmentException {
+
+		Department department = fetchByDepartmentId_Last(
+			departmentId, orderByComparator);
+
+		if (department != null) {
+			return department;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("departmentId=");
+		sb.append(departmentId);
+
+		sb.append("}");
+
+		throw new NoSuchDepartmentException(sb.toString());
+	}
+
+	/**
+	 * Returns the last department in the ordered set where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching department, or <code>null</code> if a matching department could not be found
+	 */
+	@Override
+	public Department fetchByDepartmentId_Last(
+		long departmentId, OrderByComparator<Department> orderByComparator) {
+
+		int count = countByDepartmentId(departmentId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Department> list = findByDepartmentId(
+			departmentId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Removes all the departments where departmentId = &#63; from the database.
+	 *
+	 * @param departmentId the department ID
+	 */
+	@Override
+	public void removeByDepartmentId(long departmentId) {
+		for (Department department :
+				findByDepartmentId(
+					departmentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(department);
+		}
+	}
+
+	/**
+	 * Returns the number of departments where departmentId = &#63;.
+	 *
+	 * @param departmentId the department ID
+	 * @return the number of matching departments
+	 */
+	@Override
+	public int countByDepartmentId(long departmentId) {
+		FinderPath finderPath = _finderPathCountByDepartmentId;
+
+		Object[] finderArgs = new Object[] {departmentId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_DEPARTMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_DEPARTMENTID_DEPARTMENTID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(departmentId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DEPARTMENTID_DEPARTMENTID_2 =
+		"department.departmentId = ?";
+
 	public DepartmentPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -2029,6 +2076,10 @@ public class DepartmentPersistenceImpl
 			_finderPathFetchByUUID_G,
 			new Object[] {department.getUuid(), department.getGroupId()},
 			department);
+
+		finderCache.putResult(
+			_finderPathFetchByDepartmentName,
+			new Object[] {department.getDepartmentName()}, department);
 	}
 
 	private int _valueObjectFinderCacheListThreshold;
@@ -2108,6 +2159,13 @@ public class DepartmentPersistenceImpl
 		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
 		finderCache.putResult(
 			_finderPathFetchByUUID_G, args, departmentModelImpl);
+
+		args = new Object[] {departmentModelImpl.getDepartmentName()};
+
+		finderCache.putResult(
+			_finderPathCountByDepartmentName, args, Long.valueOf(1));
+		finderCache.putResult(
+			_finderPathFetchByDepartmentName, args, departmentModelImpl);
 	}
 
 	/**
@@ -2624,23 +2682,33 @@ public class DepartmentPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "companyId"}, false);
 
-		_finderPathWithPaginationFindBydepartmentName = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBydepartmentName",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			},
-			new String[] {"departmentName"}, true);
-
-		_finderPathWithoutPaginationFindBydepartmentName = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBydepartmentName",
+		_finderPathFetchByDepartmentName = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByDepartmentName",
 			new String[] {String.class.getName()},
 			new String[] {"departmentName"}, true);
 
-		_finderPathCountBydepartmentName = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBydepartmentName",
+		_finderPathCountByDepartmentName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDepartmentName",
 			new String[] {String.class.getName()},
 			new String[] {"departmentName"}, false);
+
+		_finderPathWithPaginationFindByDepartmentId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDepartmentId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"departmentId"}, true);
+
+		_finderPathWithoutPaginationFindByDepartmentId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDepartmentId",
+			new String[] {Long.class.getName()}, new String[] {"departmentId"},
+			true);
+
+		_finderPathCountByDepartmentId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDepartmentId",
+			new String[] {Long.class.getName()}, new String[] {"departmentId"},
+			false);
 
 		_setDepartmentUtilPersistence(this);
 	}

@@ -14,8 +14,10 @@
 
 package com.aixtor.training.service.impl;
 
+import com.aixtor.training.model.Designation;
 import com.aixtor.training.service.base.DesignationLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.exception.SystemException;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -27,5 +29,19 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class DesignationLocalServiceImpl extends DesignationLocalServiceBaseImpl {
+
+	@Override
+	public Designation findByDesignationId(long designationId) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Designation findByDesignationName(String designationName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+	
+
 }

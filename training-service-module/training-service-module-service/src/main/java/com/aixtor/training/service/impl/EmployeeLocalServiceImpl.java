@@ -34,38 +34,35 @@ import org.osgi.service.component.annotations.Component;
 public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl{
 	
 	private static Log log = LogFactoryUtil.getLog(EmployeeLocalServiceImpl.class);
-
-	/**
-	 * @return designation name by employee name using employeeFinderImpl
-	 */
-	@Override
-	public List<Object[]> getDesignationNameByEmployee() {
-		return employeeFinder.getDesignationNameByEmployee();
-	}
-
-	/**
-	 * @return employee list by designation name using employeeFinderImpl
-	 */
-	@Override
-	public List<Employee> getEmployeeByDesignation(String designationName) {
-		return employeeFinder.getEmployeeByDesignation(designationName);
-	}
-
-	/**
-	 * @return employee list by employee name using employeeFinderImpl
-	 */
-	@Override
-	public List<Object[]> getEmployeeByName(String employeeName) {
-		log.info("EmployeeLocalServiceImpl >>> getEmployeeByName >>> " + employeeName);
-		return employeeFinder.getEmployeeByName(employeeName);
+	
+	
+	public List<Object[]> getEmployeesByAllEntity(String searchData){
+		log.info("EmployeeLocalServiceImpl >>> getEmployeesByAllEntity :: " +searchData+ "\n");
+		return employeeFinder.getEmployeesByAllEntity(searchData);
 	}
 	
-	/**
-	 * @return employee list by employeeName, designationName, departmentName, branchName using employeeFinderImpl
-	 */
-	@Override
-	public List<Object[]> getEmployeeByAllEntity(String searchData) {
-		log.info("EmployeeLocalServiceImpl >>> getEmployeeByAllEntity >>> " + searchData);
-		return employeeFinder.getEmployeeByAllEntity(searchData);
+	public List<Object[]> getAllEmployees(){
+		return employeeFinder.getAllEmployees();
 	}
+	
+	public List<Object[]> getAllBranches(){
+		return employeeFinder.getAllBranches();
+	}
+	
+	public List<Employee> findByBranchId(long branchId) {
+		return employeePersistence.findBybranchId(branchId);
+	}
+	
+	public List<Employee> findByDesignationId(long designationId) {
+		return employeePersistence.findBydesignationId(designationId);
+	}
+	
+	public List<Employee> findByDepartmentId(long departmentId) {
+		return employeePersistence.findBydepartmentId(departmentId);
+	}
+	
+	public List<Employee> findByEmployeeId(long employeeId) {
+		return employeePersistence.findByemployeeId(employeeId);
+	}
+
 }

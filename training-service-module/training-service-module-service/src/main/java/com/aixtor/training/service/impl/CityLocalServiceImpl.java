@@ -14,6 +14,7 @@
 
 package com.aixtor.training.service.impl;
 
+import com.aixtor.training.exception.NoSuchCityException;
 import com.aixtor.training.model.City;
 import com.aixtor.training.service.base.CityLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
@@ -36,4 +37,9 @@ public class CityLocalServiceImpl extends CityLocalServiceBaseImpl {
 		return cityPersistence.findBystateId(stateId);
 		
 	}
+	
+	public City findByCityId(long cityId) throws SystemException, NoSuchCityException{
+		return null;
+	}
+
 }

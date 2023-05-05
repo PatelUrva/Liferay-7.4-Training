@@ -1455,9 +1455,9 @@ public class DesignationPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"designation.companyId = ?";
 
-	private FinderPath _finderPathWithPaginationFindBydesignationName;
-	private FinderPath _finderPathWithoutPaginationFindBydesignationName;
-	private FinderPath _finderPathCountBydesignationName;
+	private FinderPath _finderPathWithPaginationFindByDesignationName;
+	private FinderPath _finderPathWithoutPaginationFindByDesignationName;
+	private FinderPath _finderPathCountByDesignationName;
 
 	/**
 	 * Returns all the designations where designationName = &#63;.
@@ -1466,8 +1466,8 @@ public class DesignationPersistenceImpl
 	 * @return the matching designations
 	 */
 	@Override
-	public List<Designation> findBydesignationName(String designationName) {
-		return findBydesignationName(
+	public List<Designation> findByDesignationName(String designationName) {
+		return findByDesignationName(
 			designationName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -1484,10 +1484,10 @@ public class DesignationPersistenceImpl
 	 * @return the range of matching designations
 	 */
 	@Override
-	public List<Designation> findBydesignationName(
+	public List<Designation> findByDesignationName(
 		String designationName, int start, int end) {
 
-		return findBydesignationName(designationName, start, end, null);
+		return findByDesignationName(designationName, start, end, null);
 	}
 
 	/**
@@ -1504,11 +1504,11 @@ public class DesignationPersistenceImpl
 	 * @return the ordered range of matching designations
 	 */
 	@Override
-	public List<Designation> findBydesignationName(
+	public List<Designation> findByDesignationName(
 		String designationName, int start, int end,
 		OrderByComparator<Designation> orderByComparator) {
 
-		return findBydesignationName(
+		return findByDesignationName(
 			designationName, start, end, orderByComparator, true);
 	}
 
@@ -1527,7 +1527,7 @@ public class DesignationPersistenceImpl
 	 * @return the ordered range of matching designations
 	 */
 	@Override
-	public List<Designation> findBydesignationName(
+	public List<Designation> findByDesignationName(
 		String designationName, int start, int end,
 		OrderByComparator<Designation> orderByComparator,
 		boolean useFinderCache) {
@@ -1541,12 +1541,12 @@ public class DesignationPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindBydesignationName;
+				finderPath = _finderPathWithoutPaginationFindByDesignationName;
 				finderArgs = new Object[] {designationName};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindBydesignationName;
+			finderPath = _finderPathWithPaginationFindByDesignationName;
 			finderArgs = new Object[] {
 				designationName, start, end, orderByComparator
 			};
@@ -1647,12 +1647,12 @@ public class DesignationPersistenceImpl
 	 * @throws NoSuchDesignationException if a matching designation could not be found
 	 */
 	@Override
-	public Designation findBydesignationName_First(
+	public Designation findByDesignationName_First(
 			String designationName,
 			OrderByComparator<Designation> orderByComparator)
 		throws NoSuchDesignationException {
 
-		Designation designation = fetchBydesignationName_First(
+		Designation designation = fetchByDesignationName_First(
 			designationName, orderByComparator);
 
 		if (designation != null) {
@@ -1679,11 +1679,11 @@ public class DesignationPersistenceImpl
 	 * @return the first matching designation, or <code>null</code> if a matching designation could not be found
 	 */
 	@Override
-	public Designation fetchBydesignationName_First(
+	public Designation fetchByDesignationName_First(
 		String designationName,
 		OrderByComparator<Designation> orderByComparator) {
 
-		List<Designation> list = findBydesignationName(
+		List<Designation> list = findByDesignationName(
 			designationName, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -1702,12 +1702,12 @@ public class DesignationPersistenceImpl
 	 * @throws NoSuchDesignationException if a matching designation could not be found
 	 */
 	@Override
-	public Designation findBydesignationName_Last(
+	public Designation findByDesignationName_Last(
 			String designationName,
 			OrderByComparator<Designation> orderByComparator)
 		throws NoSuchDesignationException {
 
-		Designation designation = fetchBydesignationName_Last(
+		Designation designation = fetchByDesignationName_Last(
 			designationName, orderByComparator);
 
 		if (designation != null) {
@@ -1734,17 +1734,17 @@ public class DesignationPersistenceImpl
 	 * @return the last matching designation, or <code>null</code> if a matching designation could not be found
 	 */
 	@Override
-	public Designation fetchBydesignationName_Last(
+	public Designation fetchByDesignationName_Last(
 		String designationName,
 		OrderByComparator<Designation> orderByComparator) {
 
-		int count = countBydesignationName(designationName);
+		int count = countByDesignationName(designationName);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Designation> list = findBydesignationName(
+		List<Designation> list = findByDesignationName(
 			designationName, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -1764,7 +1764,7 @@ public class DesignationPersistenceImpl
 	 * @throws NoSuchDesignationException if a designation with the primary key could not be found
 	 */
 	@Override
-	public Designation[] findBydesignationName_PrevAndNext(
+	public Designation[] findByDesignationName_PrevAndNext(
 			long designationId, String designationName,
 			OrderByComparator<Designation> orderByComparator)
 		throws NoSuchDesignationException {
@@ -1780,12 +1780,12 @@ public class DesignationPersistenceImpl
 
 			Designation[] array = new DesignationImpl[3];
 
-			array[0] = getBydesignationName_PrevAndNext(
+			array[0] = getByDesignationName_PrevAndNext(
 				session, designation, designationName, orderByComparator, true);
 
 			array[1] = designation;
 
-			array[2] = getBydesignationName_PrevAndNext(
+			array[2] = getByDesignationName_PrevAndNext(
 				session, designation, designationName, orderByComparator,
 				false);
 
@@ -1799,7 +1799,7 @@ public class DesignationPersistenceImpl
 		}
 	}
 
-	protected Designation getBydesignationName_PrevAndNext(
+	protected Designation getByDesignationName_PrevAndNext(
 		Session session, Designation designation, String designationName,
 		OrderByComparator<Designation> orderByComparator, boolean previous) {
 
@@ -1924,9 +1924,9 @@ public class DesignationPersistenceImpl
 	 * @param designationName the designation name
 	 */
 	@Override
-	public void removeBydesignationName(String designationName) {
+	public void removeByDesignationName(String designationName) {
 		for (Designation designation :
-				findBydesignationName(
+				findByDesignationName(
 					designationName, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 					null)) {
 
@@ -1941,10 +1941,10 @@ public class DesignationPersistenceImpl
 	 * @return the number of matching designations
 	 */
 	@Override
-	public int countBydesignationName(String designationName) {
+	public int countByDesignationName(String designationName) {
 		designationName = Objects.toString(designationName, "");
 
-		FinderPath finderPath = _finderPathCountBydesignationName;
+		FinderPath finderPath = _finderPathCountByDesignationName;
 
 		Object[] finderArgs = new Object[] {designationName};
 
@@ -2003,6 +2003,356 @@ public class DesignationPersistenceImpl
 	private static final String
 		_FINDER_COLUMN_DESIGNATIONNAME_DESIGNATIONNAME_3 =
 			"(designation.designationName IS NULL OR designation.designationName = '')";
+
+	private FinderPath _finderPathWithPaginationFindByDesignationId;
+	private FinderPath _finderPathWithoutPaginationFindByDesignationId;
+	private FinderPath _finderPathCountByDesignationId;
+
+	/**
+	 * Returns all the designations where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @return the matching designations
+	 */
+	@Override
+	public List<Designation> findByDesignationId(long designationId) {
+		return findByDesignationId(
+			designationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @return the range of matching designations
+	 */
+	@Override
+	public List<Designation> findByDesignationId(
+		long designationId, int start, int end) {
+
+		return findByDesignationId(designationId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching designations
+	 */
+	@Override
+	public List<Designation> findByDesignationId(
+		long designationId, int start, int end,
+		OrderByComparator<Designation> orderByComparator) {
+
+		return findByDesignationId(
+			designationId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the designations where designationId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DesignationModelImpl</code>.
+	 * </p>
+	 *
+	 * @param designationId the designation ID
+	 * @param start the lower bound of the range of designations
+	 * @param end the upper bound of the range of designations (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching designations
+	 */
+	@Override
+	public List<Designation> findByDesignationId(
+		long designationId, int start, int end,
+		OrderByComparator<Designation> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByDesignationId;
+				finderArgs = new Object[] {designationId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByDesignationId;
+			finderArgs = new Object[] {
+				designationId, start, end, orderByComparator
+			};
+		}
+
+		List<Designation> list = null;
+
+		if (useFinderCache) {
+			list = (List<Designation>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Designation designation : list) {
+					if (designationId != designation.getDesignationId()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_DESIGNATION_WHERE);
+
+			sb.append(_FINDER_COLUMN_DESIGNATIONID_DESIGNATIONID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(DesignationModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(designationId);
+
+				list = (List<Designation>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching designation
+	 * @throws NoSuchDesignationException if a matching designation could not be found
+	 */
+	@Override
+	public Designation findByDesignationId_First(
+			long designationId,
+			OrderByComparator<Designation> orderByComparator)
+		throws NoSuchDesignationException {
+
+		Designation designation = fetchByDesignationId_First(
+			designationId, orderByComparator);
+
+		if (designation != null) {
+			return designation;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("designationId=");
+		sb.append(designationId);
+
+		sb.append("}");
+
+		throw new NoSuchDesignationException(sb.toString());
+	}
+
+	/**
+	 * Returns the first designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching designation, or <code>null</code> if a matching designation could not be found
+	 */
+	@Override
+	public Designation fetchByDesignationId_First(
+		long designationId, OrderByComparator<Designation> orderByComparator) {
+
+		List<Designation> list = findByDesignationId(
+			designationId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching designation
+	 * @throws NoSuchDesignationException if a matching designation could not be found
+	 */
+	@Override
+	public Designation findByDesignationId_Last(
+			long designationId,
+			OrderByComparator<Designation> orderByComparator)
+		throws NoSuchDesignationException {
+
+		Designation designation = fetchByDesignationId_Last(
+			designationId, orderByComparator);
+
+		if (designation != null) {
+			return designation;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("designationId=");
+		sb.append(designationId);
+
+		sb.append("}");
+
+		throw new NoSuchDesignationException(sb.toString());
+	}
+
+	/**
+	 * Returns the last designation in the ordered set where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching designation, or <code>null</code> if a matching designation could not be found
+	 */
+	@Override
+	public Designation fetchByDesignationId_Last(
+		long designationId, OrderByComparator<Designation> orderByComparator) {
+
+		int count = countByDesignationId(designationId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Designation> list = findByDesignationId(
+			designationId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Removes all the designations where designationId = &#63; from the database.
+	 *
+	 * @param designationId the designation ID
+	 */
+	@Override
+	public void removeByDesignationId(long designationId) {
+		for (Designation designation :
+				findByDesignationId(
+					designationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(designation);
+		}
+	}
+
+	/**
+	 * Returns the number of designations where designationId = &#63;.
+	 *
+	 * @param designationId the designation ID
+	 * @return the number of matching designations
+	 */
+	@Override
+	public int countByDesignationId(long designationId) {
+		FinderPath finderPath = _finderPathCountByDesignationId;
+
+		Object[] finderArgs = new Object[] {designationId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_DESIGNATION_WHERE);
+
+			sb.append(_FINDER_COLUMN_DESIGNATIONID_DESIGNATIONID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(designationId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DESIGNATIONID_DESIGNATIONID_2 =
+		"designation.designationId = ?";
 
 	public DesignationPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -2629,23 +2979,41 @@ public class DesignationPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "companyId"}, false);
 
-		_finderPathWithPaginationFindBydesignationName = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBydesignationName",
+		_finderPathWithPaginationFindByDesignationName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDesignationName",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"designationName"}, true);
 
-		_finderPathWithoutPaginationFindBydesignationName = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBydesignationName",
+		_finderPathWithoutPaginationFindByDesignationName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDesignationName",
 			new String[] {String.class.getName()},
 			new String[] {"designationName"}, true);
 
-		_finderPathCountBydesignationName = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBydesignationName",
+		_finderPathCountByDesignationName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDesignationName",
 			new String[] {String.class.getName()},
 			new String[] {"designationName"}, false);
+
+		_finderPathWithPaginationFindByDesignationId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDesignationId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"designationId"}, true);
+
+		_finderPathWithoutPaginationFindByDesignationId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDesignationId",
+			new String[] {Long.class.getName()}, new String[] {"designationId"},
+			true);
+
+		_finderPathCountByDesignationId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDesignationId",
+			new String[] {Long.class.getName()}, new String[] {"designationId"},
+			false);
 
 		_setDesignationUtilPersistence(this);
 	}

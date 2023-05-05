@@ -2471,6 +2471,344 @@ public class StatePersistenceImpl
 	private static final String _FINDER_COLUMN_COUNTRYID_COUNTRYID_2 =
 		"state.countryId = ?";
 
+	private FinderPath _finderPathWithPaginationFindBystateId;
+	private FinderPath _finderPathWithoutPaginationFindBystateId;
+	private FinderPath _finderPathCountBystateId;
+
+	/**
+	 * Returns all the states where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @return the matching states
+	 */
+	@Override
+	public List<State> findBystateId(long stateId) {
+		return findBystateId(
+			stateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the states where stateId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param stateId the state ID
+	 * @param start the lower bound of the range of states
+	 * @param end the upper bound of the range of states (not inclusive)
+	 * @return the range of matching states
+	 */
+	@Override
+	public List<State> findBystateId(long stateId, int start, int end) {
+		return findBystateId(stateId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the states where stateId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param stateId the state ID
+	 * @param start the lower bound of the range of states
+	 * @param end the upper bound of the range of states (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching states
+	 */
+	@Override
+	public List<State> findBystateId(
+		long stateId, int start, int end,
+		OrderByComparator<State> orderByComparator) {
+
+		return findBystateId(stateId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the states where stateId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param stateId the state ID
+	 * @param start the lower bound of the range of states
+	 * @param end the upper bound of the range of states (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching states
+	 */
+	@Override
+	public List<State> findBystateId(
+		long stateId, int start, int end,
+		OrderByComparator<State> orderByComparator, boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindBystateId;
+				finderArgs = new Object[] {stateId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindBystateId;
+			finderArgs = new Object[] {stateId, start, end, orderByComparator};
+		}
+
+		List<State> list = null;
+
+		if (useFinderCache) {
+			list = (List<State>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (State state : list) {
+					if (stateId != state.getStateId()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_STATE_WHERE);
+
+			sb.append(_FINDER_COLUMN_STATEID_STATEID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(StateModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(stateId);
+
+				list = (List<State>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching state
+	 * @throws NoSuchStateException if a matching state could not be found
+	 */
+	@Override
+	public State findBystateId_First(
+			long stateId, OrderByComparator<State> orderByComparator)
+		throws NoSuchStateException {
+
+		State state = fetchBystateId_First(stateId, orderByComparator);
+
+		if (state != null) {
+			return state;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("stateId=");
+		sb.append(stateId);
+
+		sb.append("}");
+
+		throw new NoSuchStateException(sb.toString());
+	}
+
+	/**
+	 * Returns the first state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching state, or <code>null</code> if a matching state could not be found
+	 */
+	@Override
+	public State fetchBystateId_First(
+		long stateId, OrderByComparator<State> orderByComparator) {
+
+		List<State> list = findBystateId(stateId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching state
+	 * @throws NoSuchStateException if a matching state could not be found
+	 */
+	@Override
+	public State findBystateId_Last(
+			long stateId, OrderByComparator<State> orderByComparator)
+		throws NoSuchStateException {
+
+		State state = fetchBystateId_Last(stateId, orderByComparator);
+
+		if (state != null) {
+			return state;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("stateId=");
+		sb.append(stateId);
+
+		sb.append("}");
+
+		throw new NoSuchStateException(sb.toString());
+	}
+
+	/**
+	 * Returns the last state in the ordered set where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching state, or <code>null</code> if a matching state could not be found
+	 */
+	@Override
+	public State fetchBystateId_Last(
+		long stateId, OrderByComparator<State> orderByComparator) {
+
+		int count = countBystateId(stateId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<State> list = findBystateId(
+			stateId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Removes all the states where stateId = &#63; from the database.
+	 *
+	 * @param stateId the state ID
+	 */
+	@Override
+	public void removeBystateId(long stateId) {
+		for (State state :
+				findBystateId(
+					stateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(state);
+		}
+	}
+
+	/**
+	 * Returns the number of states where stateId = &#63;.
+	 *
+	 * @param stateId the state ID
+	 * @return the number of matching states
+	 */
+	@Override
+	public int countBystateId(long stateId) {
+		FinderPath finderPath = _finderPathCountBystateId;
+
+		Object[] finderArgs = new Object[] {stateId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_STATE_WHERE);
+
+			sb.append(_FINDER_COLUMN_STATEID_STATEID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(stateId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_STATEID_STATEID_2 =
+		"state.stateId = ?";
+
 	public StatePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -3114,6 +3452,24 @@ public class StatePersistenceImpl
 		_finderPathCountBycountryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBycountryId",
 			new String[] {Long.class.getName()}, new String[] {"countryId"},
+			false);
+
+		_finderPathWithPaginationFindBystateId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBystateId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"stateId"}, true);
+
+		_finderPathWithoutPaginationFindBystateId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBystateId",
+			new String[] {Long.class.getName()}, new String[] {"stateId"},
+			true);
+
+		_finderPathCountBystateId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBystateId",
+			new String[] {Long.class.getName()}, new String[] {"stateId"},
 			false);
 
 		_setStateUtilPersistence(this);

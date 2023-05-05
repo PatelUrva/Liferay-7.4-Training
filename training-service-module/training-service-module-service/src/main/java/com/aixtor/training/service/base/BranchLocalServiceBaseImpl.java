@@ -17,6 +17,7 @@ package com.aixtor.training.service.base;
 import com.aixtor.training.model.Branch;
 import com.aixtor.training.service.BranchLocalService;
 import com.aixtor.training.service.BranchLocalServiceUtil;
+import com.aixtor.training.service.persistence.BranchFinder;
 import com.aixtor.training.service.persistence.BranchPersistence;
 import com.aixtor.training.service.persistence.CityPersistence;
 import com.aixtor.training.service.persistence.DepartmentPersistence;
@@ -598,6 +599,9 @@ public abstract class BranchLocalServiceBaseImpl
 
 	@Reference
 	protected BranchPersistence branchPersistence;
+
+	@Reference
+	protected BranchFinder branchFinder;
 
 	@Reference
 	protected CityPersistence cityPersistence;

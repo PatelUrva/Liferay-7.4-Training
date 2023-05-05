@@ -18,6 +18,9 @@ create index IX_C0D21A4E on FOO_Designation (designationName[$COLUMN_LENGTH:75$]
 create index IX_E19742F8 on FOO_Designation (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_EB84277A on FOO_Designation (uuid_[$COLUMN_LENGTH:75$], groupId);
 
+create index IX_D235E1E on FOO_Employee (branchId);
+create index IX_9E2A44E on FOO_Employee (departmentId);
+create index IX_2FEED3B5 on FOO_Employee (designationId);
 create index IX_57864F9A on FOO_Employee (employeeName[$COLUMN_LENGTH:75$]);
 create index IX_90E73D01 on FOO_Employee (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_716D0FC3 on FOO_Employee (uuid_[$COLUMN_LENGTH:75$], groupId);
