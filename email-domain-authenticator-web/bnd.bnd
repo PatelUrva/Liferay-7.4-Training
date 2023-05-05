@@ -1,0 +1,4 @@
+Bundle-Name: email-domain-authenticator-web
+Bundle-SymbolicName: com.aixtor.training.emaildomainvalidator
+Bundle-Version: 1.0.0
+Export-Package: com.aixtor.training.emaildomainvalidator.constants
