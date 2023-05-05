@@ -1,0 +1,2 @@
+com/aixtor/training/user/servicewrapper/UserTrainingServicewrapper.java
+ com.aixtor.training.user.servicewrapper.UserTrainingServicewrapper
