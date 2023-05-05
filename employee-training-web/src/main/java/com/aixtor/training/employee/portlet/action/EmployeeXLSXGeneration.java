@@ -9,7 +9,9 @@ import com.aixtor.training.service.BranchLocalService;
 import com.aixtor.training.service.DepartmentLocalService;
 import com.aixtor.training.service.DesignationLocalService;
 import com.aixtor.training.service.EmployeeLocalService;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
@@ -31,6 +33,7 @@ import javax.portlet.ResourceResponse;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -65,18 +68,21 @@ public class EmployeeXLSXGeneration extends BaseMVCResourceCommand {
 	private DesignationLocalService designationLocalService;
 	
 
+	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	/**
 	 * @return XLSX saved in the given location
 	 */
 	@Override
 	protected void doServeResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) throws Exception {
 		
-		String searchText = ParamUtil.getString(resourceRequest, EmployeeConstants.SEARCH_TEXT);
-		Date fromDate = ParamUtil.getDate(resourceRequest, EmployeeConstants.FROM_DATE, new SimpleDateFormat("yyyy-MM-dd"));
-		Date toDate = ParamUtil.getDate(resourceRequest, EmployeeConstants.TO_DATE, new SimpleDateFormat("yyyy-MM-dd"));
-		
-		System.out.println(fromDate);
-		System.out.println(toDate);
+		String searchText = ParamUtil.getString(resourceRequest, EmployeeConstants.SEARCH_TEXT, StringPool.BLANK);
+		String fromDateStr = ParamUtil.getString(resourceRequest, EmployeeConstants.FROM_DATE, StringPool.BLANK);
+		String toDateStr = ParamUtil.getString(resourceRequest, EmployeeConstants.TO_DATE, StringPool.BLANK);
+
+		System.out.println(fromDateStr +"\n");
+		System.out.println(toDateStr +"\n");
+
+		JSONArray employeeArray = JSONFactoryUtil.createJSONArray();
 		
 		// 1. Creating XSSFWorkbook 
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -89,7 +95,7 @@ public class EmployeeXLSXGeneration extends BaseMVCResourceCommand {
 		writeHeaderLine(sheet, workbook);
 		
 		// 4. Calling writeDataLines method to write Data
-		writeDataLines(employee, fromDate, toDate, searchText, workbook, sheet);
+		writeDataLines(employee, employeeArray, fromDateStr, toDateStr, searchText, workbook, sheet);
 
 		// 5. Creating byte 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -137,179 +143,128 @@ public class EmployeeXLSXGeneration extends BaseMVCResourceCommand {
 	 * @param workbook
 	 * @param sheet
 	 */
-	private void writeDataLines(Employee employee, Date fromDate, Date toDate, String searchText,  XSSFWorkbook workbook, XSSFSheet sheet) {
+	private void writeDataLines(Employee employee, JSONArray employeeArray, String fromDateStr, String toDateStr, String searchText,  XSSFWorkbook workbook, XSSFSheet sheet) {
 
-		// 1. Declaring and initalizing rowCount
-		int rowCount = 1;
-		
 		ArrayList<ViewCustomEmployeeBean> searchEmployeeList = new ArrayList<ViewCustomEmployeeBean>();
 		EmployeeHelper employeeHelper = new EmployeeHelper(employeeAPI, employeeLocalService, branchLocalService, 
 				departmentLocalService, designationLocalService);
+		
 		// 2. Getting the employeeList from the database
-		if (searchText != null) {
+		if (Validator.isNotNull(searchText)) {
 			
 			searchEmployeeList = employeeHelper.searchTextEmployeeList(searchText, searchEmployeeList);
 			
+			ViewCustomEmployeeBean employees = null;
+			Row dataRow = null;
+			XSSFCellStyle style = workbook.createCellStyle();
+			style.setAlignment(XSSFCellStyle.ALIGN_JUSTIFY);
 			for (int i = 0; i < searchEmployeeList.size(); i++) {
 				
 				// 4. Getting current row value
-				ViewCustomEmployeeBean employees = searchEmployeeList.get(i);
-				
-				// 5. Storing row data in objects
-				long employeeId = employees.getEmployeeId();
-				String employeeName = employees.getEmployeeName();
-				String employeeMobile = employees.getEmployeeMobile();
-				String employeEmail = employees.getEmployeeEmail();
-				String branchName = employees.getBranchName();
-				String departmentName = employees.getDepartmentName();
-				String designationName = employees.getDesignationName();
-	
-				rowCount = setRowByName(sheet, rowCount, i, employeeId, employeeName, employeeMobile, employeEmail,
-						branchName, departmentName, designationName);
+				employees = searchEmployeeList.get(i);
+				sheet.autoSizeColumn(i);
+				dataRow = sheet.createRow(i + 1);
+				dataRow.setRowStyle(style);
+				dataRow.createCell(0).setCellValue(employees.getEmployeeId());
+			    dataRow.createCell(1).setCellValue(employees.getEmployeeName());
+			    dataRow.createCell(2).setCellValue(employees.getEmployeeEmail());
+			    dataRow.createCell(3).setCellValue(employees.getEmployeeMobile());
+			    dataRow.createCell(4).setCellValue(employees.getBranchName());
+			    dataRow.createCell(5).setCellValue(employees.getDepartmentName());
+			    dataRow.createCell(6).setCellValue(employees.getDepartmentName());
+			
 			}
 			
-		} else if(Validator.isNotNull(fromDate) && Validator.isNotNull(toDate) ) {
+		} else if(Validator.isNotNull(fromDateStr) && Validator.isNotNull(toDateStr) ) {
 			
 			try {
+				Date fromDate = simpleDateFormat.parse(fromDateStr);
+				Date toDate =  simpleDateFormat.parse(toDateStr);
 				searchEmployeeList = employeeHelper.dateSearchEmployeeList(fromDate, toDate, searchEmployeeList);
-			} catch (PortalException e) {
-				
-			}
+				System.out.println("EmployeeXLSX >>> " +searchEmployeeList);
+			} catch (Exception e) {
+				System.out.println("EmployeeXLSX >>> Error Occured" +e.getMessage());
+			} 
 
+			ViewCustomEmployeeBean employees = null;
+			Row dataRow = null;
+			XSSFCellStyle style = workbook.createCellStyle();
+			style.setAlignment(XSSFCellStyle.ALIGN_JUSTIFY);
 			for (int i = 0; i < searchEmployeeList.size(); i++) {
 				
 				// 4. Getting current row value
-				ViewCustomEmployeeBean employees = searchEmployeeList.get(i);
-				
-				// 5. Storing row data in objects
-				long employeeId = employees.getEmployeeId();
-				String employeeName = employees.getEmployeeName();
-				String employeeMobile = employees.getEmployeeMobile();
-				String employeEmail = employees.getEmployeeEmail();
-				String branchName = employees.getBranchName();
-				String departmentName = employees.getDepartmentName();
-				String designationName = employees.getDesignationName();
-	
-				rowCount = setRowByName(sheet, rowCount, i, employeeId, employeeName, employeeMobile, employeEmail,
-						branchName, departmentName, designationName);
+				sheet.autoSizeColumn(i);
+				employees = searchEmployeeList.get(i);
+				dataRow = sheet.createRow(i + 1);
+			    dataRow.createCell(0).setCellValue(employees.getEmployeeId());
+			    dataRow.createCell(1).setCellValue(employees.getEmployeeName());
+			    dataRow.createCell(2).setCellValue(employees.getEmployeeEmail());
+			    dataRow.createCell(3).setCellValue(employees.getEmployeeMobile());
+			    dataRow.createCell(4).setCellValue(employees.getBranchName());
+			    dataRow.createCell(5).setCellValue(employees.getDepartmentName());
+			    dataRow.createCell(6).setCellValue(employees.getDepartmentName());
 			}
 			
 		}else {
 		
 			List<Employee> employeeList = employeeLocalService.getEmployees(-1, -1);
+			
 			// 3. Storing list value in employee object row by row
+			Employee employees = null;
+			Row dataRow = null;
+			XSSFCellStyle style = workbook.createCellStyle();
+			style.setAlignment(XSSFCellStyle.ALIGN_JUSTIFY);
+			for (int i = 0; i < employeeList.size(); i++) {
+				
+				// 4. Getting current row value
+				sheet.autoSizeColumn(i);
+				employees = employeeList.get(i);
+				dataRow = sheet.createRow(i + 1);
+			    dataRow.createCell(0).setCellValue(employees.getEmployeeId());
+			    dataRow.createCell(1).setCellValue(employees.getEmployeeName());
+			    dataRow.createCell(2).setCellValue(employees.getEmployeeEmail());
+			    dataRow.createCell(3).setCellValue(employees.getEmployeeMobile());
+			    dataRow.createCell(4).setCellValue(employees.getBranchId());
+			    dataRow.createCell(5).setCellValue(employees.getDepartmentId());
+			    dataRow.createCell(6).setCellValue(employees.getDesignationId());
+				
+			}
+			
+			/*
 			for (int i = 0; i < employeeList.size(); i++) {
 	
 				// 4. Getting current row value
 				Employee employees = employeeList.get(i);
 				
 				// 5. Storing row data in objects
-				long employeeId = employees.getEmployeeId();
-				String employeeName = employees.getEmployeeName();
-				String employeeMobile = employees.getEmployeeMobile();
-				String employeEmail = employees.getEmployeeEmail();
-				long branch = employees.getBranchId();
-				long department = employees.getDepartmentId();
-				long designation = employees.getDesignationId();
-	
-				rowCount = setRowById(sheet, rowCount, i, employeeId, employeeName, employeeMobile, employeEmail,
-						branch, department, designation);
+				jsonObject.put(EmployeeConstants.EMPLOYEE_ID, employees.getEmployeeId());
+				jsonObject.put(EmployeeConstants.EMPLOYEE_NAME, employees.getEmployeeName());
+				jsonObject.put(EmployeeConstants.EMPLOYEE_EMAIL, employees.getEmployeeEmail());
+				jsonObject.put(EmployeeConstants.EMPLOYEE_MOBILE, employees.getEmployeeMobile());
+				jsonObject.put(EmployeeConstants.BRANCH_ID, employees.getBranchId());
+				jsonObject.put(EmployeeConstants.DEPARTMENT_ID, employees.getDepartmentId());
+				jsonObject.put(EmployeeConstants.DESIGNATION_ID, employees.getDesignationId());
+				
+				employeeArray.put(jsonObject);
+				
+				for (int j = 0; j < employeeArray.length(); j++) {
+					
+				    JSONObject employeeObj = employeeArray.getJSONObject(j);
+				    Row dataRow = sheet.createRow(j + 1);
+				    
+				    dataRow.createCell(0).setCellValue(employeeObj.getLong(EmployeeConstants.EMPLOYEE_ID));
+				    dataRow.createCell(1).setCellValue(employeeObj.getString(EmployeeConstants.EMPLOYEE_NAME));
+				    dataRow.createCell(2).setCellValue(employeeObj.getString(EmployeeConstants.EMPLOYEE_MOBILE));
+				    dataRow.createCell(3).setCellValue(employeeObj.getString(EmployeeConstants.EMPLOYEE_EMAIL));
+				    dataRow.createCell(4).setCellValue(employeeObj.getString(EmployeeConstants.BRANCH_ID));
+				    dataRow.createCell(5).setCellValue(employeeObj.getString(EmployeeConstants.DEPARTMENT_ID));
+				    dataRow.createCell(6).setCellValue(employeeObj.getString(EmployeeConstants.DESIGNATION_ID));
+				}
 				
 			}
+			*/
 		} 
 		
-	}
-
-	private int setRowByName(XSSFSheet sheet, int rowCount, int i, long employeeId, String employeeName,
-			String employeeMobile, String employeEmail, String branchName, String departmentName,
-			String designationName) {
-		
-		Row row = sheet.createRow(rowCount++);
-
-		// 7. Declaring and initalizing column count
-		int columnCount = 0;
-		
-		// 8. Adding cell in sheet that represents row value of Employee ID
-		Cell cell = row.createCell(columnCount++);
-		cell.setCellValue(employeeId);
-		sheet.autoSizeColumn(i);
-
-		// 9. Adding cell in sheet that represents row value of Employee Name
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(employeeName);
-		sheet.autoSizeColumn(i);
-
-		// 10. Adding cell in sheet that represents row value of Employee Mobile Number
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(employeeMobile);
-		sheet.autoSizeColumn(i);
-
-		// 11. Adding cell in sheet that represents row value of Employee Email
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(employeEmail);
-		sheet.autoSizeColumn(i);
-
-		// 12. Adding cell in sheet that represents row value of Employee Branch
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(branchName);
-		sheet.autoSizeColumn(i);
-
-		// 13. Adding cell in sheet that represents row value of Employee Department
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(departmentName);
-		sheet.autoSizeColumn(i);
-
-		// 14. Adding cell in sheet that represents row value of Employee Designation
-		cell = row.createCell(columnCount);
-		cell.setCellValue(designationName);
-		sheet.autoSizeColumn(i);
-		return rowCount;
-	}
-
-	private int setRowById(XSSFSheet sheet, int rowCount, int i, long employeeId, String employeeName,
-			String employeeMobile, String employeEmail, long branch, long department, long designation) {
-		
-		// 6. Creating row in sheet with count incrementing based on data available
-		Row row = sheet.createRow(rowCount++);
-
-		// 7. Declaring and initalizing column count
-		int columnCount = 0;
-		
-		// 8. Adding cell in sheet that represents row value of Employee ID
-		Cell cell = row.createCell(columnCount++);
-		cell.setCellValue(employeeId);
-		sheet.autoSizeColumn(i);
-
-		// 9. Adding cell in sheet that represents row value of Employee Name
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(employeeName);
-		sheet.autoSizeColumn(i);
-
-		// 10. Adding cell in sheet that represents row value of Employee Mobile Number
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(employeeMobile);
-		sheet.autoSizeColumn(i);
-
-		// 11. Adding cell in sheet that represents row value of Employee Email
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(employeEmail);
-		sheet.autoSizeColumn(i);
-
-		// 12. Adding cell in sheet that represents row value of Employee Branch
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(branch);
-		sheet.autoSizeColumn(i);
-
-		// 13. Adding cell in sheet that represents row value of Employee Department
-		cell = row.createCell(columnCount++);
-		cell.setCellValue(department);
-		sheet.autoSizeColumn(i);
-
-		// 14. Adding cell in sheet that represents row value of Employee Designation
-		cell = row.createCell(columnCount);
-		cell.setCellValue(designation);
-		sheet.autoSizeColumn(i);
-		return rowCount;
 	}
 
 }
